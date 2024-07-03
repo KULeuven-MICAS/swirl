@@ -1,0 +1,92 @@
+# Copyright 2024 KU Leuven.
+# Licensed under the Apache License, Version 2.0, see LICENSE for details.
+# SPDX-License-Identifier: Apache-2.0
+
+# Run all lint checks
+name: lint
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+
+  ################
+  # Verible Lint #
+  ################
+  verible-lint:
+    name: Lint Verilog sources
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verible linter check
+        uses: chipsalliance/verible-linter-action@main
+        with:
+          paths: |
+            ./rtl
+          #exclude_paths: |
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: true
+          reviewdog_reporter: github-check
+          extra_args: "--waiver_files tools/lint/waiver.verible"
+          #verible_version: ""
+
+  ##################
+  # Lint YML Files #
+  ##################
+  yaml-lint:
+    name: Lint YAML Sources
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          config_file: ./tools/lint/.yamllint.yml
+
+  ########################
+  # Check Python Sources #
+  ########################
+  python-lint:
+    runs-on: ubuntu-latest
+    name: Lint Python Sources
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: flake8 Lint
+        uses: py-actions/flake8@v2
+        with:
+          flake8-version: "6.0.0"
+          max-line-length: "100"
+
+  ######################
+  # Clang-Format Check #
+  ######################
+  # Check C/C++ files for correct formatting.
+  clangfmt:
+    name: Lint C/C++ Sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DoozyX/clang-format-lint-action@v0.16.2
+        with:
+          clangFormatVersion: 10
+
+  ######################
+  # Lint Editor Config #
+  ######################
+  # Detect trailing whitespaces, missing new lines and wrong file encodings.
+  editorconfig-lint:
+    name: Lint Editorconfig
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: editorconfig-checker/action-editorconfig-checker@main
+      - run: editorconfig-checker
