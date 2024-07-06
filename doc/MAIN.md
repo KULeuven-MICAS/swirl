@@ -40,6 +40,7 @@ The total maximum bandwidth to the GeMM unit (summed over the 3 operands is 96 w
 The following scheme provides an example of the computation when A and B operands have 8-bit:
 
 ![alt text](./figs/matmul.svg "GeMM in INT8 (NVIDIA solution)")
+
 M, N, and K parameters are interdependent, all root from the operand precision **P,** and a 4th parameter called **T. T is also decided at design time.**
 For T=32 and P=8:
 
