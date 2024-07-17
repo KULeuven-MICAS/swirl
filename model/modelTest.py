@@ -66,3 +66,4 @@ class MultiplyTestCase(unittest.TestCase):
         self.assertTrue(np.array_equal(
             D, np.array([[sat_val]]))
             )
+        

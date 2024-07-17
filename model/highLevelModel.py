@@ -16,13 +16,13 @@ def bitwise_add(a, b, precision):
 
 
 def bitwise_multiply(multiplicand, multiplier, precision):
-    result = 0
+    result = np.int16(0)
     multiplicand = np.int16(multiplicand) # Extend to signed int16
     multiplier = np.int16(multiplier)
     for i in range(2 * precision):
         if multiplier & 1 << i:
             result += multiplicand << i
-    return result
+    return np.int16(result)
 
 
 def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
@@ -36,3 +36,11 @@ def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
                         A[row][element], 
                         B[element][column], P), 4*P) 
     return D
+
+
+def main():
+    print(bitwise_multiply(-5, -5, 8))
+
+
+if __name__ == "__main__":
+    main()
