@@ -3,15 +3,23 @@ import numpy as np
 
 def bitwise_add(a, b, precision):
     sum = a + b
-    if ((sum) >> precision):  # If true, there is overflow
-        return (2 ** precision - 1)  # Return saturated value
+    if (not a & 1 << (precision-1) and
+       not b & 1 << (precision-1) and
+       sum & 1 << (precision-1)):  # Check positive overflow
+        return (2 ** (precision - 1) - 1)  # Return positive saturated value
+    elif (a & 1 << (precision-1) and
+          b & 1 << (precision-1) and
+          not sum & 1 << (precision-1)):  # Check for negative overflow
+        return -(2 ** (precision - 1))  # Return negative saturated value
     else:
         return sum
 
 
 def bitwise_multiply(multiplicand, multiplier, precision):
     result = 0
-    for i in range(precision):
+    multiplicand = np.int16(multiplicand) # Extend to signed int16
+    multiplier = np.int16(multiplier)
+    for i in range(2 * precision):
         if multiplier & 1 << i:
             result += multiplicand << i
     return result
