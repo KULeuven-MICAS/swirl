@@ -3,13 +3,13 @@ import numpy as np
 
 def bitwise_add(a, b, precision):
     sum = a + b
-    if (not a & 1 << (precision-1) and
-       not b & 1 << (precision-1) and
-       sum & 1 << (precision-1)):  # Check positive overflow
+    if (not a & np.int32(1) << (precision-1) and
+       not b & np.int32(1) << (precision-1) and
+       sum & np.int32(1) << (precision-1)):  # Check positive overflow
         return (2 ** (precision - 1) - 1)  # Return positive saturated value
-    elif (a & 1 << (precision-1) and
-          b & 1 << (precision-1) and
-          not sum & 1 << (precision-1)):  # Check for negative overflow
+    elif (a & np.int32(1) << (precision-1) and
+          b & np.int32(1) << (precision-1) and
+          not sum & np.int32(1) << (precision-1)):  # Check negative overflow
         return -(2 ** (precision - 1))  # Return negative saturated value
     else:
         return sum
@@ -27,7 +27,7 @@ def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
         for row in range(M):
             for element in range(K):
                 D[row, column] = bitwise_add(
-                    D[row, column], 
+                    D[row, column],
                     multiply(
                         A[row][element], 
                         B[element][column]), 4*P)
