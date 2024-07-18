@@ -16,7 +16,7 @@ def bitwise_add(a, b, precision):
 
 
 def multiply(multiplicand, multiplier):
-    multiplicand = np.int32(multiplicand) # Extend to 32 bits
+    multiplicand = np.int32(multiplicand)  # Extend to 32 bits
     multiplier = np.int32(multiplier)
     return multiplicand * multiplier
 

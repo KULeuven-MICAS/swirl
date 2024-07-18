@@ -14,7 +14,7 @@ class MultiplyTestCase(unittest.TestCase):
         C = np.ones((2, 2), dtype=np.int32)
         D = model.matrix_multiplication_accumulation(A, B, C, 2, 2, 2, 8)
         self.assertTrue(np.array_equal(D, np.array([[3, 3], [3, 3]])))
-    
+
     def test_2x2x2_zeros(self):
         A = np.zeros((2, 2), dtype=np.int8)
         B = np.zeros((2, 2), dtype=np.int8)
@@ -36,7 +36,7 @@ class MultiplyTestCase(unittest.TestCase):
         D = model.matrix_multiplication_accumulation(A, B, C, 8, 4, 16, 8)
         self.assertTrue(np.array_equal(
               D, np.matmul(np.int32(A), np.int32(B)) + C))
-        
+
     def test_8x4x16_range_negative(self):
         A = np.arange(8 * 16, dtype=np.int8).reshape(8, 16) * -1
         B = np.arange(4 * 16, dtype=np.int8).reshape(16, 4)
@@ -54,7 +54,7 @@ class MultiplyTestCase(unittest.TestCase):
         self.assertTrue(np.array_equal(
             D, np.array([[sat_val]]))
             )
-        
+
     def test_overflow_negative(self):
         A = np.ones((1, 134000), dtype=np.int8) * -127
         B = np.ones((134000, 1), dtype=np.int8) * 127
@@ -64,7 +64,7 @@ class MultiplyTestCase(unittest.TestCase):
         self.assertTrue(np.array_equal(
             D, np.array([[sat_val]]))
             )
-    
+
     def test_random(self):
         A = np.random.random_integers(-128, 127, 8 * 16).reshape(8, 16)
         B = np.random.random_integers(-128, 127, 4 * 16).reshape(16, 4)
@@ -72,7 +72,7 @@ class MultiplyTestCase(unittest.TestCase):
         D = model.matrix_multiplication_accumulation(A, B, C, 8, 4, 16, 8)
         self.assertTrue(np.array_equal(
               D, np.matmul(np.int32(A), np.int32(B)) + C))
-        
+
 
 if __name__ == "__main__":
     unittest.main()
