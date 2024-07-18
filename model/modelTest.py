@@ -51,7 +51,6 @@ class MultiplyTestCase(unittest.TestCase):
         C = np.ones((1, 1), dtype=np.int32) * 127
         D = model.matrix_multiplication_accumulation(A, B, C, 1, 1, 134000, 8)
         sat_val = 2**31-1  # Saturated value = max value
-        print(D)
         self.assertTrue(np.array_equal(
             D, np.array([[sat_val]]))
             )
@@ -61,9 +60,19 @@ class MultiplyTestCase(unittest.TestCase):
         B = np.ones((134000, 1), dtype=np.int8) * 127
         C = np.ones((1, 1), dtype=np.int32) * 127
         D = model.matrix_multiplication_accumulation(A, B, C, 1, 1, 134000, 8)
-        sat_val = -2**31  # Saturated value = max value
-        print(D)
+        sat_val = -2**31  # Saturated value = min value
         self.assertTrue(np.array_equal(
             D, np.array([[sat_val]]))
             )
+    
+    def test_random(self):
+        A = np.random.random_integers(-128, 127, 8 * 16).reshape(8, 16)
+        B = np.random.random_integers(-128, 127, 4 * 16).reshape(16, 4)
+        C = np.random.random_integers(-128, 127, 8 * 4).reshape(8, 4)
+        D = model.matrix_multiplication_accumulation(A, B, C, 8, 4, 16, 8)
+        self.assertTrue(np.array_equal(
+              D, np.matmul(np.int32(A), np.int32(B)) + C))
         
+
+if __name__ == "__main__":
+    unittest.main()
