@@ -30,13 +30,5 @@ def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
                     D[row, column], 
                     multiply(
                         A[row][element], 
-                        B[element][column]), 4*P) 
+                        B[element][column]), 4*P)
     return D
-
-
-def main():
-    print(multiply(-5, -5))
-
-
-if __name__ == "__main__":
-    main()
