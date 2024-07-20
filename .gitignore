@@ -34,3 +34,11 @@
 
 # Directories
 __pycache__/
+
+#QuestaSim
+*.vcd
+vsim.wlf
+transcript
+*.ini
+useful_commands.txt
+work/

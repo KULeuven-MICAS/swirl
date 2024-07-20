@@ -32,3 +32,15 @@ def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
                         A[row][element], 
                         B[element][column]), 4*P)
     return D
+
+
+def main():
+    print(
+        np.matmul (np.array([123,127,-2,-5]).reshape(2, 2),
+                   np.array([1,2,3,4]).reshape(2, 2))
+                   + np.array([1,2,3,4]).reshape(2, 2)
+    )
+
+
+if __name__ == "__main__":
+    main()
