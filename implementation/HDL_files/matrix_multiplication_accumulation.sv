@@ -4,10 +4,10 @@ module matrix_multiplication_accumulation #(
     parameter K,
     parameter P
 )(
-    input logic [P-1:0] A [M-1:0][K-1:0],
-    input logic [P-1:0] B [K-1:0][N-1:0],
-    input logic [4*P-1:0] C [M-1:0][N-1:0],
-    output logic [4*P-1:0] D [M-1:0][N-1:0]
+    input logic signed [P-1:0] A [M-1:0][K-1:0],
+    input logic signed [P-1:0] B [K-1:0][N-1:0],
+    input logic signed [4*P-1:0] C [M-1:0][N-1:0],
+    output logic signed [4*P-1:0] D [M-1:0][N-1:0]
 );
     generate 
             genvar column, row, element;

@@ -1,6 +1,6 @@
-# To run hardware simulation: 'vsim -c -do run_sim.tcl'
+# To run hardware simulation: 'vsim -c -do run_sim_${SIMNAME}.tcl'
 
-quietly set SIMNAME "rtl"
+quietly set SIMNAME "matmul"
 
 # Check for NO_GUI environment variable
 if { [info exist ::env(NO_GUI)] } {
@@ -23,10 +23,10 @@ vlog -sv -work ${WLIB} ${HDL_PATH}/*.sv
 
 
 if {${NO_GUI} == 0} {
-  vopt -work ${WLIB} +acc tb_ -o dbg 
+  vopt -work ${WLIB} +acc tb_${SIMNAME} -o dbg 
   set OBJ "dbg"
 } else {
-  vopt -work ${WLIB} tb_ -o nodbg 
+  vopt -work ${WLIB} tb_${SIMNAME} -o nodbg 
   set OBJ "nodbg"
 }
 
