@@ -1,4 +1,7 @@
-# To run hardware simulation: 'vsim -c -do run_sim_${SIMNAME}.tcl'
+# Run Python script to generate test data
+exec python3 tb_matmul.py
+
+# To run hardware simulation: 'vsim -c -do run_sim_matmul.tcl'
 
 quietly set SIMNAME "matmul"
 
@@ -21,28 +24,38 @@ set HDL_PATH "./HDL_files"
 # Compile HDL files
 vlog -sv -work ${WLIB} ${HDL_PATH}/*.sv
 
-
-if {${NO_GUI} == 0} {
-  vopt -work ${WLIB} +acc tb_${SIMNAME} -o dbg 
-  set OBJ "dbg"
-} else {
-  vopt -work ${WLIB} tb_${SIMNAME} -o nodbg 
-  set OBJ "nodbg"
+# Define testbench configurations
+set TESTBENCHES {
+  "2x2x2"
+  "8x4x16"
 }
 
-# Verify library mapping
-vmap
+# Run simulation for each testbench
+foreach TB ${TESTBENCHES} {
+    if {${NO_GUI} == 0} {
+        vopt -work ${WLIB} +acc tb_${SIMNAME}_${TB} -o dbg_${TB}
+        set OBJ "dbg_${TB}"
+    } else {
+        vopt -work ${WLIB} tb_${SIMNAME}_${TB} -o nodbg_${TB}
+        set OBJ "nodbg_${TB}"
+    }
 
+    # Verify library mapping
+    vmap
 
-vsim \
-  -wlf work/${SIMNAME}.wlf \
-  -msgmode both -displaymsgmode both \
-  -L work_lib  \
-  -work ${WLIB} \
-  ${OBJ}
+    # Apply the IterationLimit attribute
+    set IterationLimit 200000
 
-# Run the simulation for a specified time (e.g., 50ns)
-run 200ns
+    vsim \
+      -wlf work/${SIMNAME}_${TB}.wlf \
+      -msgmode both -displaymsgmode both \
+      -L work_lib  \
+      -work ${WLIB} \
+      -modelsimini ./modelsim.ini \
+      ${OBJ}
 
-# Exit the simulation
+    # Run the simulation for a specified time (e.g., 200ns)
+    run 1000ns
+}
+
 quit

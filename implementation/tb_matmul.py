@@ -21,8 +21,9 @@ def save_matrices_to_file(A, B, C, D, filepath):
 
 if __name__ == '__main__':
     
+    # 2x2x2 MATRIX TESTS:
     directory = "./test_data"
-    filename = 'matrix_data_2x2.txt'
+    filename = 'matrix_data_2x2x2.txt'
     filepath = os.path.join(directory, filename)
 
     # Ensure the directory exists
@@ -41,3 +42,67 @@ if __name__ == '__main__':
     C = np.matrix([[1, 1], [1, 1]])
     D = np.matrix([[3, 3], [3, 3]])
     save_matrices_to_file(A, B, C, D, filepath)
+    A = np.matrix([[0, 0], [0, 0]])
+    B = np.matrix([[0, 0], [0, 0]])
+    C = np.matrix([[0, 0], [0, 0]])
+    D = np.matrix([[0, 0], [0, 0]])
+    save_matrices_to_file(A, B, C, D, filepath)
+
+    # 4x8x16 MATRIX TESTS:
+    directory = "./test_data"
+    filename = 'matrix_data_8x4x16.txt'
+    filepath = os.path.join(directory, filename)
+
+    # Ensure the directory exists
+    os.makedirs(directory, exist_ok=True)
+
+    with open(filepath, 'w') as f:
+        pass  # Opening in 'w' mode clears the file
+
+    A = np.arange(8 * 16, dtype=np.int8).reshape(8, 16)
+    B = np.arange(4 * 16, dtype=np.int8).reshape(16, 4)
+    C = np.zeros((8, 4), dtype=np.int32)
+    D = np.matmul(np.int32(A), np.int32(B)) + C
+    save_matrices_to_file(A, B, C, D, filepath)
+
+    A = np.arange(8 * 16, dtype=np.int8).reshape(8, 16) * -1
+    B = np.arange(4 * 16, dtype=np.int8).reshape(16, 4)
+    C = np.zeros((8, 4), dtype=np.int32)
+    D = np.matmul(np.int32(A), np.int32(B)) + C
+    save_matrices_to_file(A, B, C, D, filepath)
+
+    A = np.random.randint(-128, 127, 8 * 16).reshape(8, 16)
+    B = np.random.randint(-128, 127, 4 * 16).reshape(16, 4)
+    C = np.random.randint(-128, 127, 8 * 4).reshape(8, 4)
+    D = np.matmul(np.int32(A), np.int32(B)) + C
+    save_matrices_to_file(A, B, C, D, filepath)
+
+    # OVERFLOW TESTS:
+    directory = "./test_data"
+    filename = 'matrix_data_overflow.txt'
+    filepath = os.path.join(directory, filename)
+
+    # Ensure the directory exists
+    os.makedirs(directory, exist_ok=True)
+
+    with open(filepath, 'w') as f:
+        pass  # Opening in 'w' mode clears the file
+
+    A = np.arange(8 * 16, dtype=np.int8).reshape(8, 16)
+    B = np.arange(4 * 16, dtype=np.int8).reshape(16, 4)
+    C = np.zeros((8, 4), dtype=np.int32)
+    D = np.matmul(np.int32(A), np.int32(B)) + C
+    save_matrices_to_file(A, B, C, D, filepath)
+
+    A = np.arange(8 * 16, dtype=np.int8).reshape(8, 16) * -1
+    B = np.arange(4 * 16, dtype=np.int8).reshape(16, 4)
+    C = np.zeros((8, 4), dtype=np.int32)
+    D = np.matmul(np.int32(A), np.int32(B)) + C
+    save_matrices_to_file(A, B, C, D, filepath)
+
+    A = np.random.randint(-128, 127, 8 * 16).reshape(8, 16)
+    B = np.random.randint(-128, 127, 4 * 16).reshape(16, 4)
+    C = np.random.randint(-128, 127, 8 * 4).reshape(8, 4)
+    D = np.matmul(np.int32(A), np.int32(B)) + C
+    save_matrices_to_file(A, B, C, D, filepath)
+

@@ -1,19 +1,19 @@
 `timescale 1ns / 1ps
 
 
-module tb_matmul;
+module tb_matmul_2x2x2;
 
   parameter M = 2;
   parameter N = 2;
   parameter K = 2;
   parameter P = 8;
   
-  // Testbench signals 2x2
-  logic signed [(P-1):0] tb_A_2x2 [(M-1):0][(K-1):0];
-  logic signed [(P-1):0] tb_B_2x2 [(K-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_C_2x2 [(M-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_D_2x2 [(M-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_expected_D_2x2 [(M-1):0][(N-1):0];
+  // Testbench signals 2x2x2
+  logic signed [(P-1):0] tb_A [(M-1):0][(K-1):0];
+  logic signed [(P-1):0] tb_B [(K-1):0][(N-1):0];
+  logic signed [(4*P-1):0] tb_C [(M-1):0][(N-1):0];
+  logic signed [(4*P-1):0] tb_D [(M-1):0][(N-1):0];
+  logic signed [(4*P-1):0] tb_expected_D [(M-1):0][(N-1):0];
 
   // Module instantiation
   matrix_multiplication_accumulation #(
@@ -21,48 +21,48 @@ module tb_matmul;
     .N(N),
     .K(K),
     .P(P)
-  ) matmul_2x2 (
-    .A(tb_A_2x2), .B(tb_B_2x2), .C(tb_C_2x2), .D(tb_D_2x2)
+  ) matmul_2x2x2 (
+    .A(tb_A), .B(tb_B), .C(tb_C), .D(tb_D)
   );
-
 
   initial begin
     int file;
     string filename;
 
-    $dumpfile("tb_matmul.vcd");
-    $dumpvars(0,tb_matmul);
-    //$monitor("D00 = %d \n D01 = %d \n D10 = %d \n D11 = %d",
-    //        tb_D_2x2[0][0], tb_D_2x2[0][1], tb_D_2x2[1][0], tb_D_2x2[1][1]);
+    $dumpfile($sformatf("tb_matmul_%0dx%0dx%0d.vcd", M, N, K));
+    $dumpvars(0,tb_matmul_2x2x2);
 
-    filename = "matrix_data_2x2.txt";
+    filename = $sformatf("matrix_data_%0dx%0dx%0d.txt", M, N, K);
     file = $fopen({"./test_data/",filename}, "r");
     if (file == 0) begin
          $display ("ERROR: Could not open file %s", filename);
          $finish;
     end
 
-    
-    
     for(int testIndex = 1; !$feof(file); testIndex++) begin
         read_next_test_from_file(file, M, N, K);
         #10
-        assert(tb_D_2x2 == tb_expected_D_2x2) else begin
+        assert(tb_D == tb_expected_D) else begin
             $display("\nTest #%0d failed\nExpected:", testIndex);
-            display_2d_array(tb_expected_D_2x2, 2, 2);
+            display_2d_array(tb_expected_D, M, N);
             $display("\nGot:");
-            display_2d_array(tb_D_2x2, 2, 2);
+            display_2d_array(tb_D, M, N);
             $fatal();
         end
-        $display("Test #%0d passed", testIndex);
+        $display("%0dx%0dx%0d Test #%0d passed", M, N, K, testIndex);
     end
   end
 
-    task read_next_test_from_file(input int file, input int M, input int N, input int K);
-        int status;
-        int read_M;
-        int read_N;
-        int read_K;
+  task automatic read_next_test_from_file (
+      input int file,
+      input int M,
+      input int N,
+      input int K
+  );
+    int status;
+    int read_M;
+    int read_N;
+    int read_K;
 
         status = $fscanf(file, "%d %d %d\n", read_M, read_N, read_K);
         if (status != 3) begin
@@ -78,7 +78,7 @@ module tb_matmul;
 
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
-                status = $fscanf(file, "%d ", tb_A_2x2[i][j]);
+                status = $fscanf(file, "%d ", tb_A[i][j]);
                 if (status != 1) begin
                 $display("ERROR: reading value for A[%0d][%0d]", i, j);
                 $fclose(file);
@@ -89,7 +89,7 @@ module tb_matmul;
 
         for (int i = 0; i < K; i++) begin
             for (int j = 0; j < N; j++) begin
-                status = $fscanf(file, "%d ", tb_B_2x2[i][j]);
+                status = $fscanf(file, "%d ", tb_B[i][j]);
                 if (status != 1) begin
                 $display("ERROR: reading value for B[%0d][%0d]", i, j);
                 $fclose(file);
@@ -100,7 +100,7 @@ module tb_matmul;
 
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < N; j++) begin
-                status = $fscanf(file, "%d ", tb_C_2x2[i][j]);
+                status = $fscanf(file, "%d ", tb_C[i][j]);
                 if (status != 1) begin
                 $display("ERROR: reading value for C[%0d][%0d]", i, j);
                 $fclose(file);
@@ -111,7 +111,7 @@ module tb_matmul;
 
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < N; j++) begin
-                status = $fscanf(file, "%d ", tb_expected_D_2x2[i][j]);
+                status = $fscanf(file, "%d ", tb_expected_D[i][j]);
                 if (status != 1) begin
                 $display("ERROR: reading value for D[%0d][%0d]", i, j);
                 $fclose(file);
@@ -131,5 +131,4 @@ module tb_matmul;
       $display(""); // Newline after each row
     end
   endtask
-
-endmodule
+  endmodule
