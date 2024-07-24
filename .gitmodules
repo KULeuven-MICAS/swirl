@@ -1,6 +1,1 @@
-[submodule "implementation/skywater-pdk"]
-	path = implementation/skywater-pdk
-	url = https://github.com/google/skywater-pdk.git
-[submodule "skywater-pdk"]
-	path = skywater-pdk
-	url = https://github.com/google/skywater-pdk.git
+
