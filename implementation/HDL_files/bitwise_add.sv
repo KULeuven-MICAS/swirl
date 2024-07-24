@@ -7,10 +7,10 @@ module bitwise_add #(
 );
     always_comb begin
         sum = a + b;
-        if (a[P-1] == 0 && b[P-1] == 0 && sum[P-1] == 1) begin
+        if (a[P-1] == 0 && b[P-1] == 0 && sum[P-1] == 1) begin // Check positive overflow
         sum = {1'b0, {(P-1){1'b1}}};
         end
-        else if (a[P-1] == 1 && b[P-1] == 1 && sum[P-1] == 0) begin
+        else if (a[P-1] == 1 && b[P-1] == 1 && sum[P-1] == 0) begin // Check negative overflow
         sum = {1'b1, {(P-1){1'b0}}};
         end
     end

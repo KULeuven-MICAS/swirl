@@ -15,7 +15,7 @@ module tb_adder;
     .P(8)
   ) adder1 (
     .a(a),
-    .b(b), 
+    .b(b),
     .sum(out)
   );
 
@@ -36,8 +36,9 @@ module tb_adder;
       b = test_b[i];
       expected_output = expected_outputs[i];
       #5;
-      assert(out == expected_output) else $fatal(1, "Test %0d failed: a=%0d, b=%0d, expected_output=%0d, got %0d",
-                                                  i, test_a[i], test_b[i], expected_outputs[i], out);;
+      assert(out == expected_output) else $fatal(
+        1, "Test %0d failed: a=%0d, b=%0d, expected_output=%0d, got %0d",
+        i, test_a[i], test_b[i], expected_outputs[i], out);
     end
 
     #10

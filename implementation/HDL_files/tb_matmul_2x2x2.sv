@@ -3,17 +3,17 @@
 
 module tb_matmul_2x2x2;
 
-  parameter M = 2;
-  parameter N = 2;
-  parameter K = 2;
-  parameter P = 8;
-  
+  parameter int M = 2;
+  parameter int N = 2;
+  parameter int K = 2;
+  parameter int P = 8;
+
   // Testbench signals 2x2x2
-  logic signed [(P-1):0] tb_A [(M-1):0][(K-1):0];
-  logic signed [(P-1):0] tb_B [(K-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_C [(M-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_D [(M-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_expected_D [(M-1):0][(N-1):0];
+  logic signed [(P-1):0] tb_A [M][K];
+  logic signed [(P-1):0] tb_B [K][N];
+  logic signed [(4*P-1):0] tb_C [M][N];
+  logic signed [(4*P-1):0] tb_D [M][N];
+  logic signed [(4*P-1):0] tb_expected_D [M][N];
 
   // Module instantiation
   matrix_multiplication_accumulation #(
@@ -71,7 +71,8 @@ module tb_matmul_2x2x2;
             $finish;
         end
         if (read_M != M || read_N != N || read_K != K) begin
-            $display ("ERROR: dimensions not matching: expected: %0d %0d %0d, got: %0d %0d %0d", M, N, K, read_M, read_N, read_K);
+            $display ("ERROR: dimensions not matching:" +
+                      "expected: %0d %0d %0d, got: %0d %0d %0d", M, N, K, read_M, read_N, read_K);
             $fclose(file);
             $finish;
         end
@@ -121,7 +122,9 @@ module tb_matmul_2x2x2;
         end
     endtask
 
-    task display_2d_array(input logic signed [31:0] arr [][], input int rows, input int cols);
+    task automatic display_2d_array(input logic signed [31:0] arr [][],
+                                    input int rows,
+                                    input int cols);
     // Local variables
     int i, j;
     foreach (arr[i]) begin

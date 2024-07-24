@@ -3,17 +3,17 @@
 
 module tb_matmul_overflow;
 
-  parameter M = 1;
-  parameter N = 1;
-  parameter K = 134000;
-  parameter P = 16;
-  
+  parameter int M = 1;
+  parameter int N = 1;
+  parameter int K = 134000;
+  parameter int P = 16;
+
   // Testbench signals 2x2x2
-  logic signed [(P-1):0] tb_A [(M-1):0][(K-1):0];
-  logic signed [(P-1):0] tb_B [(K-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_C [(M-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_D [(M-1):0][(N-1):0];
-  logic signed [(4*P-1):0] tb_expected_D [(M-1):0][(N-1):0];
+  logic signed [(P-1):0] tb_A [M-1][K-1];
+  logic signed [(P-1):0] tb_B [K-1][N-1];
+  logic signed [(4*P-1):0] tb_C [M-1][N-1];
+  logic signed [(4*P-1):0] tb_D [M-1][N-1];
+  logic signed [(4*P-1):0] tb_expected_D [M-1][N-1];
 
   // Module instantiation
   matrix_multiplication_accumulation #(

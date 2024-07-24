@@ -29,6 +29,6 @@ def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
                 D[row, column] = bitwise_add(
                     D[row, column],
                     multiply(
-                        A[row][element], 
+                        A[row][element],
                         B[element][column]), 4*P)
     return D
