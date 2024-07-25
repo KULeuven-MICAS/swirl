@@ -7,6 +7,7 @@ module tb_matmul_8x4x16;
   parameter int N = 4;
   parameter int K = 16;
   parameter int P = 8;
+  parameter bit TREE = 1;
 
   // Testbench signals 2x2x2
   logic signed [(P-1):0] tb_A [M][K];
@@ -20,7 +21,8 @@ module tb_matmul_8x4x16;
     .M(M),
     .N(N),
     .K(K),
-    .P(P)
+    .P(P),
+    .TREE(TREE)
   ) matmul_2x2x2 (
     .A(tb_A), .B(tb_B), .C(tb_C), .D(tb_D)
   );
