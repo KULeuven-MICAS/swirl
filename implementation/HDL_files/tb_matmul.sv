@@ -1,13 +1,30 @@
 `timescale 1ns / 1ps
 
+`ifndef P
+`define P 8
+`endif
+`ifndef M
+`define M 2
+`endif
+`ifndef N
+`define N 2
+`endif
+`ifndef K
+`define K 2
+`endif
+`ifndef TREE
+`define TREE 0
+`endif
 
-module tb_matmul_2x2x2;
 
-  parameter int M = 2;
-  parameter int N = 2;
-  parameter int K = 2;
-  parameter int P = 8;
-  parameter bit TREE = 1;
+module tb_matmul;
+  
+    parameter M = `M;
+    parameter N = `N;
+    parameter K = `K;
+    parameter P = `P;
+    parameter TREE = `TREE;
+
 
   // Testbench signals 2x2x2
   logic signed [(P-1):0] tb_A [M][K];
@@ -23,7 +40,7 @@ module tb_matmul_2x2x2;
     .K(K),
     .P(P),
     .TREE(TREE)
-  ) matmul_2x2x2 (
+  ) matmul (
     .A(tb_A), .B(tb_B), .C(tb_C), .D(tb_D)
   );
 
@@ -32,7 +49,7 @@ module tb_matmul_2x2x2;
     string filename;
 
     $dumpfile($sformatf("tb_matmul_%0dx%0dx%0d.vcd", M, N, K));
-    $dumpvars(0,tb_matmul_2x2x2);
+    $dumpvars(0,tb_matmul);
 
     filename = $sformatf("matrix_data_%0dx%0dx%0d.txt", M, N, K);
     file = $fopen({"./test_data/",filename}, "r");
