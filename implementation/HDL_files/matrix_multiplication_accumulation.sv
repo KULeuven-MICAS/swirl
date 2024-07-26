@@ -1,8 +1,8 @@
 module matrix_multiplication_accumulation #(
-    parameter int M,
-    parameter int N,
-    parameter int K,
-    parameter int P
+    parameter int M = 8,
+    parameter int N = 4,
+    parameter int K = 16,
+    parameter int P = 8
 )(
     input logic signed [P-1:0] A [M][K],
     input logic signed [P-1:0] B [K][N],
