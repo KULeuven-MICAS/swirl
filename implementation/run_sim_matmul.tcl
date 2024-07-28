@@ -32,7 +32,7 @@ vmap work_lib ${WLIB}
 set HDL_PATH "./HDL_files"
 
 # Compile HDL files
-vlog -sv -work ${WLIB} ${HDL_PATH}/*.sv
+vlog -sv -quiet -work ${WLIB} ${HDL_PATH}/*.sv
 
 # Define testbench configurations with parameters
 set TESTBENCHES {
@@ -43,14 +43,14 @@ set TESTBENCHES {
 # Run simulation for each testbench
 foreach {TB M N K} $TESTBENCHES {
     # Compile the testbench with specific parameters
-    vlog -sv -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} ${HDL_PATH}/tb_${SIMNAME}.sv
+    vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} ${HDL_PATH}/tb_${SIMNAME}.sv
 
     # Optimization and object preparation
     if {$NO_GUI == 0} {
-        vopt -work ${WLIB} +acc tb_${SIMNAME} -o dbg_${TB}
+        vopt -quiet -work ${WLIB} +acc tb_${SIMNAME} -o dbg_${TB}
         set OBJ "dbg_${TB}"
     } else {
-        vopt -work ${WLIB} tb_${SIMNAME} -o nodbg_${TB}
+        vopt -quiet -work ${WLIB} tb_${SIMNAME} -o nodbg_${TB}
         set OBJ "nodbg_${TB}"
     }
 
@@ -62,6 +62,7 @@ foreach {TB M N K} $TESTBENCHES {
 
     # Run the simulation
     vsim \
+      -quiet \
       -wlf work/${SIMNAME}.wlf \
       -msgmode both -displaymsgmode both \
       -L work_lib  \

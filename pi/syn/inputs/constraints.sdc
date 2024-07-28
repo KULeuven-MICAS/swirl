@@ -2,8 +2,8 @@ set sdc_version 1.5
 set_load_unit -picofarads 1
 set_units -time ps
 
-# 10 MHz clock
-set SOC_C_Period                 100000
+# 100 MHz clock
+set SOC_C_Period                  10000
 set SOC_C_Latency_Max                 0
 set SOC_C_Latency_Min                 0
 set SOC_C_Uncertainty_Setup        2000

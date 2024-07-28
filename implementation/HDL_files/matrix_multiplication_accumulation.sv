@@ -3,15 +3,14 @@ module matrix_multiplication_accumulation #(
     parameter int N,
     parameter int K,
     parameter int P,
+    parameter int PIPESTAGES,
     parameter int TREE = 1
 )(
-    input logic signed [P-1:0] A [M][K],
-    input logic signed [P-1:0] B [K][N],
-    input logic signed [4*P-1:0] C [M][N],
-    output logic signed [4*P-1:0] D [M][N],
-    output bit tree_or_not
+    input wire signed [P-1:0] A [M][K],
+    input wire signed [P-1:0] B [K][N],
+    input wire signed [4*P-1:0] C [M][N],
+    output wire signed [4*P-1:0] D [M][N]
 );
-    assign tree_or_not = TREE;
     // Chain implementation
     if (TREE == 0) begin : gen_chain_adder
         genvar column, row, element;
