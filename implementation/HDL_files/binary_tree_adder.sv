@@ -1,14 +1,16 @@
 // tree adder accepting only powers of 2 for amount of inputs
 module binary_tree_adder #(
     parameter int INPUTS_AMOUNT,
+    parameter int OUTPUTS_AMOUNT,
     parameter int P
 ) (
     input logic signed [P-1:0] inputs [INPUTS_AMOUNT],
-    output logic signed [P-1:0] sum
+    output logic signed [P-1:0] outputs [OUTPUTS_AMOUNT]
 );
     if (INPUTS_AMOUNT - 1 & INPUTS_AMOUNT) $fatal("ERROR: Binary adder input not power of 2");
+    if (OUTPUTS_AMOUNT - 1 & OUTPUTS_AMOUNT) $fatal("ERROR: Binary adder output not power of 2");
 
-    localparam layerAmount = $clog2(INPUTS_AMOUNT);
+    localparam layerAmount = $clog2(INPUTS_AMOUNT/OUTPUTS_AMOUNT);
     logic signed [P-1:0] connectingWires [layerAmount+1][INPUTS_AMOUNT];
     assign connectingWires[0][0:(INPUTS_AMOUNT-1)] = inputs;
     generate
@@ -25,7 +27,7 @@ module binary_tree_adder #(
             );
         end
     endgenerate
-    assign sum = connectingWires[layerAmount][0];
+    assign outputs = connectingWires[layerAmount][0:OUTPUTS_AMOUNT-1];
 
 endmodule
 

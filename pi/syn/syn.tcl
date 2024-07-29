@@ -59,11 +59,13 @@ set_attr hdl_search_path $search_path /
 read_hdl -sv [ list \
     ${HDL_PATH}/bitwise_add.sv \
     ${HDL_PATH}/matrix_multiplication_accumulation.sv \
+    ${HDL_PATH}/binary_tree_adder.sv \
     ${HDL_PATH}/test_tle.sv \
     ]
 
 elaborate ${DESIGN}
 check_design -unresolved
+set_attribute retime true
 read_sdc ${INPUTS_DIR}/constraints.sdc
 
 apply_power_intent

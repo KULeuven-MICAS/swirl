@@ -5,15 +5,26 @@ module tb_tree_adder;
 
   // Testbench signals
   logic signed [7:0] inputs_8 [8];
-  wire signed [7:0] out_8;
+  wire signed [7:0] out_1 [1];
+  wire signed [7:0] out_4 [4];
 
   // Module instantiation
   binary_tree_adder #(
     .P(8),
-    .INPUTS_AMOUNT(8)
+    .INPUTS_AMOUNT(8),
+    .OUTPUTS_AMOUNT(1)
   ) adder1 (
     .inputs(inputs_8),
-    .sum(out_8)
+    .outputs(out_1)
+  );
+
+  binary_tree_adder #(
+    .P(8),
+    .INPUTS_AMOUNT(8),
+    .OUTPUTS_AMOUNT(4)
+  ) adder2 (
+    .inputs(inputs_8),
+    .outputs(out_4)
   );
 
   // Run tests
@@ -42,10 +53,15 @@ module tb_tree_adder;
         inputs_8[j] = test_inputs_8[i][j];
       end;
       #5;
-      assert(out_8 == expected_outputs_8[i]) else $fatal(
+      assert(out_1[0] == expected_outputs_8[i]) else $fatal(
         1, "Test %0d failed: expected_output=%0d, got %0d",
-        i, expected_outputs_8[i], out_8);
+        i, expected_outputs_8[i], out_1[0]);
+      assert(out_4[1] == inputs_8[2] + inputs_8[3]) else $fatal(
+        1, "Test %0d failed: expected_output=%0d, got %0d",
+        i, inputs_8[2] + inputs_8[3], out_4[1]);
     end
+
+    $display("===============\nALL TESTS PASSED\n================");
 
     #10
 

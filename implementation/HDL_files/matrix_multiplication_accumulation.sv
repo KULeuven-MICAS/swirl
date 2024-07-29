@@ -3,7 +3,6 @@ module matrix_multiplication_accumulation #(
     parameter int N,
     parameter int K,
     parameter int P,
-    parameter int PIPESTAGES,
     parameter int TREE = 1
 )(
     input wire signed [P-1:0] A [M][K],
@@ -11,6 +10,7 @@ module matrix_multiplication_accumulation #(
     input wire signed [4*P-1:0] C [M][N],
     output wire signed [4*P-1:0] D [M][N]
 );
+
     // Chain implementation
     if (TREE == 0) begin : gen_chain_adder
         genvar column, row, element;
@@ -43,21 +43,22 @@ module matrix_multiplication_accumulation #(
                     assign mults[element] = A[row][element] * B[element][column];
                 end // gen_element_block
 
-                logic [4*P-1:0] mult_sum;
-                logic [4*P-1:0] sum;
+                logic signed [4*P-1:0] mult_sum[1];
+                logic signed [4*P-1:0] sum;
 
                 binary_tree_adder #(
                     .P(4*P),
-                    .INPUTS_AMOUNT(K)
+                    .INPUTS_AMOUNT(K),
+                    .OUTPUTS_AMOUNT(1)
                 ) tree_add (
                     .inputs(mults),
-                    .sum(mult_sum)
+                    .outputs(mult_sum)
                 );
 
                 bitwise_add #(
                     .P(4*P)
                 ) C_add (
-                    .a(mult_sum),
+                    .a(mult_sum[0]),
                     .b(C[row][column]),
                     .sum(sum)
                 );
