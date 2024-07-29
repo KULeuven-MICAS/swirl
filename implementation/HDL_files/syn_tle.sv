@@ -64,9 +64,13 @@ module syn_tle #(
 
         // $monitor("At time %t, D_o = %p, A_i = %p, B_i = %p, C_i = %p", $time, D_o, A_i, B_i, C_i);
         // $monitor("At time %t, A_q = %p, B_q = %p, C_q = %p", $time, A_q, B_q, C_q);
-        $monitor("At time %t, A_stage0 = %p, A_stage1 = %p, D_o = %p", $time, A_stage[0], A_stage[1], D_o);
+        // $monitor("At time %t, A_stage0 = %p, A_stage1 = %p, D_o = %p, ready_o = %p, valid_i = %p, valid_o = %p", 
+        // $time, A_stage[0], A_stage[1], D_o, ready_o, valid_i, valid_o);
+        $monitor("At time %t, ready_i = %p, ready_q[0] = %p, ready_q[1] = %p, ready_o = %p, valid_i = %p, valid_q[0] = %p, valid_q[1] = %p, valid_o = %p, reset = %p, D_o = %p",
+        $time, ready_i, ready_q[0], ready_q[1], ready_o, valid_i, valid_q[0], valid_q[1], valid_o, rst_ni, D_o);
     end
 
+    // Elastic pipeline logic
     genvar i;
     generate
         for (i = 0; i < PIPESTAGES - 1; i++) begin : BUFFER_GEN
@@ -86,6 +90,7 @@ module syn_tle #(
         end
     endgenerate
 
+    // Instantiate the input and output buffers
     VX_pipe_buffer #(
         .DATAW   (P*M*K + P*K*N + 4*P*M*N),
         .PASSTHRU(0)
@@ -109,9 +114,9 @@ module syn_tle #(
         .valid_in  (valid_q[PIPESTAGES-1]),
         .data_in   ({D_d}),
         .ready_in  (ready_q[PIPESTAGES-1]),
-        .valid_out (valid_i),
+        .valid_out (valid_o),
         .data_out  ({D_q}),
-        .ready_out (ready_i)
+        .ready_out (ready_o)
     );
 
     matrix_multiplication_accumulation #(

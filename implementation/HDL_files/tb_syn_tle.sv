@@ -68,8 +68,8 @@ module tb_syn_tle;
 
     // Reset generation
     initial begin
-        rst_ni = 0;
-        #20 rst_ni = 1;
+        rst_ni = 1;
+        #20 rst_ni = 0;
     end
 
     // Stimulus
@@ -98,7 +98,7 @@ module tb_syn_tle;
         // Apply test vectors
         #31;
         valid_i = 1;
-        ready_o = 1;
+        ready_o = 0;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
                 A_i[i][j] = 1;
@@ -114,6 +114,11 @@ module tb_syn_tle;
                 C_i[i][j] = 3;
             end
         end
+        #10
+        valid_i = 0;
+
+        #50;
+        ready_o = 1;
 
         // Wait for some time to observe the outputs
         #100;
