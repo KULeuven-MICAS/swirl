@@ -6,9 +6,20 @@
 #          Mats Vanhamel
 # Basic synthesis script
 
-set_attribute information_level 2
+set_attribute information_level 2\
 
-set DESIGN test_tle
+set P 8
+set M 8
+set N 4
+set K 16
+set PIPESTAGES 1
+set TREE 1
+# CHANGE CLOCKSPEED IN constraints.sdc !
+# In MHz
+set CLKSPD 100 
+
+
+set DESIGN syn_tle
 set PROJECT_DIR    ../../
 set INPUTS_DIR  ./inputs
 set OUTPUTS_DIR ./outputs
@@ -56,16 +67,19 @@ set_attribute interconnect_mode ple
 set_attribute init_hdl_search_path $HDL_PATH /
 set_attr hdl_search_path $search_path /
 
+
 read_hdl -sv [ list \
     ${HDL_PATH}/bitwise_add.sv \
     ${HDL_PATH}/matrix_multiplication_accumulation.sv \
     ${HDL_PATH}/binary_tree_adder.sv \
-    ${HDL_PATH}/test_tle.sv \
+    ${HDL_PATH}/VX_pipe_buffer.sv \
+    ${HDL_PATH}/VX_pipe_register.sv \
     ]
+read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define PIPESTAGES=${PIPESTAGES} -define TREE=${TREE} ${HDL_PATH}/syn_tle.sv
 
 elaborate ${DESIGN}
 check_design -unresolved
-set_attribute retime true
+set_attribute retime true ${DESIGN}
 read_sdc ${INPUTS_DIR}/constraints.sdc
 
 apply_power_intent

@@ -25,7 +25,6 @@ module tb_matmul;
     parameter P = `P;
     parameter TREE = `TREE;
 
-
   // Testbench signals 2x2x2
   logic signed [(P-1):0] tb_A [M][K];
   logic signed [(P-1):0] tb_B [K][N];
