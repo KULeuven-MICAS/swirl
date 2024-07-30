@@ -23,7 +23,7 @@
 `define TREE 1
 `endif
 `ifndef PIPESTAGES
-`define PIPESTAGES 1
+`define PIPESTAGES 2
 `endif
 
 module syn_tle #(
@@ -89,9 +89,44 @@ module syn_tle #(
     end
 
     // Elastic pipeline logic
+    localparam int total_width_A = M * K * P;
+    localparam int total_width_B = K * N * P;
+    localparam int total_width_C = M * N * 4 * P;
+    localparam int total_width_D = M * N * 4 * P;
+    localparam int total_width = total_width_A + total_width_B + total_width_C;
+    logic [0:total_width-1] data_stage [PIPESTAGES];
+    
     genvar i;
     generate
         for (i = 0; i < PIPESTAGES - 1; i++) begin : BUFFER_GEN
+
+            matrix_flattener #(
+                .WIDTH(K),
+                .HEIGHT(M),
+                .P(P)
+            ) A_flattener_stage (
+                .A(A_stage[i]),
+                .data_out(data_stage[i][0:total_width_A-1])
+            );
+
+            matrix_flattener #(
+                .WIDTH(N),
+                .HEIGHT(K),
+                .P(P)
+            ) B_flattener_stage (
+                .A(B_stage[i]),
+                .data_out(data_stage[i][total_width_A:total_width_A+total_width_B-1])
+            );
+
+            matrix_flattener #(
+                .WIDTH(N),
+                .HEIGHT(M),
+                .P(4*P)
+            ) C_flattener_stage (
+                .A(C_stage[i]),
+                .data_out(data_stage[i][total_width_A+total_width_B:total_width_A+total_width_B+total_width_C-1])
+            );
+
             VX_pipe_buffer #(
                 .DATAW   (P*M*K + P*K*N + 4*P*M*N),
                 .PASSTHRU(0)
@@ -99,7 +134,7 @@ module syn_tle #(
                 .clk       (clk_i),
                 .reset     (rst_ni),
                 .valid_in  (valid_q[i]),
-                .data_in   ({A_stage[i], B_stage[i], C_stage[i]}),
+                .data_in   (data_stage[i]),
                 .ready_in  (ready_q[i]),
                 .valid_out (valid_q[i+1]),
                 .data_out  ({A_stage[i+1], B_stage[i+1], C_stage[i+1]}),
@@ -109,50 +144,47 @@ module syn_tle #(
     endgenerate
 
      // Calculate the total width of the concatenated signal
-    localparam int total_width = (M * K * P) + (K * N * P) + (M * N * 4 * P);
+
 
     // Flatten the arrays and concatenate them
-    logic [total_width-1:0] data_in;
+    logic [0:total_width-1] data_in;
+    logic [0:total_width_D-1] data_out;
 
-    always_comb begin
-        int index = 0;
-        // Flatten A_d
-        for (int i = 0; i < M; i++) begin
-            for (int j = 0; j < K; j++) begin
-                data_in[index +: P] = A_d[i][j];
-                index += P;
-            end
-        end
-        // Flatten B_d
-        for (int i = 0; i < K; i++) begin
-            for (int j = 0; j < N; j++) begin
-                data_in[index +: P] = B_d[i][j];
-                index += P;
-            end
-        end
-        // Flatten C_d
-        for (int i = 0; i < M; i++) begin
-            for (int j = 0; j < N; j++) begin
-                data_in[index +: 4*P] = C_d[i][j];
-                index += 4*P;
-            end
-        end
-    end
-    localparam int total_width_D = M * N * 4 * P;
+    matrix_flattener #(
+        .WIDTH(K),
+        .HEIGHT(M),
+        .P(P)
+    ) A_flattener (
+        .A(A_d),
+        .data_out(data_in[0:total_width_A-1])
+    );
 
-    // Flatten the D_d array
-    logic [total_width_D-1:0] data_out;
+    matrix_flattener #(
+        .WIDTH(N),
+        .HEIGHT(K),
+        .P(P)
+    ) B_flattener (
+        .A(B_d),
+        .data_out(data_in[total_width_A:total_width_A+total_width_B-1])
+    );
 
-    always_comb begin
-        int index = 0;
-        // Flatten D_d
-        for (int i = 0; i < M; i++) begin
-            for (int j = 0; j < N; j++) begin
-                data_out[index +: 4*P] = D_d[i][j];
-                index += 4*P;
-            end
-        end
-    end
+    matrix_flattener #(
+        .WIDTH(N),
+        .HEIGHT(M),
+        .P(4*P)
+    ) C_flattener (
+        .A(C_d),
+        .data_out(data_in[total_width_A+total_width_B:total_width_A+total_width_B+total_width_C-1])
+    );
+
+    matrix_flattener #(
+        .WIDTH(N),
+        .HEIGHT(M),
+        .P(4*P)
+    ) D_flattener (
+        .A(D_d),
+        .data_out(data_out)
+    );
 
     // Instantiate the input and output buffers
     VX_pipe_buffer #(

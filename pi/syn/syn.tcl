@@ -12,7 +12,7 @@ set P 8
 set M 8
 set N 4
 set K 16
-set PIPESTAGES 1
+set PIPESTAGES 2
 set TREE 1
 # CHANGE CLOCKSPEED IN constraints.sdc !
 # In MHz
@@ -22,7 +22,7 @@ set CLKSPD 100
 set DESIGN syn_tle
 set PROJECT_DIR    ../../
 set INPUTS_DIR  ./inputs
-set OUTPUTS_DIR ./outputs
+set OUTPUTS_DIR ./outputs_${P}Bit_${M}x${N}x${K}_${PIPESTAGES}PIPES_TREE=${TREE}
 
 set HDL_PATH [ list \
     $PROJECT_DIR/implementation/HDL_files \
@@ -74,6 +74,7 @@ read_hdl -sv [ list \
     ${HDL_PATH}/binary_tree_adder.sv \
     ${HDL_PATH}/VX_pipe_buffer.sv \
     ${HDL_PATH}/VX_pipe_register.sv \
+    ${HDL_PATH}/matrix_flattener.sv \
     ]
 read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define PIPESTAGES=${PIPESTAGES} -define TREE=${TREE} ${HDL_PATH}/syn_tle.sv
 
