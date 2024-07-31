@@ -56,11 +56,7 @@ module syn_tle #(
     logic signed [4*P-1:0] D_q [M][N];
 
     // Elastic pipeline logic
-
-    logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
-    logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
-    logic signed [4*P-1:0] C_stage [PIPESTAGES] [M][N];
-    logic valid_q[PIPESTAGES], ready_q[PIPESTAGES];
+    logic valid_q, ready_q, valid_d, ready_d;
 
 
     // Input assignment
@@ -70,11 +66,6 @@ module syn_tle #(
     assign C_d = C_i;
     assign D_o = D_q;
 
-    // Matmul input assignment
-
-    assign A_q = A_stage[PIPESTAGES-1];
-    assign B_q = B_stage[PIPESTAGES-1];
-    assign C_q = C_stage[PIPESTAGES-1];
 
     initial begin
         // $dumpfile($sformatf("syn_tle.vcd"));
@@ -84,8 +75,10 @@ module syn_tle #(
         // $monitor("At time %t, A_q = %p, B_q = %p, C_q = %p", $time, A_q, B_q, C_q);
         // $monitor("At time %t, A_stage0 = %p, A_stage1 = %p, D_o = %p, ready_o = %p, valid_i = %p, valid_o = %p", 
         // $time, A_stage[0], A_stage[1], D_o, ready_o, valid_i, valid_o);
-        // $monitor("At time %t, ready_i = %p, ready_q[0] = %p, ready_q[1] = %p, ready_o = %p, valid_i = %p, valid_q[0] = %p, valid_q[1] = %p, valid_o = %p, reset = %p, D_o = %p",
-        // $time, ready_i, ready_q[0], ready_q[1], ready_o, valid_i, valid_q[0], valid_q[1], valid_o, rst_ni, D_o);
+        //  $monitor("At time %t, ready_i = %p, valid_o = %p, reset = %p, D_o = %p",
+        //  $time, ready_i, valid_o, rst_ni, D_o);
+        // $monitor("At time %t, ready_i = %p, ready_d = %p, ready_q = %p, valid_i = %p, valid_d = %p,  valid_q = %p",
+        // $time, ready_i, ready_d,  ready_q, valid_i, valid_d,valid_q);
     end
 
     // Elastic pipeline logic
@@ -94,56 +87,6 @@ module syn_tle #(
     localparam int total_width_C = M * N * 4 * P;
     localparam int total_width_D = M * N * 4 * P;
     localparam int total_width = total_width_A + total_width_B + total_width_C;
-    logic [0:total_width-1] data_stage [PIPESTAGES];
-    
-    genvar i;
-    generate
-        for (i = 0; i < PIPESTAGES - 1; i++) begin : BUFFER_GEN
-
-            matrix_flattener #(
-                .WIDTH(K),
-                .HEIGHT(M),
-                .P(P)
-            ) A_flattener_stage (
-                .A(A_stage[i]),
-                .data_out(data_stage[i][0:total_width_A-1])
-            );
-
-            matrix_flattener #(
-                .WIDTH(N),
-                .HEIGHT(K),
-                .P(P)
-            ) B_flattener_stage (
-                .A(B_stage[i]),
-                .data_out(data_stage[i][total_width_A:total_width_A+total_width_B-1])
-            );
-
-            matrix_flattener #(
-                .WIDTH(N),
-                .HEIGHT(M),
-                .P(4*P)
-            ) C_flattener_stage (
-                .A(C_stage[i]),
-                .data_out(data_stage[i][total_width_A+total_width_B:total_width_A+total_width_B+total_width_C-1])
-            );
-
-            VX_pipe_buffer #(
-                .DATAW   (P*M*K + P*K*N + 4*P*M*N),
-                .PASSTHRU(0)
-            ) buffer (
-                .clk       (clk_i),
-                .reset     (rst_ni),
-                .valid_in  (valid_q[i]),
-                .data_in   (data_stage[i]),
-                .ready_in  (ready_q[i]),
-                .valid_out (valid_q[i+1]),
-                .data_out  ({A_stage[i+1], B_stage[i+1], C_stage[i+1]}),
-                .ready_out (ready_q[i+1])
-            );
-        end
-    endgenerate
-
-     // Calculate the total width of the concatenated signal
 
 
     // Flatten the arrays and concatenate them
@@ -196,9 +139,9 @@ module syn_tle #(
         .valid_in  (valid_i),
         .data_in   (data_in),
         .ready_in  (ready_i),
-        .valid_out (valid_q[0]),
-        .data_out  ({A_stage[0], B_stage[0], C_stage[0]}),
-        .ready_out (ready_q[0])
+        .valid_out (valid_d),
+        .data_out  ({A_q, B_q, C_q}),
+        .ready_out (ready_d)
     );
 
     VX_pipe_buffer #(
@@ -207,9 +150,9 @@ module syn_tle #(
     ) output_buffer (
         .clk       (clk_i),
         .reset     (rst_ni),
-        .valid_in  (valid_q[PIPESTAGES-1]),
+        .valid_in  (valid_q),
         .data_in   (data_out),
-        .ready_in  (ready_q[PIPESTAGES-1]),
+        .ready_in  (ready_q),
         .valid_out (valid_o),
         .data_out  ({D_q}),
         .ready_out (ready_o)
@@ -220,12 +163,19 @@ module syn_tle #(
         .N(N),
         .K(K),
         .P(P),
-        .TREE(TREE)
+        .TREE(TREE),
+        .PIPESTAGES(PIPESTAGES)
     ) mma (
         .A(A_q),
         .B(B_q),
         .C(C_q),
-        .D(D_d)
+        .D(D_d),
+        .valid_in(valid_d),
+        .ready_in(ready_d),
+        .valid_out(valid_q),
+        .ready_out(ready_q),
+        .clk_i(clk_i),
+        .rst_ni(rst_ni)
     );
 
 endmodule

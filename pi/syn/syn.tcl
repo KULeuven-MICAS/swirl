@@ -9,20 +9,20 @@
 set_attribute information_level 2\
 
 set P 8
-set M 8
-set N 4
-set K 16
-set PIPESTAGES 2
+set M 1
+set N 1
+set K 2
+set PIPESTAGES 1
 set TREE 1
 # CHANGE CLOCKSPEED IN constraints.sdc !
 # In MHz
-set CLKSPD 100 
+set CLKSPD 200
 
 
 set DESIGN syn_tle
 set PROJECT_DIR    ../../
 set INPUTS_DIR  ./inputs
-set OUTPUTS_DIR ./outputs_${P}Bit_${M}x${N}x${K}_${PIPESTAGES}PIPES_TREE=${TREE}
+set OUTPUTS_DIR ./outputs/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}
 
 set HDL_PATH [ list \
     $PROJECT_DIR/implementation/HDL_files \
@@ -80,7 +80,7 @@ read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define
 
 elaborate ${DESIGN}
 check_design -unresolved
-set_attribute retime true ${DESIGN}
+set_attribute retime true matrix_multiplication_accumulation_M${M}_N${N}_K${K}_P${P}_TREE${TREE}_PIPESTAGES${PIPESTAGES}
 read_sdc ${INPUTS_DIR}/constraints.sdc
 
 apply_power_intent

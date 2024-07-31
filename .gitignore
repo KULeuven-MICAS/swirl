@@ -46,6 +46,7 @@ test_data/
 
 #Skywater
 130_skywater_pdk/
+outputs/
 
 # Genus
 *.log
