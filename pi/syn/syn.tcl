@@ -6,18 +6,24 @@
 #          Mats Vanhamel
 # Basic synthesis script
 
-set_attribute information_level 2\
+set_attribute information_level 2
+# Set default values for parameters
+if {![info exists ::env(P)]} { set ::env(P) 8 }
+if {![info exists ::env(M)]} { set ::env(M) 1 }
+if {![info exists ::env(N)]} { set ::env(N) 1 }
+if {![info exists ::env(K)]} { set ::env(K) 2 }
+if {![info exists ::env(PIPESTAGES)]} { set ::env(PIPESTAGES) 1 }
+if {![info exists ::env(TREE)]} { set ::env(TREE) 1 }
+if {![info exists ::env(CLKSPD)]} { set ::env(CLKSPD) 200 }
 
-set P 8
-set M 1
-set N 1
-set K 2
-set PIPESTAGES 1
-set TREE 1
-# CHANGE CLOCKSPEED IN constraints.sdc !
-# In MHz
-set CLKSPD 200
-
+# Assign parameters from environment variables
+set P $::env(P)
+set M $::env(M)
+set N $::env(N)
+set K $::env(K)
+set PIPESTAGES $::env(PIPESTAGES)
+set TREE $::env(TREE)
+set CLKSPD $::env(CLKSPD)
 
 set DESIGN syn_tle
 set PROJECT_DIR    ../../
@@ -25,7 +31,7 @@ set INPUTS_DIR  ./inputs
 set OUTPUTS_DIR ./outputs/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}
 
 set HDL_PATH [ list \
-    $PROJECT_DIR/implementation/HDL_files \
+    $PROJECT_DIR/hw/rtl \
 ]
 
 #Add other paths here

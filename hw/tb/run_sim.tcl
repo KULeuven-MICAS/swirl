@@ -1,26 +1,34 @@
-# Default value for the TREE variable
-set TREE 0
-
-# Access the TREE variable from the environment if available
 if { [info exists ::env(TREE)] } {
     set TREE $::env(TREE)
+} else {
+    set TREE 0
 }
-
-# Output the status of TREE for debugging purposes
-puts "TREE is set to $TREE"
-
-# Run Python script to generate test data
-exec python3 tb_matmul.py
-
-# Set simulation name
-set SIMNAME "matmul"
-
-# Check for NO_GUI environment variable
+if { [info exists ::env(MULT_TB)] } {
+    set MULT_TB $::env(MULT_TB)
+} else {
+    set MULT_TB 0
+}
+if { [info exists ::env(PY)] } {
+    set PY $::env(PY)
+} else { 
+    set PY 0
+}
+if { [info exists ::env(SIMNAME)] } {
+    set SIMNAME $::env(SIMNAME)
+} else {
+    puts "NO SIMNAME DEFINED"
+}
 if {[info exists ::env(NO_GUI)]} {
     set NO_GUI [expr {$::env(NO_GUI) == 1}]
 } else {
     set NO_GUI 0
 }
+
+# Run Python script to generate test data
+if {$PY == 1} {
+    exec python3 tb_${SIMNAME}.py
+}
+
 
 # Set library directory
 set WLIB "./work/work_${SIMNAME}"
@@ -29,21 +37,34 @@ vmap work ${WLIB}
 vmap work_lib ${WLIB}
 
 # Set hardware directory to the current directory
-set HDL_PATH "./HDL_files"
+set HDL_PATH "./../rtl"
 
 # Compile HDL files
-vlog -sv -quiet -work ${WLIB} ${HDL_PATH}/*.sv
+vlog -sv -quiet -work ${WLIB} ${HDL_PATH}/*.sv ./*sv
+
 
 # Define testbench configurations with parameters
-set TESTBENCHES {
+if {$MULT_TB ==  1} {
+    set TESTBENCHES {
     "2x2x2" 2 2 2
     "8x4x16" 8 4 16
 }
+} else {
+    set TESTBENCHES {
+    0 0 0 0
+    }
+}
+
 
 # Run simulation for each testbench
 foreach {TB M N K} $TESTBENCHES {
     # Compile the testbench with specific parameters
-    vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} ${HDL_PATH}/tb_${SIMNAME}.sv
+    if {$MULT_TB == 1} {
+        vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} ./tb_${SIMNAME}.sv
+    } else {
+        vlog -sv -work ${WLIB} ${HDL_PATH}/*.sv
+    }
+    
 
     # Optimization and object preparation
     if {$NO_GUI == 0} {
