@@ -3,6 +3,10 @@
 
 module tb_tree_adder;
 
+  initial begin
+    $dumpfile("tb_tree_adder.vcd");
+    $dumpvars(0, tb_tree_adder);
+  end
   // Testbench signals
   logic signed [7:0] inputs_8 [8];
   wire signed [7:0] out_1 [1];
@@ -29,6 +33,7 @@ module tb_tree_adder;
 
   // Run tests
   initial begin
+    
 
     parameter int NUM_TESTS_8 = 5;
     logic signed [7:0] test_inputs_8[NUM_TESTS_8][8] =  '{
