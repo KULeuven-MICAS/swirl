@@ -33,7 +33,7 @@ module config_shiftadder_4bit # (
         multiplicandInv = ~multiplicand;
 
         if(halvedPrecision) begin
-            extendTerm4 = multiplier[3] ? (multiplicand[3] ? (multiplicandInv + 1) << 3 : multiplicand << 3) : 0;
+            extendTerm4 = multiplier[3] ? (multiplicandInv + 1) << 3 : 0;
         end else begin
             if (invertLast) begin
                 extendTerm4 = multiplier[3] ? ((multiplicandInv) << 3) : 0;
@@ -55,7 +55,7 @@ module config_shiftadder_4bit # (
         extendTerm1 = multiplier[0] ? {{4{signExtend}}, multiplicand} :  0;
         extendTerm2 = multiplier[1] ? {{3{signExtend}}, multiplicand, 1'b0} : 0;
         extendTerm3 = multiplier[2] ? {{2{signExtend}}, multiplicand, 2'b0} : 0;
-        extendTerm4 = multiplier[3] ? (multiplicand[3] ? {-multiplicand, 3'b0} << 3 : {signExtend, multiplicand, 3'b0}) : 0;
+        extendTerm4 = multiplier[3] ? {-multiplicand, 3'b0} << 3 :  0;
         end else begin
         extendTerm1 = multiplier[0] ? {{8{signExtend}}, multiplicand} :  0;
         extendTerm2 = multiplier[1] ? {{7{signExtend}}, multiplicand, 1'b0} : 0;
