@@ -4,6 +4,7 @@ module tb_config_multiplier_8bit;
     logic signed [7:0] multiplicand;
     logic halvedPrecision;
     logic signed [15:0] product;
+    logic signed [15:0] expected_output;
 
     config_multiplier_8bit config_multiplier_8bit (
         .multiplier(multiplier),
@@ -12,73 +13,58 @@ module tb_config_multiplier_8bit;
         .product(product)
     );
 
-    initial begin
-        //$monitor("mult1 = %b, mult2 = %b, product=%b", multiplier, multiplicand, product);
-        logic signed [7:0] mult1;
-        logic signed [7:0] mult2;
-        logic signed [3:0] multiplier1;
-        logic signed [3:0] multiplier2;
-        logic signed [3:0] multiplicand1;
-        logic signed [3:0] multiplicand2;
-        assign mult1 = product[7:0];
-        assign mult2 = product[15:8];
-        assign multiplier1 = multiplier[3:0];
-        assign multiplier2 = multiplier[7:4];
-        assign multiplicand1 = multiplicand[3:0];
-        assign multiplicand2 = multiplicand[7:4];
-        $monitor("multiplier1 = %d, multiplicand1 = %d, product1=%d, multiplier2 = %d, multiplicand2 = %d, product2=%d", multiplier1, multiplicand1, mult1, multiplier2, multiplicand2, mult2);
-        $dumpfile("tb_config_multiplier_8bit.vcd");
-        $dumpvars(0, tb_config_multiplier_8bit);
-        /*
-        multiplicand = 3;
-        multiplier = 3;
-        halvedPrecision = 0;
-        #10;
-        multiplicand = -3;
-        multiplier = 3;
-        halvedPrecision = 0;
-        #10;
-        multiplicand = 96;
-        multiplier = 96;
-        halvedPrecision = 0;
-        #10;
-        multiplicand = 96;
-        multiplier = 6;
-        halvedPrecision = 0;
-        #10;
-        multiplicand = -1;
-        multiplier = -1;
-        halvedPrecision = 0;
-        #10;
-        multiplicand = -20;
-        multiplier = -2;
-        halvedPrecision = 0;
-        #10;
-        multiplicand = 100;
-        multiplier = -10;
-        halvedPrecision = 0;
-        */
-        #10;
-        multiplicand = 8'b00010001;
-        multiplier = 8'b00010001;
-        halvedPrecision = 1;
-        #10;
-        multiplicand = 8'b11111111;
-        multiplier = 8'b10101010;
-        halvedPrecision = 1;
-        #10;
-        multiplicand = 8'b11101001;
-        multiplier = 8'b10001000;
-        halvedPrecision = 1;
-        #10;
-        multiplicand = 8'b11101001;
-        multiplier = 8'b00000010;
-        halvedPrecision = 1;
-        #10;
-        multiplicand = 0;
-        multiplier = 0;
-        halvedPrecision = 0;
+    parameter int NUM_TESTS_8bit = 7;
+    logic signed [7:0] test_multiplier_8bit[NUM_TESTS_8bit] =   '{0, 1, 127,    -1, -1, -128, -8};
+    logic signed [7:0] test_multiplicand_8bit[NUM_TESTS_8bit] = '{0, 2, 127,     5, -1,   -1, 4};
+    logic signed [15:0] expected_outputs_8bit[NUM_TESTS_8bit] = '{0, 2, 16129,  -5,  1,  128, -32};
 
+    parameter int NUM_TESTS_4bit = 6;
+    logic signed [3:0] test_multiplier1_4bit[NUM_TESTS_4bit] =   '{0, 1, 7,   -1,  4, -8};
+    logic signed [3:0] test_multiplicand1_4bit[NUM_TESTS_4bit] = '{0, 2, 7,    5, -2,  -8};
+    logic signed [7:0] expected_outputs1_4bit[NUM_TESTS_4bit] =  '{0, 2, 49,  -5, -8, 64};
+
+    logic signed [3:0] test_multiplier2_4bit[NUM_TESTS_4bit] =   '{0,  3,  7,  -1,  4,  -8};
+    logic signed [3:0] test_multiplicand2_4bit[NUM_TESTS_4bit] = '{0,  4, -7,  5,  2,   7};
+    logic signed [7:0] expected_outputs2_4bit[NUM_TESTS_4bit] =  '{0, 12, -49,  -5,  8, -56};
+
+    // Run tests
+    initial begin
+        for (int i = 0; i < NUM_TESTS_8bit; i++) begin
+        multiplier = test_multiplier_8bit[i];
+        multiplicand = test_multiplicand_8bit[i];
+        halvedPrecision = 0;
+        expected_output = expected_outputs_8bit[i];
+        #5;
+        assert(product == expected_output) else $fatal(
+            1, "Test %0d failed: multiplier=%0d, multiplicand=%0d, expected_output=%0d, got %0d",
+            i, test_multiplier_8bit[i], test_multiplicand_8bit[i], expected_outputs_8bit[i], product);
+        end
+
+        for (int i = 0; i < NUM_TESTS_4bit; i++) begin
+        multiplier = {test_multiplier1_4bit[i], test_multiplier2_4bit[i]};
+        multiplicand = {test_multiplicand1_4bit[i], test_multiplicand2_4bit[i]};
+        halvedPrecision = 1;
+        expected_output = {expected_outputs1_4bit[i], expected_outputs2_4bit[i]};
+        #5;
+        assert(product == expected_output) else $fatal(
+            1, "Test %0d failed: \n multiplier1=%0d, multiplicand1=%0d, expected_output1=%0d, got1 %0d \n multiplier2=%0d, multiplicand2=%0d, expected_output2=%0d, got2 %0d",
+            i, test_multiplier1_4bit[i], test_multiplicand1_4bit[i], expected_outputs1_4bit[i], product[15:8], test_multiplier2_4bit[i], test_multiplicand2_4bit[i], expected_outputs2_4bit[i], product[7:0]);
+        end
+        #10;
+        for (int i = 0; i < 100; i++) begin
+            multiplier = $random;
+            multiplicand = $random;
+            halvedPrecision = 0;
+            expected_output = multiplier * multiplicand;
+            #5;
+            $display("multiplier=%0d, multiplicand=%0d, expected_output=%0d, got %0d", multiplier, multiplicand, expected_output, product);
+            assert(product == expected_output) else $fatal(
+                1, "Test %0d failed: multiplier=%0d, multiplicand=%0d, expected_output=%b, got %b",
+                i, multiplier, multiplicand, expected_output, product);
+        end
+
+        #10;
+        $finish;
 
     end
 endmodule

@@ -16,7 +16,7 @@ module tb_config_shiftadder_4bit;
     );
 
     initial begin
-        $monitor("product=%b", product);
+        $monitor("product=%d", product);
         $dumpfile("config_shiftadder_4bit.vcd");
         $dumpvars(0, tb_config_shiftadder_4bit);
         multiplicand = 3;
@@ -42,6 +42,10 @@ module tb_config_shiftadder_4bit;
         multiplicand = 4'b0;
         multiplier = 4'b0;
         halvedPrecision = 0;
+        #10;
+        multiplicand = 5;
+        multiplier = -1;
+        halvedPrecision = 1;
         #10;
 
     end

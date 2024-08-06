@@ -17,9 +17,6 @@ module matrix_multiplication_accumulation #(
     input wire clk_i,
     input wire rst_ni
 );
-
-
-
     logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
     logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
     logic signed [4*P-1:0] C_stage [PIPESTAGES] [M][N];
