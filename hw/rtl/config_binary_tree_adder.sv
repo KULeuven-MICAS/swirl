@@ -22,7 +22,7 @@ module config_binary_tree_adder #(
                 assign temp_out = connectingWires[0];
             end
             if(layer == 0) begin 
-                binary_tree_adder_layer #(
+                config_binary_tree_adder_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P)
                 ) binary_tree_adder_layer (
@@ -31,7 +31,7 @@ module config_binary_tree_adder #(
                     .halvedPrecision(halvedPrecision)
                 );
             end else begin
-                binary_tree_adder_layer #(
+                config_binary_tree_adder_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P+2*layer)
                 ) binary_tree_adder_layer (
@@ -45,11 +45,19 @@ module config_binary_tree_adder #(
         end
     endgenerate
 
-    assign out = { {(32-P-2*layerAmount){temp_out[P+2*layerAmount-1]}}, temp_out[P+2*layerAmount-1:0] };
+    logic signed [P/2+layerAmount:0] halved_precision_out;
+    logic signed [(P+2*layerAmount)/2-1:0] term1;
+    assign term1 = temp_out[P+2*layerAmount-1:(P+2*layerAmount)/2];
+    logic signed [(P+2*layerAmount)/2-1:0] term2;
+    assign term2 = temp_out[(P+2*layerAmount)/2-1:0];
+    assign halved_precision_out = term1 + term2;
+
+    assign out = halvedPrecision ? { {(32-P/2-layerAmount-1){halved_precision_out[P/2+layerAmount]}}, halved_precision_out[P/2+layerAmount:0] } :
+    { {(32-P-2*layerAmount){temp_out[P+2*layerAmount-1]}}, temp_out[P+2*layerAmount-1:0] };
 
 endmodule
 
-module binary_tree_adder_layer #(
+module config_binary_tree_adder_layer #(
     parameter int INPUTS_AMOUNT,
     parameter int P
 ) (

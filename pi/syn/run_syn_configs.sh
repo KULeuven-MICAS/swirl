@@ -1,10 +1,10 @@
-for i in 200 250 300
+for i in 200
 do 
     export M=1
     export N=1
     export K=32
-    export CLKSPD=$i
-    export CLKPRD=(1000000/$CLKSPD)
+    export CLKSPD=200
+    export CLKPRD=5000
     export PIPESTAGES=2
     export P=8
     export TREE=1

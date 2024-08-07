@@ -9,26 +9,15 @@ module tb_tree_adder;
   end
   // Testbench signals
   logic signed [7:0] inputs_8 [8];
-  wire signed [7:0] out_1 [1];
-  wire signed [7:0] out_4 [4];
+  wire signed [31:0] out;
 
   // Module instantiation
   binary_tree_adder #(
     .P(8),
-    .INPUTS_AMOUNT(8),
-    .OUTPUTS_AMOUNT(1)
+    .INPUTS_AMOUNT(8)
   ) adder1 (
     .inputs(inputs_8),
-    .outputs(out_1)
-  );
-
-  binary_tree_adder #(
-    .P(8),
-    .INPUTS_AMOUNT(8),
-    .OUTPUTS_AMOUNT(4)
-  ) adder2 (
-    .inputs(inputs_8),
-    .outputs(out_4)
+    .out(out)
   );
 
   // Run tests
@@ -43,27 +32,38 @@ module tb_tree_adder;
         '{127, 5, 2, 1, 6, 1, 35, 6},
         '{-127, 5, 2, 1, -6, 1, -35, 6}
     };
-    logic signed [7:0] expected_outputs_8[NUM_TESTS_8] = '{
+    logic signed [31:0] expected_outputs_8[NUM_TESTS_8] = '{
         36,
         -4,
         0,
-        127,
-        -128
+        183,
+        -153
     };
 
     int i;
     int j;
+    int expected_output = 0;
     for (i = 0; i < NUM_TESTS_8; i++) begin
        for (j = 0; j < 8; j++) begin
         inputs_8[j] = test_inputs_8[i][j];
       end;
       #5;
-      assert(out_1[0] == expected_outputs_8[i]) else $fatal(
-        1, "Test %0d failed: expected_output=%0d, got %0d",
-        i, expected_outputs_8[i], out_1[0]);
-      assert(out_4[1] == inputs_8[2] + inputs_8[3]) else $fatal(
-        1, "Test %0d failed: expected_output=%0d, got %0d",
-        i, inputs_8[2] + inputs_8[3], out_4[1]);
+      assert(out == expected_outputs_8[i]) else $fatal(
+        1, "Test %0d failed: expected_output=%b, got %b",
+        i, expected_outputs_8[i], out);
+    end
+
+    
+    for (i = 0; i < 50; i++) begin
+      expected_output = 0;
+       for (j = 0; j < 8; j++) begin
+        inputs_8[j] = $random;
+        expected_output += inputs_8[j];
+      end;
+      #5;
+      assert(out == expected_output) else $fatal(
+        1, "Test %0d failed: expected_output=%b, got %b",
+        i, expected_output, out);
     end
 
     $display("===============\nALL TESTS PASSED\n================");

@@ -124,27 +124,26 @@ module matrix_multiplication_accumulation #(
         genvar column, row, element;
         for (column = 0; column < N; column = column + 1) begin : gen_column_block
             for (row = 0; row < M; row = row + 1) begin: gen_row_block
-                logic signed [4*P-1:0] mults [K];
+                logic signed [2*P-1:0] mults [K];
                 for (element = 0; element < K; element = element + 1) begin : gen_element_block
                     assign mults[element] = A_mul[row][element] * B_mul[element][column];
                 end // gen_element_block
 
-                logic signed [4*P-1:0] mult_sum[1];
+                logic signed [4*P-1:0] mult_sum;
                 logic signed [4*P-1:0] sum;
 
                 binary_tree_adder #(
-                    .P(4*P),
-                    .INPUTS_AMOUNT(K),
-                    .OUTPUTS_AMOUNT(1)
+                    .P(2*P),
+                    .INPUTS_AMOUNT(K)
                 ) tree_add (
                     .inputs(mults),
-                    .outputs(mult_sum)
+                    .out(mult_sum)
                 );
 
                 bitwise_add #(
                     .P(4*P)
                 ) C_add (
-                    .a(mult_sum[0]),
+                    .a(mult_sum),
                     .b(C_mul[row][column]),
                     .sum(sum)
                 );
