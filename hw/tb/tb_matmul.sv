@@ -15,6 +15,9 @@
 `ifndef TREE
 `define TREE 0
 `endif
+`ifndef CONFIGURABLE
+`define CONFIGURABLE 0
+`endif
 
 
 module tb_matmul;
@@ -24,6 +27,7 @@ module tb_matmul;
     parameter K = `K;
     parameter P = `P;
     parameter TREE = `TREE;
+    parameter CONFIGURABLE = `CONFIGURABLE;
 
   // Testbench signals 2x2x2
   logic signed [(P-1):0] tb_A [M][K];
@@ -31,17 +35,21 @@ module tb_matmul;
   logic signed [(4*P-1):0] tb_C [M][N];
   logic signed [(4*P-1):0] tb_D [M][N];
   logic signed [(4*P-1):0] tb_expected_D [M][N];
+  logic halvedPrecision;
 
   // Module instantiation
+
   matrix_multiplication_accumulation #(
     .M(M),
     .N(N),
     .K(K),
     .P(P),
-    .TREE(TREE)
+    .TREE(TREE),
+    .CONFIGURABLE(CONFIGURABLE)
   ) matmul (
-    .A(tb_A), .B(tb_B), .C(tb_C), .D(tb_D)
+    .A(tb_A), .B(tb_B), .C(tb_C), .D(tb_D), .halvedPrecision(halvedPrecision)
   );
+  
 
   initial begin
     int file;
@@ -57,6 +65,7 @@ module tb_matmul;
          $finish;
     end
 
+    halvedPrecision = 0;
     for(int testIndex = 1; !$feof(file); testIndex++) begin
         read_next_test_from_file(file, M, N, K);
         #10

@@ -4,7 +4,8 @@ module matrix_multiplication_accumulation #(
     parameter int K,
     parameter int P,
     parameter int TREE = 1,
-    parameter int PIPESTAGES = 1
+    parameter int PIPESTAGES = 1,
+    parameter int CONFIGURABLE = 0
 )(
     input wire signed [P-1:0] A [M][K],
     input wire signed [P-1:0] B [K][N],
@@ -15,7 +16,9 @@ module matrix_multiplication_accumulation #(
     output wire ready_in, valid_out,
 
     input wire clk_i,
-    input wire rst_ni
+    input wire rst_ni,
+
+    input wire halvedPrecision = 0
 );
     logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
     logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
@@ -97,60 +100,100 @@ module matrix_multiplication_accumulation #(
     assign B_mul = B_stage[PIPESTAGES-1];
     assign C_mul = C_stage[PIPESTAGES-1];
 
-    // Chain implementation
-    if (TREE == 0) begin : gen_chain_adder
-        genvar column, row, element;
-        for (column = 0; column < N; column = column + 1) begin : gen_column_block
-            for (row = 0; row < M; row = row + 1) begin: gen_row_block
-                logic [4*P-1:0] temp_sum[K+1];
-                assign temp_sum[0] = C_mul[row][column];
-                for (element = 0; element < K; element = element + 1) begin : gen_element_block
-                    logic [4*P-1:0] mult;
-                    assign mult = A_mul[row][element] * B_mul[element][column];
+    if (CONFIGURABLE == 0) begin : gen_non_config
+        // Chain implementation
+        if (TREE == 0) begin : gen_chain_adder
+            genvar column, row, element;
+            for (column = 0; column < N; column = column + 1) begin : gen_column_block
+                for (row = 0; row < M; row = row + 1) begin: gen_row_block
+                    logic [4*P-1:0] temp_sum[K+1];
+                    assign temp_sum[0] = C_mul[row][column];
+                    for (element = 0; element < K; element = element + 1) begin : gen_element_block
+                        logic [4*P-1:0] mult;
+                        assign mult = A_mul[row][element] * B_mul[element][column];
+                        bitwise_add #(
+                            .P(4*P)
+                            ) add (
+                                .a(temp_sum[element]),
+                                .b(mult),
+                                .sum(temp_sum[element+1])
+                            );
+                    end // gen_element_block
+                    assign D[row][column] = temp_sum[K];
+                end // gen_row_block
+            end // gen_column_block
+        end
+        // Tree implementation
+        else begin : gen_tree_adder
+            genvar column, row, element;
+            for (column = 0; column < N; column = column + 1) begin : gen_column_block
+                for (row = 0; row < M; row = row + 1) begin: gen_row_block
+                    logic signed [2*P-1:0] mults [K];
+                    for (element = 0; element < K; element = element + 1) begin : gen_element_block
+                        assign mults[element] = A_mul[row][element] * B_mul[element][column];
+                    end // gen_element_block
+
+                    logic signed [4*P-1:0] mult_sum;
+                    logic signed [4*P-1:0] sum;
+
+                    binary_tree_adder #(
+                        .P(2*P),
+                        .INPUTS_AMOUNT(K)
+                    ) tree_add (
+                        .inputs(mults),
+                        .out(mult_sum)
+                    );
+
                     bitwise_add #(
                         .P(4*P)
-                        ) add (
-                            .a(temp_sum[element]),
-                            .b(mult),
-                            .sum(temp_sum[element+1])
-                        );
-                end // gen_element_block
-                assign D[row][column] = temp_sum[K];
-            end // gen_row_block
-        end // gen_column_block
-    end
-    // Tree implementation
-    else begin : gen_tree_adder
+                    ) C_add (
+                        .a(mult_sum),
+                        .b(C_mul[row][column]),
+                        .sum(sum)
+                    );
+
+                    assign D[row][column] = sum;
+                end // gen_row_block
+            end // gen_column_block
+        end
+    end else begin
         genvar column, row, element;
-        for (column = 0; column < N; column = column + 1) begin : gen_column_block
-            for (row = 0; row < M; row = row + 1) begin: gen_row_block
-                logic signed [2*P-1:0] mults [K];
-                for (element = 0; element < K; element = element + 1) begin : gen_element_block
-                    assign mults[element] = A_mul[row][element] * B_mul[element][column];
-                end // gen_element_block
+            for (column = 0; column < N; column = column + 1) begin : gen_column_block
+                for (row = 0; row < M; row = row + 1) begin: gen_row_block
+                    logic signed [2*P-1:0] mults [K];
+                    for (element = 0; element < K; element = element + 1) begin : gen_element_block
+                        config_multiplier_8bit mult (
+                            .multiplier(A_mul[row][element]),
+                            .multiplicand(B_mul[element][column]),
+                            .product(mults[element]),
+                            .halvedPrecision(halvedPrecision)
+                        );
 
-                logic signed [4*P-1:0] mult_sum;
-                logic signed [4*P-1:0] sum;
+                    end 
 
-                binary_tree_adder #(
-                    .P(2*P),
-                    .INPUTS_AMOUNT(K)
-                ) tree_add (
-                    .inputs(mults),
-                    .out(mult_sum)
-                );
+                    logic signed [4*P-1:0] mult_sum;
+                    logic signed [31:0] sum;
 
-                bitwise_add #(
-                    .P(4*P)
-                ) C_add (
-                    .a(mult_sum),
-                    .b(C_mul[row][column]),
-                    .sum(sum)
-                );
+                    config_binary_tree_adder #(
+                        .P(2*P),
+                        .INPUTS_AMOUNT(K)
+                    ) tree_add (
+                        .inputs(mults),
+                        .out(mult_sum),
+                        .halvedPrecision(halvedPrecision)
+                    );
 
-                assign D[row][column] = sum;
-            end // gen_row_block
-        end // gen_column_block
+                    bitwise_add #(
+                        .P(32)
+                    ) C_add (
+                        .a(mult_sum),
+                        .b(C_mul[row][column]),
+                        .sum(sum)
+                    );
+
+                    assign D[row][column] = sum;
+                end // gen_row_block
+            end // gen_column_block
     end
 
 endmodule

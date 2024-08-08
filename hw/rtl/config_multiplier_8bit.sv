@@ -35,8 +35,8 @@ module config_multiplier_8bit (
     assign term1 = multiplier[4] ? {{4'b0}, multiplicand[3:0]} :  0;
     assign term2 = multiplier[5] ? {{3'b0}, multiplicand[3:0], 1'b0} : 0;
     assign term3 = multiplier[6] ? {{2'b0}, multiplicand[3:0], 2'b0} : 0;
-    assign term4 = multiplier[7] ? {1'b0, -multiplicand[3:0], 3'b0} : 0;
-    assign partProduct3 = term1 + term2 + term3 + term4;
+    assign term4 = multiplier[7] ? {1'b0, ~multiplicand[3:0], 3'b0} + {8'b00001000} : 0;
+    assign partProduct3 = term1 + term2 + term3 + term4 ;
 
      config_shiftadder_4bit #(
         .configurable(1),

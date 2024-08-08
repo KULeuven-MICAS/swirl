@@ -14,9 +14,9 @@ module tb_config_multiplier_8bit;
     );
 
     parameter int NUM_TESTS_8bit = 7;
-    logic signed [7:0] test_multiplier_8bit[NUM_TESTS_8bit] =   '{0, 1, 127,    -1, -1, -128, -8};
-    logic signed [7:0] test_multiplicand_8bit[NUM_TESTS_8bit] = '{0, 2, 127,     5, -1,   -1, 4};
-    logic signed [15:0] expected_outputs_8bit[NUM_TESTS_8bit] = '{0, 2, 16129,  -5,  1,  128, -32};
+    logic signed [7:0] test_multiplier_8bit[NUM_TESTS_8bit] =   '{-128, 1, 127,    -1, -1, -128, -128};
+    logic signed [7:0] test_multiplicand_8bit[NUM_TESTS_8bit] = '{16, 2, 127,     5, -1,   -1, 16};
+    logic signed [15:0] expected_outputs_8bit[NUM_TESTS_8bit] = '{-2048, 2, 16129,  -5,  1,  128, -2048};
 
     parameter int NUM_TESTS_4bit = 6;
     logic signed [3:0] test_multiplier1_4bit[NUM_TESTS_4bit] =   '{0, 1, 7,   -1,  4, -8};
@@ -29,6 +29,9 @@ module tb_config_multiplier_8bit;
 
     // Run tests
     initial begin
+        $dumpfile("tb_config_multiplier_8bit.vcd");
+        $dumpvars(0, tb_config_multiplier_8bit);
+
         for (int i = 0; i < NUM_TESTS_8bit; i++) begin
         multiplier = test_multiplier_8bit[i];
         multiplicand = test_multiplicand_8bit[i];
@@ -38,7 +41,7 @@ module tb_config_multiplier_8bit;
         assert(product == expected_output) else $fatal(
             1, "Test %0d failed: multiplier=%0d, multiplicand=%0d, expected_output=%0d, got %0d",
             i, test_multiplier_8bit[i], test_multiplicand_8bit[i], expected_outputs_8bit[i], product);
-        end
+         end
 
         for (int i = 0; i < NUM_TESTS_4bit; i++) begin
         multiplier = {test_multiplier1_4bit[i], test_multiplier2_4bit[i]};

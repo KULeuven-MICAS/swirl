@@ -9,6 +9,12 @@ tb_matmul_tree:
 	MULT_TB=1 \
 	PY=1 \
 	vsim -c -do run_sim.tcl
+tb_config_matmul: 
+	SIMNAME=matmul \
+	MULT_TB=1 \
+	CONFIGURABLE=1 \
+	PY=1 \
+	vsim -c -do run_sim.tcl
 tb_syn_tle_tree:
 	source ~micasusr/design/scripts/questasim_2022.4.rc
 	SIMNAME=syn_tle \

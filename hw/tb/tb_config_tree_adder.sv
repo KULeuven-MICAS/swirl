@@ -65,29 +65,29 @@ module tb_config_tree_adder;
     int i;
     int j;
     int expected_output = 0;
-    // halvedPrecision = 0;
-    // for (i = 0; i < NUM_TESTS_16BIT; i++) begin
-    //    for (j = 0; j < 8; j++) begin
-    //     inputs_8[j] = test_inputs_8[i][j];
-    //   end;
-    //   #5;
-    //   assert(out == expected_outputs_8[i]) else $fatal(
-    //     1, "Test %0d failed: expected_output=%b, got %b",
-    //     i, expected_outputs_8[i], out);
-    // end
+    halvedPrecision = 0;
+    for (i = 0; i < NUM_TESTS_16BIT; i++) begin
+       for (j = 0; j < 8; j++) begin
+        inputs_8[j] = test_inputs_8[i][j];
+      end;
+      #5;
+      assert(out == expected_outputs_8[i]) else $fatal(
+        1, "Test %0d failed: expected_output=%b, got %b",
+        i, expected_outputs_8[i], out);
+    end
 
     
-    // for (i = 0; i < 50; i++) begin
-    //   expected_output = 0;
-    //    for (j = 0; j < 8; j++) begin
-    //     inputs_8[j] = $random;
-    //     expected_output += inputs_8[j];
-    //   end;
-    //   #5;
-    //   assert(out == expected_output) else $fatal(
-    //     1, "Test %0d failed: expected_output=%b, got %b",
-    //     i, expected_output, out);
-    // end
+    for (i = 0; i < 50; i++) begin
+      expected_output = 0;
+       for (j = 0; j < 8; j++) begin
+        inputs_8[j] = $random;
+        expected_output += inputs_8[j];
+      end;
+      #5;
+      assert(out == expected_output) else $fatal(
+        1, "Test %0d failed: expected_output=%b, got %b",
+        i, expected_output, out);
+    end
 
     halvedPrecision = 1;
     for (i = 0; i < NUM_TESTS_8BIT; i++) begin

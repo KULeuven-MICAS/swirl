@@ -3,6 +3,11 @@ if { [info exists ::env(TREE)] } {
 } else {
     set TREE 0
 }
+if { [info exists ::env(CONFIGURABLE)] } {
+    set CONFIGURABLE $::env(CONFIGURABLE)
+} else {
+    set CONFIGURABLE 0
+}
 if { [info exists ::env(MULT_TB)] } {
     set MULT_TB $::env(MULT_TB)
 } else {
@@ -60,7 +65,7 @@ if {$MULT_TB ==  1} {
 foreach {TB M N K} $TESTBENCHES {
     # Compile the testbench with specific parameters
     if {$MULT_TB == 1} {
-        vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} ./tb_${SIMNAME}.sv
+        vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} +define+CONFIGURABLE=${CONFIGURABLE} ./tb_${SIMNAME}.sv
     } else {
         vlog -sv -work ${WLIB} ${HDL_PATH}/*.sv
     }
