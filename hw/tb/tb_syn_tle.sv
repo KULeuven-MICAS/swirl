@@ -15,6 +15,9 @@
 `ifndef TREE
 `define TREE 0
 `endif
+`ifndef CONFIGURABLE
+`define CONFIGURABLE 0
+`endif
 
 module tb_syn_tle;
 
@@ -25,6 +28,7 @@ module tb_syn_tle;
     parameter int P = `P;
     parameter int PIPESTAGES = 2;
     parameter bit TREE = `TREE;
+    parameter bit CONFIGURABLE = `CONFIGURABLE;
 
     // Signals
     logic clk_i;
@@ -37,6 +41,7 @@ module tb_syn_tle;
     logic signed [4*P-1:0] D_o [M][N];
     logic ready_i;
     logic valid_o;
+    logic halvedPrecision;
 
     // Instantiate the DUT (Device Under Test)
     syn_tle #(
@@ -45,7 +50,8 @@ module tb_syn_tle;
         .K(K),
         .P(P),
         .PIPESTAGES(PIPESTAGES),
-        .TREE(TREE)
+        .TREE(TREE),
+        .CONFIGURABLE(CONFIGURABLE)
     ) dut (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
@@ -56,7 +62,8 @@ module tb_syn_tle;
         .ready_o(ready_o),
         .D_o(D_o),
         .ready_i(ready_i),
-        .valid_o(valid_o)
+        .valid_o(valid_o),
+        .halvedPrecision(halvedPrecision)
     );
     
 
@@ -79,6 +86,7 @@ module tb_syn_tle;
         // Initialize inputs
         valid_i = 0;
         ready_o = 0;
+        halvedPrecision = 0;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
                 A_i[i][j] = 0;
@@ -96,7 +104,7 @@ module tb_syn_tle;
         end
 
         // Apply test vectors
-        #31;
+        #30;
         valid_i = 1;
         ready_o = 0;
         for (int i = 0; i < M; i++) begin
@@ -116,6 +124,25 @@ module tb_syn_tle;
         end
         #10
         valid_i = 0;
+        halvedPrecision = 1;
+        #10
+        valid_i = 1;
+        
+        for (int i = 0; i < M; i++) begin
+            for (int j = 0; j < K; j++) begin
+                A_i[i][j] = 8'b00010001;
+            end
+        end
+        for (int i = 0; i < K; i++) begin
+            for (int j = 0; j < N; j++) begin
+                B_i[i][j] = 8'b00010001;
+            end
+        end
+        for (int i = 0; i < M; i++) begin
+            for (int j = 0; j < N; j++) begin
+                C_i[i][j] = 8'b00010001;
+            end
+        end
 
         #50;
         ready_o = 1;

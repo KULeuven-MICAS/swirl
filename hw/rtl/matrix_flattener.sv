@@ -1,7 +1,7 @@
 module matrix_flattener #(
-    parameter int WIDTH = 8, // Example dimensions, adjust as needed
+    parameter int WIDTH = 8,
     parameter int HEIGHT = 4,
-    parameter int P = 8  // Example bit-width, adjust as needed
+    parameter int P = 8
 )(
     input logic signed [P-1:0] A [HEIGHT-1:0][WIDTH-1:0],
     output logic [(WIDTH*HEIGHT)*P-1:0] data_out

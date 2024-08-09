@@ -20,6 +20,7 @@ tb_syn_tle_tree:
 	SIMNAME=syn_tle \
 	TREE=1 \
 	MULT_TB=1 \
+	CONFIGURABLE=1 \
 	PY=0 \
 	vsim -c -do run_sim.tcl
 tb_tree_adder:

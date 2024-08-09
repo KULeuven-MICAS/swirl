@@ -3,8 +3,8 @@ do
     export M=1
     export N=1
     export K=32
-    export CLKSPD=200
-    export CLKPRD=5000
+    export CLKSPD=300
+    export CLKPRD=3333
     export PIPESTAGES=$i
     export P=8
     export TREE=1
