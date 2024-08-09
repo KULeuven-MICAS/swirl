@@ -35,7 +35,7 @@ module syn_tle #(
     parameter int K = `K,
     parameter int P = `P,
     parameter int PIPESTAGES = `PIPESTAGES,
-    parameter bit TREE = `TREE,
+    parameter bit TREE = 1,
     parameter bit CONFIGURABLE = `CONFIGURABLE
 )(
     input logic clk_i,

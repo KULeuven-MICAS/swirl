@@ -64,7 +64,7 @@ module config_shiftadder_4bit # (
         end
 
     end
-
-    assign product = extendTerm1 + extendTerm2 + extendTerm3 + extendTerm4;
     end
+    
+    assign product = extendTerm1 + extendTerm2 + extendTerm3 + extendTerm4;
 endmodule

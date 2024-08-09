@@ -15,6 +15,7 @@ if {![info exists ::env(K)]} { set ::env(K) 2 }
 if {![info exists ::env(PIPESTAGES)]} { set ::env(PIPESTAGES) 1 }
 if {![info exists ::env(TREE)]} { set ::env(TREE) 1 }
 if {![info exists ::env(CLKSPD)]} { set ::env(CLKSPD) 200 }
+if {![info exists ::env(CONFIGURABLE)]} { set ::env(CONFIGURABLE) 1 }
 
 # Assign parameters from environment variables
 set P $::env(P)
@@ -24,11 +25,16 @@ set K $::env(K)
 set PIPESTAGES $::env(PIPESTAGES)
 set TREE $::env(TREE)
 set CLKSPD $::env(CLKSPD)
+set CONFIGURABLE $::env(CONFIGURABLE)
 
 set DESIGN syn_tle
 set PROJECT_DIR    ../../
 set INPUTS_DIR  ./inputs
-set OUTPUTS_DIR ./outputs/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}
+if {$CONFIGURABLE==1} {
+    set OUTPUTS_DIR ./../outputs/outputs_partitioned/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}_CONFIGURABLE
+} else {
+    set OUTPUTS_DIR ./../outputs/outputs_base/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}
+}
 
 set HDL_PATH [ list \
     $PROJECT_DIR/hw/rtl \
@@ -75,18 +81,23 @@ set_attr hdl_search_path $search_path /
 
 
 read_hdl -sv [ list \
-    ${HDL_PATH}/bitwise_add.sv \
-    ${HDL_PATH}/matrix_multiplication_accumulation.sv \
     ${HDL_PATH}/binary_tree_adder.sv \
+    ${HDL_PATH}/bitwise_add.sv \
+    ${HDL_PATH}/config_adder.sv \
+    ${HDL_PATH}/config_binary_tree_adder.sv \
+    ${HDL_PATH}/config_multiplier_8bit.sv \
+    ${HDL_PATH}/config_shiftadder_4bit.sv \
+    ${HDL_PATH}/matrix_flattener.sv \
+    ${HDL_PATH}/matrix_multiplication_accumulation.sv \
     ${HDL_PATH}/VX_pipe_buffer.sv \
     ${HDL_PATH}/VX_pipe_register.sv \
-    ${HDL_PATH}/matrix_flattener.sv \
     ]
-read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define PIPESTAGES=${PIPESTAGES} -define TREE=${TREE} ${HDL_PATH}/syn_tle.sv
+read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define PIPESTAGES=${PIPESTAGES} -define TREE=${TREE} -define CONFIGURABLE=${CONFIGURABLE} ${HDL_PATH}/syn_tle.sv
 
 elaborate ${DESIGN}
 check_design -unresolved
-set_attribute retime true matrix_multiplication_accumulation_M${M}_N${N}_K${K}_P${P}_TREE${TREE}_PIPESTAGES${PIPESTAGES}
+set_attribute retime true matrix_multiplication_accumulation*
+set_attribute retime true matrix_multiplication_accumulation/*
 read_sdc ${INPUTS_DIR}/constraints.sdc
 
 apply_power_intent
