@@ -1,4 +1,4 @@
-module config_multiplier_2bit (
+/*module config_multiplier_2bit (
     input logic [1:0] multiplier,
     input logic [1:0] multiplicand,
     input logic halvedPrecision,
@@ -24,3 +24,4 @@ always_comb begin
 
 end
 endmodule
+*/

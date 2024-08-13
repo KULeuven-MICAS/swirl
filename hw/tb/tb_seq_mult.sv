@@ -1,4 +1,6 @@
 module tb_seq_mult();
+        localparam P = 2;
+        localparam W = 10;
     
         // Inputs
         logic clk;
@@ -7,16 +9,19 @@ module tb_seq_mult();
         logic [15:0] b;
         logic [3:0] bitsize;
         logic start;
+
     
         // Outputs
-        logic [1:0] p;
+        logic [P-1:0] p;
+        logic newOut;
+        logic done;
 
         // Clock / Reset
         logic clk_i, rst_ni;
     
         // Instantiate the Unit Under Test (UUT)
         seq_mult #(
-            .P(1)
+            .P(P)
             ) uut (
             .clk(clk_i),
             .rst_n(rst_ni),
@@ -24,8 +29,17 @@ module tb_seq_mult();
             .a(a),
             .b(b),
             .bitsize(bitsize),
-            .p(p)
+            .p(p),
+            .newOut(newOut),
+            .done(done)
         );
+
+        logic signed [2*W-1:0] fullProduct = 0;
+        always @(posedge clk_i) begin
+            if (newOut) begin
+                fullProduct <= {p, fullProduct[2*W-1:P]};
+            end
+        end
     
             // Clock generation
         initial begin
@@ -42,15 +56,18 @@ module tb_seq_mult();
         initial begin
             $dumpfile($sformatf("tb_seq_mult.vcd"));
             $dumpvars(0, tb_seq_mult);
+            $monitor("Fullproduct: %b, DONE = $b", fullProduct, done);
 
-            a = 16'b0000000000101101;
-            b = 16'b0000000010011101;
-            bitsize = 8;
+            // a = 16'b0000000000101101;
+            // b = 16'b0000000010011101;
+            a = 16'b0000000010000001;
+            b = 16'b0000001011111111;
+            bitsize = 10;
             #30;
             start = 1;
             #10;
             start = 0;
-            #1000;  
+            #3000;  
 
         end
 endmodule
