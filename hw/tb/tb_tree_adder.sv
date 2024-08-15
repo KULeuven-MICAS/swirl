@@ -25,14 +25,14 @@ module tb_tree_adder;
     
 
     parameter int NUM_TESTS_8 = 5;
-    logic signed [7:0] test_inputs_8[NUM_TESTS_8][8] =  '{
+    static logic signed [7:0] test_inputs_8[NUM_TESTS_8][8] =  '{
         '{1, 2, 3, 4, 5, 6, 7, 8},
         '{1, -2, 3, -4, 5, -6, 7, -8},
         '{127, -128, 0, 1, 0, 0, 0, 0},
         '{127, 5, 2, 1, 6, 1, 35, 6},
         '{-127, 5, 2, 1, -6, 1, -35, 6}
     };
-    logic signed [31:0] expected_outputs_8[NUM_TESTS_8] = '{
+    static logic signed [31:0] expected_outputs_8[NUM_TESTS_8] = '{
         36,
         -4,
         0,
@@ -42,7 +42,7 @@ module tb_tree_adder;
 
     int i;
     int j;
-    int expected_output = 0;
+    automatic int expected_output = 0;
     for (i = 0; i < NUM_TESTS_8; i++) begin
        for (j = 0; j < 8; j++) begin
         inputs_8[j] = test_inputs_8[i][j];

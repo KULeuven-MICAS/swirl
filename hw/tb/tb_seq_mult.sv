@@ -1,13 +1,13 @@
 module tb_seq_mult();
         localparam P = 2;
-        localparam W = 10;
+        localparam W = 8;
     
         // Inputs
         logic clk;
         logic rst_n;
         logic [15:0] a;
         logic [15:0] b;
-        logic [3:0] bitsize;
+        logic [3:0] bitSize;
         logic start;
 
     
@@ -28,7 +28,7 @@ module tb_seq_mult();
             .start(start),
             .a(a),
             .b(b),
-            .bitsize(bitsize),
+            .bitSize(bitSize),
             .p(p),
             .newOut(newOut),
             .done(done)
@@ -49,8 +49,8 @@ module tb_seq_mult();
 
         // Reset generation
         initial begin
-            rst_ni = 1;
-            #20 rst_ni = 0;
+            rst_ni = 0;
+            #20 rst_ni = 1;
         end
 
         initial begin
@@ -58,11 +58,11 @@ module tb_seq_mult();
             $dumpvars(0, tb_seq_mult);
             $monitor("Fullproduct: %b, DONE = $b", fullProduct, done);
 
-            // a = 16'b0000000000101101;
-            // b = 16'b0000000010011101;
-            a = 16'b0000000010000001;
-            b = 16'b0000001011111111;
-            bitsize = 10;
+            a = 16'b0000000000101101;
+            b = 16'b0000000010011101;
+            // a = 16'b0000000001000011;
+            // b = 16'b0000111100111111;
+            bitSize = W/2;
             #30;
             start = 1;
             #10;

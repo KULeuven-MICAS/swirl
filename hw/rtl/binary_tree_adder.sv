@@ -3,8 +3,8 @@ module binary_tree_adder #(
     parameter int INPUTS_AMOUNT,
     parameter int P
 ) (
-    input logic signed [P-1:0] inputs [INPUTS_AMOUNT],
-    output logic signed [31:0] out
+    input wire signed [P-1:0] inputs [INPUTS_AMOUNT],
+    output wire signed [31:0] out
 );
 
     if (INPUTS_AMOUNT - 1 & INPUTS_AMOUNT) $fatal("ERROR: Binary adder input not power of 2");

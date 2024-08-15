@@ -40,9 +40,9 @@ module syn_tle #(
 )(
     input logic clk_i,
     input logic rst_ni,
-    input logic signed [P-1:0] A_i [M][K],
-    input logic signed [P-1:0] B_i [K][N],
-    input logic signed [4*P-1:0] C_i [M][N],
+    input wire signed [P-1:0] A_i [M][K],
+    input wire signed [P-1:0] B_i [K][N],
+    input wire signed [4*P-1:0] C_i [M][N],
     input logic valid_i,
     input logic ready_o,
     input logic halvedPrecision,

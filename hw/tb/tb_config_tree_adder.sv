@@ -31,14 +31,14 @@ module tb_config_tree_adder;
     
 
     parameter int NUM_TESTS_16BIT = 5;
-    logic signed [7:0] test_inputs_8[NUM_TESTS_16BIT][8] =  '{
+    static logic signed [7:0] test_inputs_8[NUM_TESTS_16BIT][8] =  '{
         '{1, 2, 3, 4, 5, 6, 7, 8},
         '{1, -2, 3, -4, 5, -6, 7, -8},
         '{127, -128, 0, 1, 0, 0, 0, 0},
         '{127, 5, 2, 1, 6, 1, 35, 6},
         '{-127, 5, 2, 1, -6, 1, -35, 6}
     };
-    logic signed [31:0] expected_outputs_8[NUM_TESTS_16BIT] = '{
+    static logic signed [31:0] expected_outputs_8[NUM_TESTS_16BIT] = '{
         36,
         -4,
         0,
@@ -46,7 +46,7 @@ module tb_config_tree_adder;
         -153
     };
     parameter int NUM_TESTS_8BIT = 5;
-    logic signed [7:0] test_inputs_4bit[NUM_TESTS_8BIT][16] = '{
+    static logic signed [7:0] test_inputs_4bit[NUM_TESTS_8BIT][16] = '{
       '{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
       '{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
       '{-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16},
@@ -54,7 +54,7 @@ module tb_config_tree_adder;
       '{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
       
     };
-    logic signed [31:0] expected_outputs_4bit[NUM_TESTS_8BIT] = '{
+    static logic signed [31:0] expected_outputs_4bit[NUM_TESTS_8BIT] = '{
       0,
       136,
       -136,
