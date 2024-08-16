@@ -8,13 +8,16 @@ module tb_seq_mult();
         logic [15:0] a;
         logic [15:0] b;
         logic [3:0] bitSize;
-        logic start;
+        logic valid_in;
+        logic ready_out;
 
     
         // Outputs
         logic [P-1:0] p;
         logic newOut;
-        logic done;
+        logic valid_out;
+        logic ready_in;
+
 
         // Clock / Reset
         logic clk_i, rst_ni;
@@ -25,13 +28,15 @@ module tb_seq_mult();
             ) uut (
             .clk(clk_i),
             .rst_n(rst_ni),
-            .start(start),
             .a(a),
             .b(b),
             .bitSize(bitSize),
             .p(p),
             .newOut(newOut),
-            .done(done)
+            .valid_in(valid_in),
+            .ready_in(ready_in),
+            .valid_out(valid_out),
+            .ready_out(ready_out)
         );
 
         logic signed [2*W-1:0] fullProduct = 0;
@@ -56,7 +61,10 @@ module tb_seq_mult();
         initial begin
             $dumpfile($sformatf("tb_seq_mult.vcd"));
             $dumpvars(0, tb_seq_mult);
-            $monitor("Fullproduct: %b, DONE = $b", fullProduct, done);
+            $monitor("Fullproduct: %b, valid_out = %b", fullProduct, valid_out);
+
+            ready_out = 1;
+            valid_in = 0;
 
             a = 16'b0000000000101101;
             b = 16'b0000000010011101;
@@ -64,9 +72,7 @@ module tb_seq_mult();
             // b = 16'b0000111100111111;
             bitSize = W/2;
             #30;
-            start = 1;
-            #10;
-            start = 0;
+            valid_in = 1;
             #3000;  
 
         end

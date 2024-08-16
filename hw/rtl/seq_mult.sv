@@ -1,18 +1,27 @@
 module seq_mult #(
-    parameter P = 2,
-    parameter MAX_WIDTH = 16
+    parameter unsigned P = 2,
+    parameter unsigned [4:0] MAX_WIDTH = 16
     ) (
     input logic clk,
     input logic rst_n,
-    input logic start,
     input logic [MAX_WIDTH-1:0] a,
     input logic [MAX_WIDTH-1:0] b,
-    input logic [$clog2(MAX_WIDTH/P):0] bitSize,
+    input logic unsigned [$clog2(MAX_WIDTH/P):0] bitSize,
     output logic [P-1:0] p,
     output logic newOut,
-    output logic done
+    output logic ready_in, valid_out,
+    input wire ready_out, valid_in,
+    output logic start
 
 );
+
+    logic busy;
+
+    assign stall = (valid_out & ~ready_out) | busy;
+    assign start = valid_in & ~stall;
+    assign ready_in = ~stall;
+
+    
 
     localparam MAX_WIDTH_BITS = $clog2(MAX_WIDTH/P) + 1; // bits needed to represent bitSize in steps of P
     localparam M = MAX_WIDTH_BITS; // shorthand parameter
@@ -35,8 +44,9 @@ module seq_mult #(
 
     logic placeOne;
     reg lastOut;
-    reg doneReg;
-    assign done = doneReg;
+    reg lastMultAccum;
+    reg valid_out_reg;
+    assign valid_out = valid_out_reg;
     
 
     reg [MAX_WIDTH-1:0] reg_a;
@@ -61,8 +71,8 @@ module seq_mult #(
     assign placeOne = (shiftCount == bitSize | shiftCount == 2*bitSize) ? 1'b1 : 1'b0;
 
     assign rstCount = ~start;
-    assign ce1 = countLast2;
-    assign ce2 = 1'b1;
+    assign ce1 = countLast2 & busy;
+    assign ce2 = busy;
 
 
     multiplexer_8to1 #(
@@ -154,10 +164,15 @@ module seq_mult #(
             reg_b <= 0;
             countDown <= 0;
             lastOut <= 0;
-            doneReg <= 0;
+            valid_out_reg <= 0;
+            busy <= 0;
+            newOut <= 0;
         end else if (start) begin
             reg_a <= a;
             reg_b <= b;
+            busy <= 1'b1;
+            countDown <= 0;
+            newOut <= 0;
         end
 
         if (countLastBoth & ~countDown) begin
@@ -171,17 +186,29 @@ module seq_mult #(
         end
 
         if (lastOut) begin
-            doneReg <= 1'b1;
-        end else begin 
-            doneReg <= 1'b0;
+            lastMultAccum <= 1'b1;
+            lastOut <= 1'b0;
+        end
+        
+
+        if (lastMultAccum) begin
+            valid_out_reg <= 1'b1;
+            busy <= 1'b0;
+        end else if (valid_out & stall) begin 
+            valid_out_reg <= 1'b1;
+        end else begin
+            valid_out_reg <= 1'b0;
         end
 
-        if (countLast2 | lastOut) begin
+        if ( (countLast2 | lastOut) & busy) begin
             newOut <= 1'b1;
         end else begin
             newOut <= 1'b0;
         end
     end
+
+    logic unsigned [M-1:0] count1_start;
+    assign count1_start =  bitSize - 1'b1;
 
     programmable_counter #(.WIDTH(M), .UPDOWN(1'b1)) count1 (
         .clk_i(clk),
@@ -190,8 +217,8 @@ module seq_mult #(
         .en_i(ce1),
         .load_i(1'b0),
         .down_i(countDown),
-        .countSet(bitSize-1),
-        .d_i(1'b0),
+        .countSet(count1_start),
+        .d_i(),
         .q_o(countOut1),
         .last_o(countLast1)
     );
@@ -204,22 +231,49 @@ module seq_mult #(
         .load_i(1'b0),
         .down_i(1'b0),
         .countSet(countOut1),
-        .d_i(1'b0),
+        .d_i(),
         .q_o(countOut2),
         .last_o(countLast2)
     );
 
-    programmable_counter #(.WIDTH(M), .UPDOWN(1'b0)) count3 (
+    localparam [M:0] total_product_width = 2*MAX_WIDTH/P; // width in chunks of P
+    logic [M:0] count3_start = 4;
+
+    programmable_counter #(.WIDTH(M+1), .UPDOWN(1'b0)) count3 (
         .clk_i(clk),
         .rst_ni(rst_n),
         .clear_i(1'b0),
         .en_i(1'b1),
         .load_i(start),
         .down_i(1'b0),
-        .countSet(10),
-        .d_i(4),
+        .countSet(total_product_width),
+        .d_i(count3_start),
         .q_o(shiftCount),
         .last_o()
     );
+
+endmodule
+
+module adder #(P) (
+    input logic [P-1:0] a,
+    input logic [P-1:0] b,
+    output logic [P-1:0] sum,
+    output logic cout
+);
+    logic [P-1:0] carryWires;
+    assign cout = carryWires[P-1];
+
+    half_adder ha (.a(a[0]), .b(b[0]), .sum(sum[0]), .carry(carryWires[0]));
+
+    genvar i;
+    for (i = 1; i < P; i = i + 1) begin
+        full_adder fa(
+            .a(a[i]),
+            .b(b[i]),
+            .sum(sum[i]),
+            .cin(carryWires[i-1]),
+            .cout(carryWires[i])
+        );
+    end
 
 endmodule

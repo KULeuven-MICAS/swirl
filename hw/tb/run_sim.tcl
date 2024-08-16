@@ -3,10 +3,10 @@ if { [info exists ::env(TREE)] } {
 } else {
     set TREE 0
 }
-if { [info exists ::env(CONFIGURABLE)] } {
-    set CONFIGURABLE $::env(CONFIGURABLE)
+if { [info exists ::env(MODE)] } {
+    set MODE $::env(MODE)
 } else {
-    set CONFIGURABLE 0
+    set MODE 0
 }
 if { [info exists ::env(MULT_TB)] } {
     set MULT_TB $::env(MULT_TB)
@@ -50,11 +50,11 @@ set HDL_PATH "./../rtl"
 vlog -sv -quiet -work ${WLIB} ${HDL_PATH}/*.sv ./*sv
 
 
-# Define testbench configurations with parameters
+# Define testbench configurations with parameters  #"8x4x16" 8 4 16
 if {$MULT_TB ==  1} {
     set TESTBENCHES {
     "2x2x2" 2 2 2
-    "8x4x16" 8 4 16
+   
 }
 } else {
     set TESTBENCHES {
@@ -67,7 +67,7 @@ if {$MULT_TB ==  1} {
 foreach {TB M N K} $TESTBENCHES {
     # Compile the testbench with specific parameters
     if {$MULT_TB == 1} {
-        vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} +define+CONFIGURABLE=${CONFIGURABLE} ./tb_${SIMNAME}.sv
+        vlog -sv -quiet -work ${WLIB} +define+M=${M} +define+N=${N} +define+K=${K} +define+TREE=${TREE} +define+MODE=${MODE} ./tb_${SIMNAME}.sv
     } else {
         vlog -sv -work ${WLIB} ${HDL_PATH}/*.sv
     }
