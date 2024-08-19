@@ -221,8 +221,8 @@ module tb_seq_mult_adder ();
 
             bitSize = 8;
 
-            a_16bit = 2**15-1;
-            b_16bit = 2**15-1;
+            a_16bit = $random;
+            b_16bit = $random;
 
             product = a_16bit * b_16bit;
 
