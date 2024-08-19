@@ -8,6 +8,7 @@ module seq_mult_adder #(
     input logic signed [MAX_WIDTH-1:0] row [K],
     input logic signed [MAX_WIDTH-1:0] column [K],
     input logic [31:0] C_in,
+    output logic [31:0] D,
     input logic unsigned [$clog2(MAX_WIDTH/P)+1:0] bitSize,
     input wire valid_in,
     output wire ready_in,
@@ -139,7 +140,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .clear_i(1'b0),
-        .en_i(1'b1),
+        .en_i(countLast2),
         .load_i(start),
         .down_i(1'b0),
         .countSet(total_product_width),
@@ -148,10 +149,10 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .last_o()
     );
 
-    initial begin
-            $dumpfile("tb_seq_mult_adder.vcd");
-            $dumpvars(0, seq_mult_adder);
-        end
+    // initial begin
+    //         $dumpfile("tb_seq_mult_adder.vcd");
+    //         $dumpvars(0, seq_mult_adder);
+    //     end
 
 
     genvar element;
@@ -223,5 +224,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .b(mult_sum_extend),
         .sum(accum_mult_next)
     );
+
+    assign D = accum_mult;
 
 endmodule

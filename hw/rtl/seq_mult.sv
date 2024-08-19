@@ -25,6 +25,7 @@ module seq_mult #(
     logic [2*P-1:0] nextAccumSum;
     logic unsigned [2*P-1:0] nextCarryCount;
     logic adderCout;
+    logic placedFirst;
 
     reg [MAX_WIDTH-1:0] reg_a;
     reg [MAX_WIDTH-1:0] reg_b;
@@ -99,17 +100,26 @@ module seq_mult #(
     always_ff @(posedge clk, negedge rst_n) begin
         if (!rst_n) begin
             carryCount <= 0;
+            placedFirst <= 0;
         end else if (start) begin
             if (bitSize == 1 | bitSize == 2) begin // assign correct ones for 2 bit width
                 carryCount <= 4'b0001;
+                placedFirst <= 1;
             end else if (bitSize == 3) begin
                 carryCount <= 4'b0100;
+                placedFirst <= 1;
             end else begin
                 carryCount <= 0;
+                placedFirst <= 0;
             end
         end else if (countLast2) begin
             if (placeOne) begin
-                carryCount <= {{(P-1){1'b0}}, 1'b1, nextCarryCount[2*P-1:P]};
+                if (placedFirst) begin
+                    carryCount <= {{(P-1){1'b0}}, 1'b1, nextCarryCount[2*P-1:P]};
+                end else begin
+                    carryCount <= {{(P-1){1'b0}}, 1'b1, nextCarryCount[2*P-1:P]};
+                    placedFirst <= 1;
+                end
             end else begin
                 carryCount <= {{P{1'b0}}, nextCarryCount[2*P-1:P]};
             end

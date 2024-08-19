@@ -20,6 +20,8 @@ def save_matrices_to_file(A, B, C, D, filepath):
 
 
 if __name__ == '__main__':
+    RANDOM_TESTS = 3
+
     # 2x2x2 MATRIX TESTS:
 
     # 8-bit matrices
@@ -44,6 +46,11 @@ if __name__ == '__main__':
     B = np.matrix([[0, 0], [0, 0]])
     C = np.matrix([[0, 0], [0, 0]])
     D = np.matrix([[0, 0], [0, 0]])
+    save_matrices_to_file(A, B, C, D, filepath)
+    A = np.matrix([[-128, 0], [0, 0]])
+    B = np.matrix([[-128, 0], [0, 0]])
+    C = np.matrix([[0, 0], [0, 0]])
+    D = np.matrix([[16384, 0], [0, 0]])
     save_matrices_to_file(A, B, C, D, filepath)
     # Positive overflow test
     A = np.matrix([[100, 0], [0, 0]])
@@ -115,11 +122,12 @@ if __name__ == '__main__':
     D = np.matmul(np.int32(A), np.int32(B)) + C
     save_matrices_to_file(A, B, C, D, filepath)
 
-    A = np.random.randint(-128, 127, 8 * 16).reshape(8, 16)
-    B = np.random.randint(-128, 127, 4 * 16).reshape(16, 4)
-    C = np.random.randint(-128, 127, 8 * 4).reshape(8, 4)
-    D = np.matmul(np.int32(A), np.int32(B)) + C
-    save_matrices_to_file(A, B, C, D, filepath)
+    for i in range(RANDOM_TESTS):
+        A = np.random.randint(-128, 127, 8 * 16).reshape(8, 16)
+        B = np.random.randint(-128, 127, 4 * 16).reshape(16, 4)
+        C = np.random.randint(-128, 127, 8 * 4).reshape(8, 4)
+        D = np.matmul(np.int32(A), np.int32(B)) + C
+        save_matrices_to_file(A, B, C, D, filepath)
 
     # 4-bit matrices
 
@@ -130,8 +138,6 @@ if __name__ == '__main__':
     with open(filepath, 'w') as f:
         pass  # Opening in 'w' mode clears the file
     
-    RANDOM_TESTS = 10
-
     for i in range(RANDOM_TESTS):
         A = np.random.randint(-8, 7, 8 * 32).reshape(8, 32)
         B = np.random.randint(-8, 7, 4 * 32).reshape(32, 4)

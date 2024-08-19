@@ -146,7 +146,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .clear_i(1'b0),
-        .en_i(1'b1),
+        .en_i(countLast2),
         .load_i(start),
         .down_i(1'b0),
         .countSet(total_product_width),
