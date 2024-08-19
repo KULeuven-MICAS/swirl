@@ -38,21 +38,33 @@ module tb_seq_mult_adder ();
         // Run tests
         initial begin
             valid_in = 0;
-            ready_out = 1;
+            ready_out = 0;
             rst_ni = 0;
 
             #10;
 
             rst_ni = 1;
-            row = '{29, -13};
-            column = '{-56, -98};
+            row = '{29, 13};
+            column = '{-56, 98};
             C_in = 71;
-
-            #5;
-
             valid_in = 1;
 
-            #100;
+            #10;
+
+            valid_in = 0;
+
+            #500;
+
+            ready_out = 1;
+
+            #100
+
+            row = '{1, 1};
+            column = '{1, 1};
+            C_in = 1;
+            valid_in = 1;
+
+            #200
 
             row = '{0, 0};
             column = '{0, 0};

@@ -18,10 +18,6 @@ module seq_mult #(
     input logic start,
     input logic placeOne,
     output logic [P-1:0] p
-    // output logic newOut,
-    // output logic ready_in, valid_out,
-    // input wire ready_out, valid_in,
-    // output logic start
 
 );
     logic [P-1:0] input_a, input_b;

@@ -45,7 +45,7 @@ module tb_seq_mult();
                 fullProduct <= {p, fullProduct[2*W-1:P]};
             end
         end
-    
+
             // Clock generation
         initial begin
             clk_i = 0;

@@ -54,6 +54,7 @@ vlog -sv -quiet -work ${WLIB} ${HDL_PATH}/*.sv ./*sv
 if {$MULT_TB ==  1} {
     set TESTBENCHES {
     "2x2x2" 2 2 2
+    "8x4x16" 8 4 16
    
 }
 } else {

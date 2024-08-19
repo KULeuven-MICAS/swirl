@@ -62,10 +62,12 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
             valid_out_reg <= 0;
             busy <= 0;
             newOut <= 0;
+            lastMultAccum <= 0;
          end else if (start) begin
             busy <= 1'b1;
             countDown <= 0;
             newOut <= 0;
+            lastMultAccum <= 0;
          end
 
         if (countLastBoth & ~countDown) begin
@@ -84,6 +86,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         end
 
         if (lastMultAccum) begin
+            lastMultAccum <= 1'b0;
             valid_out_reg <= 1'b1;
             busy <= 1'b0;
         end else if (valid_out & stall) begin 
@@ -186,7 +189,8 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .INPUTS_AMOUNT(K)
     ) tree_add (
         .inputs(partial_mults),
-        .out(mult_sum)
+        .out(mult_sum),
+        .signedAddition(lastMultAccum)
     );
 
 
@@ -195,7 +199,10 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
 
     logic [4:0] offsetCount;
     logic [31:0] mult_sum_extend;
-    assign mult_sum_extend = mult_sum << offsetCount;
+
+    logic signed [P + $clog2(K):0] mult_sum_signed;
+    assign mult_sum_signed = lastMultAccum & mult_sum[P + $clog2(K)-1]? {1'b1, mult_sum} : {1'b0, mult_sum};
+    assign mult_sum_extend = mult_sum_signed << offsetCount;
 
     always_ff @(posedge clk_i or negedge rst_ni) begin
         if (~rst_ni) begin

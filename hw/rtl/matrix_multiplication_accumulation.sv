@@ -31,8 +31,8 @@ module matrix_multiplication_accumulation #(
     wire ready_in_sequential;
 
     initial begin
-        $dumpfile("tb_matmul_module.vcd"); 
-        $dumpvars(0, matrix_multiplication_accumulation);
+        // $dumpfile("tb_matmul_module.vcd"); 
+        // $dumpvars(0, matrix_multiplication_accumulation);
         // $monitor("At time %t, ready_stage = %p, valid_stage = %p, A_in = %p, B_in = %p, C_in = %p, reset = %p, D_o = %p",
         // $time, ready_stage[0], valid_stage[0], A_stage[1], B_stage[1], C_stage[1], rst_ni, D);
     end
@@ -211,56 +211,40 @@ module matrix_multiplication_accumulation #(
                 end // gen_row_block
             end // gen_column_block
     end else if (MODE == 2) begin
-        genvar column, row, element;
-            for (column = 0; column < N; column = column + 1) begin : gen_column_block
-                for (row = 0; row < M; row = row + 1) begin: gen_row_block
-                    localparam int P_seq_mult = 2;
-                    localparam int MAX_WIDTH = 16;
 
-                    logic signed [P_seq_mult-1:0] partial_mults [K];
-                    for (element = 0; element < K; element = element + 1) begin : gen_element_block
-    
-                        seq_mult #(
-                            .P(P_seq_mult),
-                            .MAX_WIDTH(MAX_WIDTH)
-                        ) seq_mult (
-                            .clk(clk_i),
-                            .rst_n(rst_ni),
-                            .a({{MAX_WIDTH-P{A_mul[row][element][P-1]}},A_mul[row][element]}),
-                            .b({{MAX_WIDTH-P{B_mul[element][column][P-1]}},B_mul[element][column]}),
-                            .bitSize(4'b0100),
-                            .p(partial_mults[element]),
-                            .newOut(newOut),
-                            .valid_in(valid_in_sequential),
-                            .ready_in(ready_in_sequential),
-                            .valid_out(valid_out_sequential),
-                            .ready_out(ready_out_sequential)
-                        );
-                        
-                    end 
+        logic signed [15:0] A_seq [M][K];
+        logic signed [15:0] B_seq [K][N];
 
-                    logic signed [P_seq_mult + $clog2(K)-1:0] mult_sum;
-                    logic signed [31:0] sum;
-
-                    binary_tree_adder #(
-                        .P(2),
-                        .INPUTS_AMOUNT(K)
-                    ) tree_add (
-                        .inputs(partial_mults),
-                        .out(mult_sum)
-                    );
-
-                    bitwise_add #(
-                        .P(32)
-                    ) C_add (
-                        .a(mult_sum),
-                        .b(C_mul[row][column]),
-                        .sum(sum)
-                    );
-
-                    assign D[row][column] = sum;
-                end // gen_row_block
-            end // gen_column_block
+        genvar i, j;
+        for ( i = 0; i < M; i = i + 1) begin
+            for ( j = 0; j < K; j = j + 1) begin
+                assign A_seq[i][j] = {{(16-P){1'b0}}, A_mul[i][j]};
+            end
+        end
+        for ( i = 0; i < K; i = i + 1) begin
+            for ( j = 0; j < N; j = j + 1) begin
+                assign B_seq[i][j] = {{(16-P){1'b0}}, B_mul[i][j]};
+            end
+        end
+        seq_MAC #(
+            .M(M),
+            .N(N),
+            .K(K),
+            .P(2),
+            .MAX_WIDTH(16)
+        ) seq_MAC (
+            .clk_i(clk_i),
+            .rst_ni(rst_ni),
+            .A_mul(A_seq),
+            .B_mul(B_seq),
+            .C_mul(C_mul),
+            .D(D),
+            .valid_in(valid_in_sequential),
+            .ready_in(ready_in_sequential),
+            .valid_out(valid_out_sequential),
+            .ready_out(ready_out_sequential),
+            .bitSize(5'b00100)
+        );
     end
 
 endmodule

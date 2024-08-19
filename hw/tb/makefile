@@ -50,3 +50,6 @@ tb_seq_mult:
 tb_seq_mult_adder:
 	SIMNAME=seq_mult_adder \
 	vsim -c -do run_sim.tcl
+tb_seq_MAC:
+	SIMNAME=seq_MAC \
+	vsim -c -do run_sim.tcl
