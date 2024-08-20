@@ -98,7 +98,7 @@ if __name__ == '__main__':
     C = np.matrix([[2**31-2, 2**31-2], [2**31-2, 2**31-2]])
     D = np.matrix([[2**31-1, 2**31-2], [2**31-2, 2**31-2]])
     save_matrices_to_file(A, B, C, D, filepath)
-    
+
     # 4x8x16 MATRIX TESTS:
 
     # 8-bit matrices
@@ -137,11 +137,10 @@ if __name__ == '__main__':
 
     with open(filepath, 'w') as f:
         pass  # Opening in 'w' mode clears the file
-    
+
     for i in range(RANDOM_TESTS):
         A = np.random.randint(-8, 7, 8 * 32).reshape(8, 32)
         B = np.random.randint(-8, 7, 4 * 32).reshape(32, 4)
         C = np.random.randint(-2**31, 2**31-1, 8 * 4).reshape(8, 4)
         D = np.matmul(np.int32(A), np.int32(B)) + C
         save_matrices_to_file(A, B, C, D, filepath)
-
