@@ -25,8 +25,8 @@
 `ifndef PIPESTAGES
 `define PIPESTAGES 2
 `endif
-`ifndef CONFIGURABLE
-`define CONFIGURABLE 0
+`ifndef MODE
+`define MODE 0
 `endif
 
 module syn_tle #(
@@ -36,7 +36,7 @@ module syn_tle #(
     parameter int P = `P,
     parameter int PIPESTAGES = `PIPESTAGES,
     parameter bit TREE = 1,
-    parameter bit CONFIGURABLE = `CONFIGURABLE
+    parameter bit MODE = `MODE
 )(
     input logic clk_i,
     input logic rst_ni,
@@ -46,6 +46,7 @@ module syn_tle #(
     input logic valid_i,
     input logic ready_o,
     input logic halvedPrecision,
+    input logic [3:0] bitSize = 4,
     output logic signed [4*P-1:0] D_o [M][N],
     output logic ready_i,
     output logic valid_o
@@ -65,10 +66,9 @@ module syn_tle #(
 
 
     // Input assignment
-    // Regroup B matrix elements correctly
+    // Regroup B matrix elements for partitioned input
     
-   
-    if (CONFIGURABLE) begin
+    if (MODE==1) begin
         genvar row, column;
         for (row = 0; row < K; row++) begin
             for (column = 0; column < N; column++) begin
@@ -105,7 +105,7 @@ module syn_tle #(
         // $dumpfile($sformatf("syn_tle.vcd"));
         // $dumpvars(0, syn_tle);
 
-        $monitor("At time %t, D_o = %p, A_i = %p, B_i = %p, C_i = %p", $time, D_o, A_i, B_i, C_i);
+        // $monitor("At time %t, D_o = %p, A_i = %p, B_i = %p, C_i = %p", $time, D_o, A_i, B_i, C_i);
         // $monitor("At time %t, A_q = %p, B_q = %p, C_q = %p", $time, A_q, B_q, C_q);
         // $monitor("At time %t, A_stage0 = %p, A_stage1 = %p, D_o = %p, ready_o = %p, valid_i = %p, valid_o = %p", 
         // $time, A_stage[0], A_stage[1], D_o, ready_o, valid_i, valid_o);
@@ -169,7 +169,7 @@ module syn_tle #(
         .PASSTHRU(0)
     ) input_buffer (
         .clk       (clk_i),
-        .reset     (rst_ni),
+        .reset     (~rst_ni),
         .valid_in  (valid_i),
         .data_in   (data_in),
         .ready_in  (ready_i),
@@ -183,7 +183,7 @@ module syn_tle #(
         .PASSTHRU(0)
     ) output_buffer (
         .clk       (clk_i),
-        .reset     (rst_ni),
+        .reset     (~rst_ni),
         .valid_in  (valid_q),
         .data_in   (data_out),
         .ready_in  (ready_q),
@@ -199,7 +199,7 @@ module syn_tle #(
         .P(P),
         .TREE(TREE),
         .PIPESTAGES(PIPESTAGES),
-        .CONFIGURABLE(CONFIGURABLE)
+        .MODE(2)
     ) mma (
         .A(A_q),
         .B(B_q),
@@ -211,7 +211,8 @@ module syn_tle #(
         .ready_out(ready_q),
         .clk_i(clk_i),
         .rst_ni(rst_ni),
-        .halvedPrecision(halvedPrecision)
+        .halvedPrecision(halvedPrecision),
+        .bitSize(bitSize)
     );
 
 endmodule

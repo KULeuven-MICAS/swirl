@@ -18,7 +18,8 @@ module matrix_multiplication_accumulation #(
     input wire clk_i,
     input wire rst_ni,
 
-    input wire halvedPrecision = 0
+    input wire halvedPrecision = 0,
+    input wire [3:0] bitSize = 4
 );
     logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
     logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
@@ -50,7 +51,7 @@ module matrix_multiplication_accumulation #(
     end else begin
         assign ready_out_sequential = ready_out;
         assign valid_out = valid_out_sequential;
-        assign ready_in_sequential = ready_stage[PIPESTAGES-1];
+        assign ready_stage[PIPESTAGES-1] = ready_in_sequential;
         assign valid_in_sequential = valid_stage[PIPESTAGES-1];
     end
     
@@ -98,7 +99,7 @@ module matrix_multiplication_accumulation #(
                 .PASSTHRU(0)
             ) buffer (
                 .clk       (clk_i),
-                .reset     (rst_ni),
+                .reset     (~rst_ni),
                 .valid_in  (valid_stage[i]),
                 .data_in   (data_stage[i]),
                 .ready_in  (ready_stage[i]),
@@ -243,7 +244,7 @@ module matrix_multiplication_accumulation #(
             .ready_in(ready_in_sequential),
             .valid_out(valid_out_sequential),
             .ready_out(ready_out_sequential),
-            .bitSize(5'b00100)
+            .bitSize(bitSize)
         );
     end
 

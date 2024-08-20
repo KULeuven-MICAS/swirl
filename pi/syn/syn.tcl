@@ -15,7 +15,7 @@ if {![info exists ::env(K)]} { set ::env(K) 2 }
 if {![info exists ::env(PIPESTAGES)]} { set ::env(PIPESTAGES) 1 }
 if {![info exists ::env(TREE)]} { set ::env(TREE) 1 }
 if {![info exists ::env(CLKSPD)]} { set ::env(CLKSPD) 200 }
-if {![info exists ::env(CONFIGURABLE)]} { set ::env(CONFIGURABLE) 1 }
+if {![info exists ::env(MODE)]} { set ::env(MODE) 1 }
 
 # Assign parameters from environment variables
 set P $::env(P)
@@ -25,15 +25,17 @@ set K $::env(K)
 set PIPESTAGES $::env(PIPESTAGES)
 set TREE $::env(TREE)
 set CLKSPD $::env(CLKSPD)
-set CONFIGURABLE $::env(CONFIGURABLE)
+set MODE $::env(MODE)
 
 set DESIGN syn_tle
 set PROJECT_DIR    ../../
 set INPUTS_DIR  ./inputs
-if {$CONFIGURABLE==1} {
-    set OUTPUTS_DIR ./../outputs/outputs_partitioned/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}_CONFIGURABLE
+if {$MODE==2} {
+    set OUTPUTS_DIR ./../outputs/outputs_partitioned/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}_SEQUENTIAL
+} else if {$MODE==1} {
+    set OUTPUTS_DIR ./../outputs/outputs_partitioned/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}_PARTITIONED
 } else {
-    set OUTPUTS_DIR ./../outputs/outputs_base/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}
+    set OUTPUTS_DIR ./../outputs/outputs_base/output_${P}Bit_${M}x${N}x${K}_${CLKSPD}MHz_${PIPESTAGES}PIPES_TREE=${TREE}_BASE
 }
 
 set HDL_PATH [ list \
@@ -79,20 +81,20 @@ set_attribute interconnect_mode ple
 set_attribute init_hdl_search_path $HDL_PATH /
 set_attr hdl_search_path $search_path /
 
-
-read_hdl -sv [ list \
-    ${HDL_PATH}/binary_tree_adder.sv \
-    ${HDL_PATH}/bitwise_add.sv \
-    ${HDL_PATH}/config_adder.sv \
-    ${HDL_PATH}/config_binary_tree_adder.sv \
-    ${HDL_PATH}/config_multiplier_8bit.sv \
-    ${HDL_PATH}/config_shiftadder_4bit.sv \
-    ${HDL_PATH}/matrix_flattener.sv \
-    ${HDL_PATH}/matrix_multiplication_accumulation.sv \
-    ${HDL_PATH}/VX_pipe_buffer.sv \
-    ${HDL_PATH}/VX_pipe_register.sv \
-    ]
-read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define PIPESTAGES=${PIPESTAGES} -define TREE=${TREE} -define CONFIGURABLE=${CONFIGURABLE} ${HDL_PATH}/syn_tle.sv
+read_hdl -sv ${HDL_PATH}/*.sv
+# read_hdl -sv [ list \
+#     ${HDL_PATH}/binary_tree_adder.sv \
+#     ${HDL_PATH}/bitwise_add.sv \
+#     ${HDL_PATH}/config_adder.sv \
+#     ${HDL_PATH}/config_binary_tree_adder.sv \
+#     ${HDL_PATH}/config_multiplier_8bit.sv \
+#     ${HDL_PATH}/config_shiftadder_4bit.sv \
+#     ${HDL_PATH}/matrix_flattener.sv \
+#     ${HDL_PATH}/matrix_multiplication_accumulation.sv \
+#     ${HDL_PATH}/VX_pipe_buffer.sv \
+#     ${HDL_PATH}/VX_pipe_register.sv \
+#     ]
+read_hdl -sv -define M=${M} -define N=${N} -define K=${K} -define P=${P} -define PIPESTAGES=${PIPESTAGES} -define TREE=${TREE} -define MODE=${MODE} ${HDL_PATH}/syn_tle.sv
 
 elaborate ${DESIGN}
 check_design -unresolved

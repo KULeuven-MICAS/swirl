@@ -10,7 +10,7 @@ module seq_MAC #(
     input wire signed [MAX_WIDTH-1:0] A_mul [M][K],
     input wire signed [MAX_WIDTH-1:0] B_mul [K][N],
     input wire signed [31:0] C_mul [M][N],
-    input logic unsigned [$clog2(MAX_WIDTH/P)+1:0] bitSize,
+    input logic unsigned [$clog2(MAX_WIDTH/P):0] bitSize,
     input wire valid_in,
     output wire ready_in,
     output wire valid_out,
@@ -46,7 +46,7 @@ module seq_MAC #(
     assign valid_out = valid_out_reg;
     assign stall = (valid_out & ~ready_out) | busy;
     assign start = valid_in & ~stall;
-    assign ready_in = ~stall;
+    assign ready_in = !stall;
 
     assign invertFirstBit = (countLast1 & countOut2 == 0) | (countDown & countOut2 == 0);
     assign invertSecondRow = (countLastBoth) | (countDown & countLast2);

@@ -26,6 +26,13 @@ tb_syn_tle_tree:
 	MODE=1 \
 	PY=0 \
 	vsim -c -do run_sim.tcl
+tb_syn_tle_seq:
+	SIMNAME=syn_tle \
+	TREE=1 \
+	MULT_TB=1 \
+	MODE=2 \
+	PY=0 \
+	vsim -c -do run_sim.tcl
 tb_tree_adder:
 	SIMNAME=tree_adder \
 	vsim -c -do run_sim.tcl
