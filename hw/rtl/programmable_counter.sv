@@ -17,6 +17,7 @@ module programmable_counter #(
 
     logic [WIDTH-1:0] counter_q, counter_d;
     logic [WIDTH-1:0] cnt_next;
+    reg hold;
 
     assign q_o = counter_q;
 
@@ -27,27 +28,36 @@ module programmable_counter #(
 
         if (clear_i) begin
             counter_d = '0;
+            hold <= 0;
         end else if (load_i) begin
             counter_d = d_i;
         end else if (en_i) begin
-            if (down_i) begin
-                counter_d = counter_q - 1;
-            end else begin
-                if (UPDOWN) begin
-                    if (counter_q == countSet) begin
-                        counter_d = counter_q - 1;
-                    end else begin
-                        counter_d = counter_q + 1;
-                    end
+                if (down_i) begin
+                    counter_d = counter_q - 1; 
                 end else begin
-                    if (counter_q == countSet) begin
-                        counter_d = 0;
+                    if (UPDOWN) begin
+                        if (countSet == 0) begin
+                            if (hold) begin
+                                counter_d = counter_q - 1;
+                            end else begin
+                                hold <= 1;
+                            end
+                        end else begin
+                        if (counter_q == countSet) begin
+                            counter_d = counter_q - 1;
+                        end else begin
+                            counter_d = counter_q + 1;
+                        end
+                        end
                     end else begin
-                        counter_d = counter_q + 1;
+                        if (counter_q == countSet) begin
+                            counter_d = 0;
+                        end else begin
+                            counter_d = counter_q + 1;
+                        end
                     end
                 end
 
-            end
         end
     end
 

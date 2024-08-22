@@ -100,7 +100,7 @@ foreach {TB M N K} $TESTBENCHES {
       ${OBJ}
 
     # Run the simulation for a specified time (e.g., 1000ns)
-    run 3000ns
+    run 10000ns
 }
 
 quit

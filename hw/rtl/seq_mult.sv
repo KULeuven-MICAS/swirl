@@ -16,6 +16,8 @@ module seq_mult #(
     input logic invertSecondRow,
     input logic start,
     input logic placeOne,
+    input logic [1:0] countShiftInput,
+    input logic [4*P-1:0] initSum,
     output logic [P-1:0] p
 
 );
@@ -24,7 +26,6 @@ module seq_mult #(
     logic [2*P-1:0] nextAccumSum;
     logic unsigned [2*P-1:0] nextCarryCount;
     logic adderCout;
-    logic placedFirst;
 
     reg [MAX_WIDTH-1:0] reg_a;
     reg [MAX_WIDTH-1:0] reg_b;
@@ -64,8 +65,9 @@ module seq_mult #(
     end
 
     adder #(2*P) adder (
-        .a(prod),
-        .b(accumSum),
+        .a(accumSum),
+        .b(prod),
+        .en(~lastOut),
         .sum(nextAccumSum),
         .cout(adderCout)
     );
@@ -84,11 +86,7 @@ module seq_mult #(
         if (!rst_n) begin
             accumSum <= 0;
         end else if (start) begin
-            if (bitSize == 1) begin // assign correct ones for 2 bit width
-                accumSum <= 4'b0100;
-            end else begin
-                accumSum <= 0;
-            end
+            accumSum <= initSum[3:0];
         end else if (countLast2) begin
             accumSum <= {nextCarryCount[P-1:0], nextAccumSum[2*P-1:P]};
         end else begin
@@ -99,29 +97,10 @@ module seq_mult #(
     always_ff @(posedge clk, negedge rst_n) begin
         if (!rst_n) begin
             carryCount <= 0;
-            placedFirst <= 0;
         end else if (start) begin
-            if (bitSize == 1 | bitSize == 2) begin // assign correct ones for 2 bit width
-                carryCount <= 4'b0001;
-                placedFirst <= 1;
-            end else if (bitSize == 3) begin
-                carryCount <= 4'b0100;
-                placedFirst <= 1;
-            end else begin
-                carryCount <= 0;
-                placedFirst <= 0;
-            end
+            carryCount <= initSum[7:4];
         end else if (countLast2) begin
-            if (placeOne) begin
-                if (placedFirst) begin
-                    carryCount <= {{(P-1){1'b0}}, 1'b1, nextCarryCount[2*P-1:P]};
-                end else begin
-                    carryCount <= {{(P-1){1'b0}}, 1'b1, nextCarryCount[2*P-1:P]};
-                    placedFirst <= 1;
-                end
-            end else begin
-                carryCount <= {{P{1'b0}}, nextCarryCount[2*P-1:P]};
-            end
+            carryCount <= {countShiftInput, nextCarryCount[2*P-1:P]};
         end else begin
             carryCount <= nextCarryCount;
         end
@@ -145,23 +124,27 @@ endmodule
 module adder #(P) (
     input logic [P-1:0] a,
     input logic [P-1:0] b,
+    input logic en,
     output logic [P-1:0] sum,
     output logic cout
 );
     logic [P-1:0] carryWires;
+    logic [P-1:0] sumWires;
     assign cout = carryWires[P-1];
 
-    half_adder ha (.a(a[0]), .b(b[0]), .sum(sum[0]), .carry(carryWires[0]));
+    half_adder ha (.a(a[0]), .b(b[0]), .sum(sumWires[0]), .carry(carryWires[0]));
 
     genvar i;
     for (i = 1; i < P; i = i + 1) begin
         full_adder fa(
             .a(a[i]),
             .b(b[i]),
-            .sum(sum[i]),
+            .sum(sumWires[i]),
             .cin(carryWires[i-1]),
             .cout(carryWires[i])
         );
     end
+
+    assign sum = en? sumWires : a;
 
 endmodule

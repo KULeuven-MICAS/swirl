@@ -1,12 +1,15 @@
 module tb_seq_mult_adder ();
+
+    localparam K = 1;
     
         
         // Testbench signals
-        logic signed [15:0] row [2];
-        logic signed [15:0] column [2];
+        logic signed [15:0] row [K];
+        logic signed [15:0] column [K];
         logic signed [31:0] C_in;
         logic signed [31:0] D;
-        logic unsigned [4:0] bitSize;
+        logic unsigned [4:0] bitSizeA;
+        logic unsigned [4:0] bitSizeB;
         reg valid_in;
         wire ready_in;
         wire valid_out;
@@ -32,10 +35,14 @@ module tb_seq_mult_adder ();
         logic signed [15:0] b_16bit;
 
         logic signed [31:0] product;
+
+        
+        logic signed [15:0] a_list [8];
+        logic signed [15:0] b_list [8];
     
         // Module instantiation
         seq_mult_adder #(
-            .K(2),
+            .K(K),
             .P(2),
             .MAX_WIDTH(16)
         ) seq_mult_adder (
@@ -49,7 +56,8 @@ module tb_seq_mult_adder ();
             .ready_in(ready_in),
             .valid_out(valid_out),
             .ready_out(ready_out),
-            .bitSize(bitSize)
+            .bitSizeA(bitSizeA),
+            .bitSizeB(bitSizeB)
         );
 
 
@@ -70,179 +78,302 @@ module tb_seq_mult_adder ();
             #10;
             rst_ni = 1;
 
-            // 2-BIT //
+            // // 2-BIT //
 
-            bitSize = 1; // 4-bit = 2*P
+            // bitSizeA = 1; // 4-bit = 2*P
+            // bitSizeB = 1; // 4-bit = 2*P
 
-            a_2bit = $random;
-            b_2bit = $random;
+            // a_2bit = $random;
+            // b_2bit = $random;
 
-            product = a_2bit * b_2bit;
+            // product = a_2bit * b_2bit;
 
-            row = '{{14'b0, a_2bit}, 0};
-            column = '{{14'b0, b_2bit}, 0};
+            // row = '{{14'b0, a_2bit}};
+            // column = '{{14'b0, b_2bit}};
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit:     %d x     %d = %d  OUT: %d    %b",2*bitSize, a_2bit, b_2bit, product, D, D);
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit:     %d x     %d = %d  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_2bit, b_2bit, product, D, D);
 
-            // 4-BIT //
+            // // 4-BIT //
 
-            bitSize = 2; // 4-bit = 2*P
+            // bitSizeA = 2; // 4-bit = 2*P
+            // bitSizeB = 2; // 4-bit = 2*P
 
-            a_4bit = $random;
-            b_4bit = $random;
+            // a_4bit = $random;
+            // b_4bit = $random;
 
-            product = a_4bit * b_4bit;
+            // product = a_4bit * b_4bit;
 
-            row = '{{12'b0, a_4bit}, 0};
-            column = '{{12'b0, b_4bit}, 0};
+            // row = '{{12'b0, a_4bit}};
+            // column = '{{12'b0, b_4bit}};
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit:    %d x    %d = %d  OUT: %d    %b",2*bitSize, a_4bit, b_4bit, product, D, D);
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit:    %d x    %d = %d  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_4bit, b_4bit, product, D, D);
 
-            // 6-BIT //
+            // // 6-BIT //
 
-            bitSize = 3;
+            // bitSizeA = 3;
+            // bitSizeB = 3;
 
-            a_6bit = $random;
-            b_6bit = $random;
+            // a_6bit = $random;
+            // b_6bit = $random;
 
-            product = a_6bit * b_6bit;
+            // product = a_6bit * b_6bit;
 
-            row = '{{10'b0, a_6bit}, 0};
-            column = '{{10'b0, b_6bit}, 0};
+            // row = '{{10'b0, a_6bit}};
+            // column = '{{10'b0, b_6bit}};
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit:    %d x    %d = %d  OUT: %d    %b",2*bitSize, a_6bit, b_6bit, product, D, D);
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit:    %d x    %d = %d  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_6bit, b_6bit, product, D, D);
 
-            // 8-BIT //
+            // // 8-BIT //
 
-            bitSize = 4;
+            // bitSizeA = 4;
+            // bitSizeB = 4;
 
-            a_8bit = $random;
-            b_8bit = $random;
+            // a_8bit = $random;
+            // b_8bit = $random;
 
-            product = a_8bit * b_8bit;
+            // product = a_8bit * b_8bit;
 
-            row = '{{8'b0, a_8bit}, 0};
-            column = '{{8'b0, b_8bit}, 0};
+            // row = '{{8'b0, a_8bit}};
+            // column = '{{8'b0, b_8bit}};
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit:   %d x   %d = %d  OUT: %d    %b",2*bitSize, a_8bit, b_8bit, product, D, D);
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit:   %d x   %d = %d  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_8bit, b_8bit, product, D, D);
 
-            // 10-BIT //
+            // // 10-BIT //
 
-            bitSize = 5;
+            // bitSizeA = 5;
+            // bitSizeB = 5;
 
-            a_10bit = $random;
-            b_10bit = $random;
+            // a_10bit = $random;
+            // b_10bit = $random;
 
-            product = a_10bit * b_10bit;
+            // product = a_10bit * b_10bit;
 
-            row = '{{6'b0, a_10bit}, 0};
-            column = '{{6'b0, b_10bit}, 0};
+            // row = '{{6'b0, a_10bit}};
+            // column = '{{6'b0, b_10bit}};
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit:  %d x  %d = %d  OUT: %d    %b",2*bitSize, a_10bit, b_10bit, product, D, D);
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit:  %d x  %d = %d  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_10bit, b_10bit, product, D, D);
 
-            // 12-BIT //
+            // // 12-BIT //
 
-            bitSize = 6;
+            // bitSizeA = 6;
+            // bitSizeB = 6;
 
-            a_12bit = $random;
-            b_12bit = $random;
+            // a_12bit = $random;
+            // b_12bit = $random;
 
-            product = a_12bit * b_12bit;
+            // product = a_12bit * b_12bit;
 
-            row = '{{4'b0, a_12bit}, 0};
-            column = '{{4'b0, b_12bit}, 0};
+            // row = '{{4'b0, a_12bit}};
+            // column = '{{4'b0, b_12bit}};
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("#####TEST %d-bit FAILED#######", 2*bitSize);
-            $display("%d-bit:  %d x  %d = %d  OUT: %d    %b",2*bitSize, a_12bit, b_12bit, product, D, D);
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("#####TEST %dx%d-bit FAILED#######", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit:  %d x  %d = %d  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_12bit, b_12bit, product, D, D);
 
-            // 14-BIT //
+            // // 14-BIT //
 
-            bitSize = 7;
 
-            a_14bit = $random;
-            b_14bit = $random;
+            // bitSizeA = 7;
+            // bitSizeB = 7;
 
-            product = a_14bit * b_14bit;
+            // a_14bit = $random;
+            // b_14bit = $random;
 
-            row = '{{2'b0, a_14bit}, 0};
-            column = '{{2'b0, b_14bit}, 0};
+            // product = a_14bit * b_14bit;
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // row = '{{2'b0, a_14bit}};
+            // column = '{{2'b0, b_14bit}};
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit: %d x %d = %d  OUT: %d    %b",2*bitSize, a_14bit, b_14bit, product, D, D);
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
 
-            // 16-BIT //
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit: %d x %d = %d   %b  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_14bit, b_14bit, product, product, D, D);
 
-            bitSize = 8;
+            // // // 16-BIT //
 
-            a_16bit = $random;
-            b_16bit = $random;
+            // // bitSize = 8;
 
-            product = a_16bit * b_16bit;
+            // // a_16bit = $random;
+            // // b_16bit = $random;
 
-            row = '{a_16bit, 0};
-            column = '{b_16bit, 0};
+            // // product = a_16bit * b_16bit;
 
-            C_in = 0;
-            valid_in = 1;
-            #20;
+            // // row = '{a_16bit, 0};
+            // // column = '{b_16bit, 0};
 
-            wait(valid_out==1);
-            #1;
-            assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
-            $display("%d-bit: %d x %d = %d  OUT: %d    %b",2*bitSize, a_16bit, b_16bit, product, D, D);
+            // // C_in = 0;
+            // // valid_in = 1;
+            // // #20;
+
+            // // wait(valid_out==1);
+            // // #1;
+            // // assert(D == product) else $display("TEST %d-bit FAILED", 2*bitSize);
+            // // $display("%d-bit: %d x %d = %d  OUT: %d    %b",2*bitSize, a_16bit, b_16bit, product, D, D);
+
+            //             // 16-BIT //
+
+            // bitSizeA = 6;
+            // bitSizeB = 5;
+
+            // a_12bit = $random;
+            // b_10bit = $random;
+
+            // product = a_12bit * b_10bit;
+
+            // row = '{{4'b0, a_12bit}};
+            // column = '{{6'b0, b_10bit}};
+
+            // C_in = 0;
+            // valid_in = 1;
+            // #20;
+
+            // wait(valid_out==1);
+            // #1;
+            // assert(D == product) else $display("TEST %dx%d-bit FAILED", 2*bitSizeA, 2*bitSizeB);
+            // $display("%dx%d-bit: %d x %d = %d   %b  OUT: %d    %b",2*bitSizeA, 2*bitSizeB, a_12bit, b_10bit, product, product, D, D);
+
+            
+
+            for (logic [4:0] i = 1; i < 8; i = i + 1) begin
+                for (logic [4:0] j = 1; j < 8; j = j + 1) begin
+                    a_16bit = $random;
+                    a_14bit = $random;
+                    a_12bit = $random;
+                    a_10bit = $random;
+                    a_8bit = $random;
+                    a_6bit = $random;
+                    a_4bit = $random;
+                    a_2bit = $random;
+
+                    a_list = '{a_2bit, a_4bit, a_6bit, a_8bit, a_10bit, a_12bit, a_14bit, a_16bit};
+
+                    b_16bit = $random;
+                    b_14bit = $random;
+                    b_12bit = $random;
+                    b_10bit = $random;
+                    b_8bit = $random;
+                    b_6bit = $random;
+                    b_4bit = $random;
+                    b_2bit = $random;
+
+                    b_list = '{b_2bit, b_4bit, b_6bit, b_8bit, b_10bit, b_12bit, b_14bit, b_16bit};
+                    
+                    bitSizeA = i;
+                    bitSizeB = j;
+
+                    product = a_list[i-1] * b_list[j-1];
+
+                    case (i)
+                        1: begin
+                            row = '{{14'b0, a_2bit}};
+                        end
+                        2: begin
+                            row = '{{12'b0, a_4bit}};
+                        end
+                        3: begin
+                            row = '{{10'b0, a_6bit}};
+                        end
+                        4: begin
+                            row = '{{8'b0, a_8bit}};
+                        end
+                        5: begin
+                            row = '{{6'b0, a_10bit}};
+                        end
+                        6: begin
+                            row = '{{4'b0, a_12bit}};
+                        end
+                        7: begin
+                            row = '{{2'b0, a_14bit}};
+                        end
+                    endcase
+
+                    case (j) 
+                        1: begin
+                            column = '{{14'b0, b_2bit}};
+                        end
+                        2: begin
+                            column = '{{12'b0, b_4bit}};
+                        end
+                        3: begin
+                            column = '{{10'b0, b_6bit}};
+                        end
+                        4: begin
+                            column = '{{8'b0, b_8bit}};
+                        end
+                        5: begin
+                            column = '{{6'b0, b_10bit}};
+                        end
+                        6: begin
+                            column = '{{4'b0, b_12bit}};
+                        end
+                        7: begin
+                            column = '{{2'b0, b_14bit}};
+                        end
+                    endcase
+
+                    C_in = 0;
+                    valid_in = 1;
+                    #20;
+
+                    wait(valid_out==1);
+                    #1;
+                    assert(D == product) else begin
+                        $display("#############TEST %dx%d-bit FAILED##############", 2*i, 2*j);
+                        $fatal();
+                    end
+                    $display("TEST %2d x %2d-bit SUCCEEDED:   %4d x %4d = %8d OUT: %8d",2*i, 2*j, a_list[i-1], b_list[j-1], product, D);
+                end
+            end
 
             
 
             #10;
 
-            row = '{0, 0};
-            column = '{0, 0};
+            row = '{0};
+            column = '{0};
         end
 endmodule

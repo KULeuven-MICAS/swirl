@@ -13,32 +13,36 @@ module binary_tree_adder_unsigned #(
     localparam layerAmount = $clog2(INPUTS_AMOUNT);
     logic unsigned [P+layerAmount-1:0] temp_output ;
     generate
-        genvar layer;
-        for(layer = 0; layer < layerAmount; layer = layer + 1) begin: gen_layer
-            localparam int CurrentWidth = INPUTS_AMOUNT >> layer;
-            localparam int NextWidth = INPUTS_AMOUNT >> (layer+1);
-            logic [P+layer:0] connectingWires [NextWidth];
-            if(layer == layerAmount-1) begin
-                assign temp_output = connectingWires[0];
-            end
-            if(layer == 0) begin 
-                binary_tree_adder_layer_unsigned #(
-                .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
-                .P(P)
-                ) binary_tree_adder_layer (
-                    .inputs(inputs),
-                    .outputs(connectingWires),
-                    .signedAddition(signedAddition)
-                );
-            end else begin
-                binary_tree_adder_layer_unsigned #(
-                .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
-                .P(P+layer)
-                ) binary_tree_adder_layer (
-                    .inputs(gen_layer[layer-1].connectingWires),
-                    .outputs(connectingWires),
-                    .signedAddition(signedAddition)
-                );
+        if (INPUTS_AMOUNT == 1) begin
+            assign temp_output = inputs[0];
+        end else begin
+            genvar layer;
+            for(layer = 0; layer < layerAmount; layer = layer + 1) begin: gen_layer
+                localparam int CurrentWidth = INPUTS_AMOUNT >> layer;
+                localparam int NextWidth = INPUTS_AMOUNT >> (layer+1);
+                logic [P+layer:0] connectingWires [NextWidth];
+                if(layer == layerAmount-1) begin
+                    assign temp_output = connectingWires[0];
+                end
+                if(layer == 0) begin 
+                    binary_tree_adder_layer_unsigned #(
+                    .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
+                    .P(P)
+                    ) binary_tree_adder_layer (
+                        .inputs(inputs),
+                        .outputs(connectingWires),
+                        .signedAddition(signedAddition)
+                    );
+                end else begin
+                    binary_tree_adder_layer_unsigned #(
+                    .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
+                    .P(P+layer)
+                    ) binary_tree_adder_layer (
+                        .inputs(gen_layer[layer-1].connectingWires),
+                        .outputs(connectingWires),
+                        .signedAddition(signedAddition)
+                    );
+                end
             end
 
             
