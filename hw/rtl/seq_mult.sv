@@ -36,22 +36,25 @@ module seq_mult #(
     assign p = out;
     assign nextCarryCount = adderCout? carryCount + 1'b1 : carryCount;
 
-    multiplexer_8to1 #(
-        .M(P)
+    generic_mux #(
+        .WIDTH(P),
+        .NUMBER(8)
     ) mux_a (
-        .in(reg_a),
+        .mux_in('{reg_a[P-1:0], reg_a[2*P-1:P], reg_a[3*P-1:2*P], reg_a[4*P-1:3*P],
+        reg_a[5*P-1:4*P], reg_a[6*P-1:5*P], reg_a[7*P-1:6*P], reg_a[8*P-1:7*P]}),
         .sel(muxSelA),
         .out(input_a)
     );
 
-    multiplexer_8to1 #(
-        .M(P)
+    generic_mux #(
+        .WIDTH(P),
+        .NUMBER(8)
     ) mux_b (
-        .in(reg_b),
+        .mux_in('{reg_b[P-1:0], reg_b[2*P-1:P], reg_b[3*P-1:2*P], reg_b[4*P-1:3*P],
+        reg_b[5*P-1:4*P], reg_b[6*P-1:5*P], reg_b[7*P-1:6*P], reg_b[8*P-1:7*P]}),
         .sel(muxSelB),
         .out(input_b)
     );
-
 
     // MULTIPLIER IS NOT YET PARAMETRIZED FOR DIFFERENT P !!!
     if (P == 2) begin : gen_mult_2bit
