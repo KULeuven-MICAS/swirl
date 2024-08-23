@@ -31,7 +31,8 @@ module tb_seq_MAC ();
             .ready_in(ready_in),
             .valid_out(valid_out),
             .ready_out(ready_out),
-            .bitSize(5'b00100)
+            .bitSizeA(4'b0100),
+            .bitSizeB(4'b0100)
         );
 
         initial begin

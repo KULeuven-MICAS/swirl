@@ -19,7 +19,8 @@ module matrix_multiplication_accumulation #(
     input wire rst_ni,
 
     input wire halvedPrecision = 0,
-    input wire [3:0] bitSize = 4
+    input wire [3:0] bitSizeA = 4,
+    input wire [3:0] bitSizeB = 4
 );
     logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
     logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
@@ -244,7 +245,8 @@ module matrix_multiplication_accumulation #(
             .ready_in(ready_in_sequential),
             .valid_out(valid_out_sequential),
             .ready_out(ready_out_sequential),
-            .bitSize(bitSize)
+            .bitSizeA(bitSizeA),
+            .bitSizeB(bitSizeB)
         );
     end
 

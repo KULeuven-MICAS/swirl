@@ -42,6 +42,8 @@ module tb_matmul;
     logic ready_in;
     logic valid_out;
     logic ready_out;
+    logic [3:0] bitSizeA;
+    logic [3:0] bitSizeB;
 
   // Module instantiation
 
@@ -63,7 +65,9 @@ module tb_matmul;
     .valid_out(valid_out),
     .ready_out(ready_out),
     .clk_i(clk_i),
-    .rst_ni(rst_ni)
+    .rst_ni(rst_ni),
+    .bitSizeA(bitSizeA),
+    .bitSizeB(bitSizeB)
   );
 
   initial begin
@@ -76,6 +80,10 @@ module tb_matmul;
     int file;
     string filename;
 
+    bitSizeA = 4;
+    bitSizeB = 4;
+
+    halvedPrecision = 0;
     rst_ni = 0;
     ready_out = 1;
     #10;
@@ -94,7 +102,7 @@ module tb_matmul;
 
         halvedPrecision = 1;
         for(int testIndex = 1; !$feof(file); testIndex++) begin
-            read_next_test_from_file(file, M, N, K, 1);
+            read_next_test_from_file(file, M, N, K, halvedPrecision);
             #10
             assert(tb_D == tb_expected_D) else begin
                 $display("\nTest #%0d failed\nExpected:", testIndex);
@@ -108,6 +116,34 @@ module tb_matmul;
         end
     end
 
+    if (MODE == 2) begin
+        filename = $sformatf("matrix_data_%0dx%0dx%0d_mixed8x4.txt", M, N, K);
+        file = $fopen({"./test_data/",filename}, "r");
+        if (file == 0) begin
+            $display ("ERROR: Could not open file %s", filename);
+            $finish;
+        end
+
+        bitSizeA = 4;
+        bitSizeB = 2;
+        for(int testIndex = 1; !$feof(file); testIndex++) begin
+            read_next_test_from_file(file, M, N, K, halvedPrecision);
+            valid_in = 1;
+            #15;
+            valid_in = 0;
+            wait (valid_out == 1);
+            assert(tb_D == tb_expected_D) else begin
+                $display("\nTest #%0d failed\nExpected:", testIndex);
+                display_2d_array(tb_expected_D, M, N);
+                $display("\nGot:");
+                display_2d_array(tb_D, M, N);
+                #10
+                $fatal();
+            end
+            $display("mixed 8x4-bit %0dx%0dx%0d Test #%0d passed", M, N, K, testIndex);
+        end
+    end
+
     filename = $sformatf("matrix_data_%0dx%0dx%0d.txt", M, N, K);
     file = $fopen({"./test_data/",filename}, "r");
     if (file == 0) begin
@@ -115,9 +151,11 @@ module tb_matmul;
          $finish;
     end
 
+    bitSizeA = 4;
+    bitSizeB = 4;
     halvedPrecision = 0;
     for(int testIndex = 1; !$feof(file); testIndex++) begin
-        read_next_test_from_file(file, M, N, K, 0);
+        read_next_test_from_file(file, M, N, K, halvedPrecision);
         valid_in = 1;
         #15;
         valid_in = 0;
