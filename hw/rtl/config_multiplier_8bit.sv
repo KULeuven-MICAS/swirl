@@ -79,5 +79,4 @@ module config_multiplier_8bit (
         .halvedPrecision(halvedPrecision[0]),
         .continueHigher(halvedPrecision == 2'b0)
     );
-    
 endmodule

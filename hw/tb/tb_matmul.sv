@@ -21,13 +21,13 @@
 
 
 module tb_matmul;
-  
-    parameter M = `M;
-    parameter N = `N;
-    parameter K = `K;
-    parameter P = `P;
-    parameter TREE = `TREE;
-    parameter MODE = `MODE;
+
+    parameter int M = `M;
+    parameter int N = `N;
+    parameter int K = `K;
+    parameter int P = `P;
+    parameter int TREE = `TREE;
+    parameter int MODE = `MODE;
 
     // Testbench signals 2x2x2
     logic signed [(P-1):0] tb_A [M][K];
@@ -74,7 +74,7 @@ module tb_matmul;
     clk_i = 0;
     forever #5 clk_i = ~clk_i; // 100MHz clock
   end
-  
+
 
   initial begin
     int file;
@@ -177,7 +177,7 @@ module tb_matmul;
       input int M,
       input int N,
       input int K,
-      input [1:0] halvedPrecision
+      input logic [1:0] halvedPrecision
   );
     int status;
     int read_M;
@@ -194,7 +194,8 @@ module tb_matmul;
             K = 2 * K;
         end
         if (read_M != M || read_N != N || read_K != K) begin
-            $display ("ERROR: dimensions not matching: expected: %0d %0d %0d, got: %0d %0d %0d", M, N, K, read_M, read_N, read_K);
+            $display ("ERROR: dimensions not matching: expected: %0d %0d %0d, got: %0d %0d %0d",
+            M, N, K, read_M, read_N, read_K);
             $fclose(file);
             $finish;
         end

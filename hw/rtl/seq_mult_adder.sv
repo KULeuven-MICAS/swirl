@@ -16,9 +16,11 @@ module seq_mult_adder #(
     output wire valid_out,
     input wire ready_out
 );
+    // bits needed to represent bitSize in chunks of P
+    localparam int MaxBitWidth = $clog2(MAX_WIDTH/P) + 1;
 
-    localparam MAX_WIDTH_BITS = $clog2(MAX_WIDTH/P) + 1; // bits needed to represent bitSize in steps of P
-    localparam M = MAX_WIDTH_BITS; // shorthand parameter
+    // shorthand parameter
+    localparam int M = MaxBitWidth;
 
 
     logic countLast1, countLast2, countLast3;
@@ -49,7 +51,7 @@ module seq_mult_adder #(
 
     reg [M-1:0] bitSizeB_reg;
     reg [M-1:0] bitSizeA_reg;
-    
+
 
     assign valid_out = valid_out_reg;
     assign stall = (valid_out & ~ready_out) | busy;
@@ -61,19 +63,31 @@ module seq_mult_adder #(
 
     assign muxSelOffsetCountdown = countDown? bitSizeMin - 1 - countOut1 : 0;
     assign muxSelOffsetDiff = countOut3;
-    assign muxSelA = largerA ? countOut2 + muxSelOffsetCountdown + muxSelOffsetDiff : countOut2 + muxSelOffsetCountdown;
-    assign muxSelB = largerA ? countOut1 - countOut2 + muxSelOffsetCountdown : countOut1 - countOut2 + muxSelOffsetCountdown + muxSelOffsetDiff;
+
+    assign muxSelA = largerA ?
+    countOut2 + muxSelOffsetCountdown + muxSelOffsetDiff :
+    countOut2 + muxSelOffsetCountdown;
+
+    assign muxSelB = largerA ?
+    countOut1 - countOut2 + muxSelOffsetCountdown :
+    countOut1 - countOut2 + muxSelOffsetCountdown + muxSelOffsetDiff;
 
     logic placeOne1, placeOne2, placeOne3;
-    assign placeOne1 = (bitSizeDiff == 0)? ( (shiftCount == bitSizeB_reg) ? 1'b1 : 1'b0 ) : ( (shiftCount == bitSizeB_reg-1) ? 1'b1 : 1'b0 );
-    assign placeOne2 = (bitSizeDiff == 0)? ( (shiftCount == bitSizeA_reg) ? 1'b1 : 1'b0 ) : ( (shiftCount == bitSizeA_reg-1) ? 1'b1 : 1'b0 );
+
+    assign placeOne1 = (bitSizeDiff == 0) ?
+    ( (shiftCount == bitSizeB_reg) ? 1'b1 : 1'b0 ) :
+    ( (shiftCount == bitSizeB_reg-1) ? 1'b1 : 1'b0 );
+
+    assign placeOne2 = (bitSizeDiff == 0) ?
+    ( (shiftCount == bitSizeA_reg) ? 1'b1 : 1'b0 ) :
+    ( (shiftCount == bitSizeA_reg-1) ? 1'b1 : 1'b0 );
     assign placeOne3 = (shiftCount == bitSizeA_reg + bitSizeB-1) ? 1'b1 : 1'b0;
 
     assign countShiftInput = placeOne1 ? (
         placeOne2 ? 2'b01 : 2'b10
     ) : placeOne2 ? 2'b10 :
     placeOne3 ? 2'b10 : 2'b00;
-    
+
     assign placeOne = placeOne1 | placeOne2 | placeOne3;
     //assign placeOne = placeOne1 | placeOne2 | placeOne3;
 
@@ -86,7 +100,10 @@ module seq_mult_adder #(
     assign bitSizeMin = largerA? bitSizeB_reg : bitSizeA_reg;
     assign bitSizeDiff = largerA? (bitSizeA_reg - bitSizeB_reg) : (bitSizeB_reg - bitSizeA_reg);
 
-    assign initSum = (8'b00000010 << (2*(bitSizeA-1))) + (8'b00000010 << (2*(bitSizeB-1))) + (8'b00000010 << (2*(bitSizeA+bitSizeB-1)));
+    assign initSum =
+    (8'b00000010 << (2*(bitSizeA-1))) +
+    (8'b00000010 << (2*(bitSizeB-1))) +
+    (8'b00000010 << (2*(bitSizeA+bitSizeB-1)));
 
 always_ff @(posedge clk_i, negedge rst_ni) begin
 
@@ -137,7 +154,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
             lastMultAccum <= 1'b0;
             valid_out_reg <= 1'b1;
             busy <= 1'b0;
-        end else if (valid_out & stall) begin 
+        end else if (valid_out & stall) begin
             valid_out_reg <= 1'b1;
         end else begin
             valid_out_reg <= 1'b0;
@@ -150,7 +167,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         end
     end
 
-    
+
     logic unsigned [M-1:0] count1_start;
     assign count1_start =  bitSizeMin - 1'b1;
 
@@ -193,7 +210,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .last_o(countLast3)
     );
 
-    localparam [M:0] total_product_width = 2*MAX_WIDTH/P; // width in chunks of P
+    localparam int TotalProductWidth = 2*MAX_WIDTH/P; // width in chunks of P
     logic [M:0] count4_start = 4;
 
     programmable_counter #(.WIDTH(M+1), .UPDOWN(1'b0)) count4 (
@@ -203,7 +220,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
         .en_i(countLast2),
         .load_i(start),
         .down_i(1'b0),
-        .countSet(total_product_width),
+        .countSet(TotalProductWidth),
         .d_i(count4_start),
         .q_o(shiftCount),
         .last_o()
@@ -219,7 +236,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
     logic signed [P-1:0] partial_mults [K];
 
     for (element = 0; element < K; element = element + 1) begin : gen_element_block
- 
+
         seq_mult #(
             .P(P),
             .MAX_WIDTH(MAX_WIDTH)
@@ -264,7 +281,8 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
     logic [31:0] mult_sum_extend;
 
     logic signed [P + $clog2(K):0] mult_sum_signed;
-    assign mult_sum_signed = lastMultAccum & mult_sum[P + $clog2(K)-1]? {1'b1, mult_sum} : {1'b0, mult_sum};
+    assign mult_sum_signed = lastMultAccum & mult_sum[P + $clog2(K)-1] ?
+                             {1'b1, mult_sum} : {1'b0, mult_sum};
     assign mult_sum_extend = mult_sum_signed << offsetCount;
 
     always_ff @(posedge clk_i or negedge rst_ni) begin

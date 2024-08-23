@@ -4,7 +4,7 @@ module matrix_multiplication_accumulation #(
     parameter int K,
     parameter int P,
     parameter int TREE = 1,
-    parameter int PIPESTAGES = 1,
+    parameter int PIPESTAGES = 2,
     parameter int MODE = 0 // 0 = 8-bit, 1 = partitioned 4-/8-bit, 2 = sequential
 )(
     input wire signed [P-1:0] A [M][K],
@@ -33,8 +33,8 @@ module matrix_multiplication_accumulation #(
     wire ready_in_sequential;
 
     initial begin
-        // $dumpfile("tb_matmul_module.vcd"); 
-        // $dumpvars(0, matrix_multiplication_accumulation);
+        $dumpfile("tb_matmul_module.vcd");
+        $dumpvars(0, matrix_multiplication_accumulation);
         // $monitor("At time %t, ready_stage = %p, valid_stage = %p, A_in = %p, B_in = %p, C_in = %p, reset = %p, D_o = %p",
         // $time, ready_stage[0], valid_stage[0], A_stage[1], B_stage[1], C_stage[1], rst_ni, D);
     end
@@ -45,25 +45,24 @@ module matrix_multiplication_accumulation #(
 
     assign ready_in = ready_stage[0];
     assign valid_stage[0] = valid_in;
-    
-    if (MODE == 0 | MODE == 1) begin
+
+    if (MODE == 0 | MODE == 1) begin : gen_pipeline_combinatorial
         assign ready_stage[PIPESTAGES-1] = ready_out;
         assign valid_out = valid_stage[PIPESTAGES-1];
-    end else begin
+    end else begin : gen_pipeline_sequential
         assign ready_out_sequential = ready_out;
         assign valid_out = valid_out_sequential;
         assign ready_stage[PIPESTAGES-1] = ready_in_sequential;
         assign valid_in_sequential = valid_stage[PIPESTAGES-1];
     end
-    
 
      // Elastic pipeline logic
-    localparam int total_width_A = M * K * P;
-    localparam int total_width_B = K * N * P;
-    localparam int total_width_C = M * N * 4 * P;
-    localparam int total_width_D = M * N * 4 * P;
-    localparam int total_width = total_width_A + total_width_B + total_width_C;
-    logic [0:total_width-1] data_stage [PIPESTAGES];
+    localparam int TotalWidthA = M * K * P;
+    localparam int TotalWidthB = K * N * P;
+    localparam int TotalWidthC = M * N * 4 * P;
+    localparam int TotalWidthD = M * N * 4 * P;
+    localparam int TotalWidth = TotalWidthA + TotalWidthB + TotalWidthC;
+    logic [TotalWidth-1:0] data_stage [PIPESTAGES];
 
     genvar i;
     generate
@@ -74,7 +73,7 @@ module matrix_multiplication_accumulation #(
                 .P(P)
             ) A_flattener_stage (
                 .A(A_stage[i]),
-                .data_out(data_stage[i][0:total_width_A-1])
+                .data_out(data_stage[i][TotalWidthA-1:0])
             );
 
             matrix_flattener #(
@@ -83,7 +82,7 @@ module matrix_multiplication_accumulation #(
                 .P(P)
             ) B_flattener_stage (
                 .A(B_stage[i]),
-                .data_out(data_stage[i][total_width_A:total_width_A+total_width_B-1])
+                .data_out(data_stage[i][TotalWidthA+TotalWidthB-1:TotalWidthA])
             );
 
             matrix_flattener #(
@@ -92,7 +91,9 @@ module matrix_multiplication_accumulation #(
                 .P(4*P)
             ) C_flattener_stage (
                 .A(C_stage[i]),
-                .data_out(data_stage[i][total_width_A+total_width_B:total_width_A+total_width_B+total_width_C-1])
+                .data_out(
+                    data_stage[i][TotalWidthA+TotalWidthB+TotalWidthC-1:TotalWidthA+TotalWidthB]
+                    )
             );
 
             VX_pipe_buffer #(
@@ -105,7 +106,7 @@ module matrix_multiplication_accumulation #(
                 .data_in   (data_stage[i]),
                 .ready_in  (ready_stage[i]),
                 .valid_out (valid_stage[i+1]),
-                .data_out  ({A_stage[i+1], B_stage[i+1], C_stage[i+1]}),
+                .data_out  ({C_stage[i+1], B_stage[i+1], A_stage[i+1]}),
                 .ready_out (ready_stage[i+1])
             );
         end
@@ -174,7 +175,7 @@ module matrix_multiplication_accumulation #(
                 end // gen_row_block
             end // gen_column_block
         end
-    end else if (MODE == 1) begin
+    end else if (MODE == 1) begin : gen_partitioned
         genvar column, row, element;
             for (column = 0; column < N; column = column + 1) begin : gen_column_block
                 for (row = 0; row < M; row = row + 1) begin: gen_row_block
@@ -187,7 +188,7 @@ module matrix_multiplication_accumulation #(
                             .halvedPrecision(halvedPrecision)
                         );
 
-                    end 
+                    end
 
                     logic signed [4*P-1:0] mult_sum;
                     logic signed [31:0] sum;
@@ -212,19 +213,19 @@ module matrix_multiplication_accumulation #(
                     assign D[row][column] = sum;
                 end // gen_row_block
             end // gen_column_block
-    end else if (MODE == 2) begin
+    end else if (MODE == 2) begin : gen_sequential
 
         logic signed [15:0] A_seq [M][K];
         logic signed [15:0] B_seq [K][N];
 
         genvar i, j;
-        for ( i = 0; i < M; i = i + 1) begin
-            for ( j = 0; j < K; j = j + 1) begin
+        for ( i = 0; i < M; i = i + 1) begin : gen_seq_A_padding_row
+            for ( j = 0; j < K; j = j + 1) begin : gen_seq_A_padding_column
                 assign A_seq[i][j] = {{(16-P){1'b0}}, A_mul[i][j]};
             end
         end
-        for ( i = 0; i < K; i = i + 1) begin
-            for ( j = 0; j < N; j = j + 1) begin
+        for ( i = 0; i < K; i = i + 1) begin : gen_seq_B_padding_row
+            for ( j = 0; j < N; j = j + 1) begin : gen_seq_B_padding_column
                 assign B_seq[i][j] = {{(16-P){1'b0}}, B_mul[i][j]};
             end
         end

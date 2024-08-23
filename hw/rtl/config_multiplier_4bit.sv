@@ -26,8 +26,9 @@ module config_multiplier_4bit (
     assign partialMultTopLeftExtend = {2'b0, partialMultTopLeft, 2'b0};
     assign partialMultBottomRightExtend = {2'b0, partialMultBottomRight, 2'b0};
     assign partialMultBottomLeftExtend = {partialMultBottomLeft, 4'b0};
-    assign correctionOnes8bit = continueHigher? 8'b0000_0000 : 8'b1001_0000; // See Modified Baugh-Wooley Algorithm
-    assign correctionOnes4bit = 4'b1100; // See Modified Baugh-Wooley Algorithm
+    // For used algorithm logic, see modified Baugh-Wooley Algorithm
+    assign correctionOnes8bit = continueHigher? 8'b0000_0000 : 8'b1001_0000;
+    assign correctionOnes4bit = 4'b1100;
 
     assign fullProduct =
     partialMultTopRightExtend +

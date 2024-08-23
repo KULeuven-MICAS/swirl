@@ -54,7 +54,7 @@ module seq_mult #(
 
 
     // MULTIPLIER IS NOT YET PARAMETRIZED FOR DIFFERENT P !!!
-    if (P == 2) begin
+    if (P == 2) begin : gen_mult_2bit
     mult_2bit mult_2bit (
         .multiplier(input_a),
         .multiplicand(input_b),
@@ -121,7 +121,7 @@ module seq_mult #(
 
 endmodule
 
-module adder #(P) (
+module adder #(parameter int P) (
     input logic [P-1:0] a,
     input logic [P-1:0] b,
     input logic en,
@@ -135,7 +135,7 @@ module adder #(P) (
     half_adder ha (.a(a[0]), .b(b[0]), .sum(sumWires[0]), .carry(carryWires[0]));
 
     genvar i;
-    for (i = 1; i < P; i = i + 1) begin
+    for (i = 1; i < P; i = i + 1) begin : gen_adder
         full_adder fa(
             .a(a[i]),
             .b(b[i]),

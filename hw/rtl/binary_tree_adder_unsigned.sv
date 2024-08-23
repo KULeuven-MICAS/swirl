@@ -10,21 +10,21 @@ module binary_tree_adder_unsigned #(
 
     if (INPUTS_AMOUNT - 1 & INPUTS_AMOUNT) $fatal("ERROR: Binary adder input not power of 2");
 
-    localparam layerAmount = $clog2(INPUTS_AMOUNT);
-    logic unsigned [P+layerAmount-1:0] temp_output ;
+    localparam int LayerAmount = $clog2(INPUTS_AMOUNT);
+    logic unsigned [P+LayerAmount-1:0] temp_output ;
     generate
-        if (INPUTS_AMOUNT == 1) begin
+        if (INPUTS_AMOUNT == 1) begin : gen_single_input
             assign temp_output = inputs[0];
-        end else begin
+        end else begin : gen_tree
             genvar layer;
-            for(layer = 0; layer < layerAmount; layer = layer + 1) begin: gen_layer
+            for(layer = 0; layer < LayerAmount; layer = layer + 1) begin: gen_layer
                 localparam int CurrentWidth = INPUTS_AMOUNT >> layer;
                 localparam int NextWidth = INPUTS_AMOUNT >> (layer+1);
                 logic [P+layer:0] connectingWires [NextWidth];
-                if(layer == layerAmount-1) begin
+                if(layer == LayerAmount-1) begin : gen_last_layer
                     assign temp_output = connectingWires[0];
                 end
-                if(layer == 0) begin 
+                if(layer == 0) begin : gen_first_layer
                     binary_tree_adder_layer_unsigned #(
                     .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                     .P(P)
@@ -33,7 +33,7 @@ module binary_tree_adder_unsigned #(
                         .outputs(connectingWires),
                         .signedAddition(signedAddition)
                     );
-                end else begin
+                end else begin : gen_mid_layers
                     binary_tree_adder_layer_unsigned #(
                     .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                     .P(P+layer)
@@ -44,12 +44,10 @@ module binary_tree_adder_unsigned #(
                     );
                 end
             end
-
-            
         end
     endgenerate
 
-    assign out = temp_output[P+layerAmount-1:0];
+    assign out = temp_output[P+LayerAmount-1:0];
 
 endmodule
 
@@ -63,13 +61,21 @@ module binary_tree_adder_layer_unsigned #(
 );
     localparam int OutputsAmount = INPUTS_AMOUNT/2;
     generate
-        genvar adderIndex;
-        for (adderIndex = 0; adderIndex < OutputsAmount; adderIndex = adderIndex + 1) begin: gen_adder
-            logic [P:0] input_extend_1; 
-            logic [P:0] input_extend_2; 
-            assign input_extend_1 = signedAddition ? {inputs[2*adderIndex][P-1], inputs[2*adderIndex]} : {1'b0, inputs[2*adderIndex]};
-            assign input_extend_2 = signedAddition ? {inputs[2*adderIndex+1][P-1], inputs[2*adderIndex+1]} : {1'b0, inputs[2*adderIndex+1]};
-            assign outputs[adderIndex] = input_extend_1 + input_extend_2;
+        genvar i;
+        for (i = 0; i < OutputsAmount; i = i + 1) begin: gen_adder
+            logic [P:0] input_extend_1;
+            logic [P:0] input_extend_2;
+
+            assign input_extend_1 = signedAddition ?
+            {inputs[2*i][P-1], inputs[2*i]} :
+            {1'b0, inputs[2*i]};
+
+            assign input_extend_2 = signedAddition ?
+            {inputs[2*i+1][P-1], inputs[2*i+1]} :
+            {1'b0, inputs[2*i+1]};
+
+            assign outputs[i] = input_extend_1 + input_extend_2;
         end
     endgenerate
 endmodule
+

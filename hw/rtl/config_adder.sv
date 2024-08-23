@@ -1,4 +1,4 @@
-module config_adder #(parameter P = 8) (
+module config_adder #(parameter int P = 8) (
     input logic [P-1:0] a,
     input logic [P-1:0] b,
     input logic halvedPrecision,
@@ -35,7 +35,7 @@ module config_adder #(parameter P = 8) (
                 .carry(carry[0])
             );
 
-        for (i = 1; i < P/2; i++) begin : ADDER_GEN_LSB
+        for (i = 1; i < P/2; i++) begin : gen_adder_lsb
             full_adder fa (
                 .a(a[i]),
                 .b(b[i]),
@@ -53,7 +53,7 @@ module config_adder #(parameter P = 8) (
                 .cout(carry[P/2])
             );
 
-        for (i = P/2+1; i < P; i++) begin : ADDER_GEN_MSB
+        for (i = P/2+1; i < P; i++) begin : gen_adder_msb
             full_adder fa (
                 .a(a[i]),
                 .b(b[i]),

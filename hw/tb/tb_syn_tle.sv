@@ -42,7 +42,8 @@ module tb_syn_tle;
     logic ready_i;
     logic valid_o;
     logic halvedPrecision;
-    logic [3:0] bitSize;
+    logic [3:0] bitSizeA;
+    logic [3:0] bitSizeB;
 
     // Instantiate the DUT (Device Under Test)
     syn_tle #(
@@ -65,9 +66,10 @@ module tb_syn_tle;
         .ready_i(ready_i),
         .valid_o(valid_o),
         .halvedPrecision(halvedPrecision),
-        .bitSize(bitSize)
+        .bitSizeA(bitSizeA),
+        .bitSizeB(bitSizeB)
     );
-    
+
 
     // Clock generation
     initial begin
@@ -90,7 +92,8 @@ module tb_syn_tle;
         valid_i = 0;
         ready_o = 0;
         halvedPrecision = 0;
-        bitSize = 4;
+        bitSizeA = 4;
+        bitSizeB = 4;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
                 A_i[i][j] = 0;
@@ -138,17 +141,17 @@ module tb_syn_tle;
         ready_o = 1;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
-                A_i[i][j] = $random;
+                A_i[i][j] = $urandom;
             end
         end
         for (int i = 0; i < K; i++) begin
             for (int j = 0; j < N; j++) begin
-                B_i[i][j] = $random;
+                B_i[i][j] = $urandom;
             end
         end
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < N; j++) begin
-                C_i[i][j] = $random;
+                C_i[i][j] = $urandom;
             end
         end
         $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
@@ -161,8 +164,9 @@ module tb_syn_tle;
         #10
         valid_i = 1;
         halvedPrecision = 1;
-        bitSize = 2;
-        
+        bitSizeA = 2;
+        bitSizeB = 2;
+
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
                 A_i[i][j] = 8'b00010001;

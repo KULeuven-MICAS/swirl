@@ -46,7 +46,8 @@ module syn_tle #(
     input logic valid_i,
     input logic ready_o,
     input logic halvedPrecision,
-    input logic [3:0] bitSize = 4,
+    input logic [3:0] bitSizeA = 4,
+    input logic [3:0] bitSizeB = 4,
     output logic signed [4*P-1:0] D_o [M][N],
     output logic ready_i,
     output logic valid_o
@@ -67,12 +68,12 @@ module syn_tle #(
 
     // Input assignment
     // Regroup B matrix elements for partitioned input
-    
-    if (MODE==1) begin
+
+    if (MODE==1) begin : gen_partitioned_input
         genvar row, column;
-        for (row = 0; row < K; row++) begin
-            for (column = 0; column < N; column++) begin
-                localparam index = N + column;
+        for (row = 0; row < K; row++) begin : gen_column_loop
+            for (column = 0; column < N; column++) begin : gen_row_loop
+                localparam int Index = N + column;
                 always_comb begin
                     if (halvedPrecision) begin
                         if (column % 2 == 0) begin
@@ -81,10 +82,10 @@ module syn_tle #(
                             B_d[row][column][P-1:P/2] = B_i[row][column/2][P/2-1:0];
                         end
 
-                        if (index % 2 == 0) begin
-                            B_d[row][column][P/2-1:0] = B_i[row][index/2][P-1:P/2];
+                        if (Index % 2 == 0) begin
+                            B_d[row][column][P/2-1:0] = B_i[row][Index/2][P-1:P/2];
                         end else begin
-                            B_d[row][column][P/2-1:0] = B_i[row][index/2][P/2-1:0];
+                            B_d[row][column][P/2-1:0] = B_i[row][Index/2][P/2-1:0];
                         end
                     end else begin
                         B_d[row][column] = B_i[row][column];
@@ -92,7 +93,7 @@ module syn_tle #(
                 end
             end
         end
-    end else begin
+    end else begin : gen_unpartitioned_input
         assign B_d = B_i;
     end
 
@@ -102,12 +103,12 @@ module syn_tle #(
 
 
     initial begin
-        // $dumpfile($sformatf("syn_tle.vcd"));
-        // $dumpvars(0, syn_tle);
+        $dumpfile($sformatf("syn_tle.vcd"));
+        $dumpvars(0, syn_tle);
 
         // $monitor("At time %t, D_o = %p, A_i = %p, B_i = %p, C_i = %p", $time, D_o, A_i, B_i, C_i);
         // $monitor("At time %t, A_q = %p, B_q = %p, C_q = %p", $time, A_q, B_q, C_q);
-        // $monitor("At time %t, A_stage0 = %p, A_stage1 = %p, D_o = %p, ready_o = %p, valid_i = %p, valid_o = %p", 
+        // $monitor("At time %t, A_stage0 = %p, A_stage1 = %p, D_o = %p, ready_o = %p, valid_i = %p, valid_o = %p",
         // $time, A_stage[0], A_stage[1], D_o, ready_o, valid_i, valid_o);
         //  $monitor("At time %t, ready_i = %p, valid_o = %p, reset = %p, D_o = %p",
         //  $time, ready_i, valid_o, rst_ni, D_o);
@@ -116,16 +117,16 @@ module syn_tle #(
     end
 
     // Elastic pipeline logic
-    localparam int total_width_A = M * K * P;
-    localparam int total_width_B = K * N * P;
-    localparam int total_width_C = M * N * 4 * P;
-    localparam int total_width_D = M * N * 4 * P;
-    localparam int total_width = total_width_A + total_width_B + total_width_C;
+    localparam int TotalWidthA = M * K * P;
+    localparam int TotalWidthB = K * N * P;
+    localparam int TotalWidthC = M * N * 4 * P;
+    localparam int TotalWidthD = M * N * 4 * P;
+    localparam int TotalWidth = TotalWidthA + TotalWidthB + TotalWidthC;
 
 
     // Flatten the arrays and concatenate them
-    logic [0:total_width-1] data_in;
-    logic [0:total_width_D-1] data_out;
+    logic [TotalWidth-1:0] data_in;
+    logic [TotalWidthD-1:0] data_out;
 
     matrix_flattener #(
         .WIDTH(K),
@@ -133,7 +134,7 @@ module syn_tle #(
         .P(P)
     ) A_flattener (
         .A(A_d),
-        .data_out(data_in[0:total_width_A-1])
+        .data_out(data_in[TotalWidthA-1:0])
     );
 
     matrix_flattener #(
@@ -142,7 +143,7 @@ module syn_tle #(
         .P(P)
     ) B_flattener (
         .A(B_d),
-        .data_out(data_in[total_width_A:total_width_A+total_width_B-1])
+        .data_out(data_in[TotalWidthA+TotalWidthB-1:TotalWidthA])
     );
 
     matrix_flattener #(
@@ -151,7 +152,7 @@ module syn_tle #(
         .P(4*P)
     ) C_flattener (
         .A(C_d),
-        .data_out(data_in[total_width_A+total_width_B:total_width_A+total_width_B+total_width_C-1])
+        .data_out(data_in[TotalWidthA+TotalWidthB+TotalWidthC-1:TotalWidthA+TotalWidthB])
     );
 
     matrix_flattener #(
@@ -174,7 +175,7 @@ module syn_tle #(
         .data_in   (data_in),
         .ready_in  (ready_i),
         .valid_out (valid_d),
-        .data_out  ({A_q, B_q, C_q}),
+        .data_out  ({C_q, B_q, A_q}),
         .ready_out (ready_d)
     );
 
@@ -212,7 +213,8 @@ module syn_tle #(
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .halvedPrecision(halvedPrecision),
-        .bitSize(bitSize)
+        .bitSizeA(bitSizeA),
+        .bitSizeB(bitSizeB)
     );
 
 endmodule

@@ -24,11 +24,8 @@ module tb_config_tree_adder;
     .halvedPrecision(halvedPrecision)
   );
 
-  
-
   // Run tests
   initial begin
-    
 
     parameter int NUM_TESTS_16BIT = 5;
     static logic signed [7:0] test_inputs_8[NUM_TESTS_16BIT][8] =  '{
@@ -52,7 +49,7 @@ module tb_config_tree_adder;
       '{-1, -2, -3, -4, -5, -6, -7, -8, -9, -10, -11, -12, -13, -14, -15, -16},
       '{-1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7, -8, 8},
       '{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
-      
+
     };
     static logic signed [31:0] expected_outputs_4bit[NUM_TESTS_8BIT] = '{
       0,
@@ -76,11 +73,10 @@ module tb_config_tree_adder;
         i, expected_outputs_8[i], out);
     end
 
-    
     for (i = 0; i < 50; i++) begin
       expected_output = 0;
        for (j = 0; j < 8; j++) begin
-        inputs_8[j] = $random;
+        inputs_8[j] = $urandom;
         expected_output += inputs_8[j];
       end;
       #5;
@@ -104,8 +100,8 @@ module tb_config_tree_adder;
     for (i = 0; i < 50; i++) begin
       expected_output = 0;
        for (j = 0; j < 8; j++) begin
-        input1 = $random;
-        input2 = $random;
+        input1 = $urandom;
+        input2 = $urandom;
         inputs_8[j] = {input1, input2};
         expected_output += input1;
         expected_output += input2;

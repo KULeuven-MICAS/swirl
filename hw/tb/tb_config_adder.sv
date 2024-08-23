@@ -24,18 +24,18 @@ module tb_config_adder;
   );
 
   // Testcases
-  parameter int NUM_TESTS_8bit = 7; // Renamed parameter
+  parameter int NumTests8bit = 7; // Renamed parameter
   parameter int RANDOM_TESTS = 100;
-  logic signed [7:0] test_a[NUM_TESTS_8bit] =           '{0, 1, 8,  124, 124, -127, -127};
-  logic signed [7:0] test_b[NUM_TESTS_8bit] =           '{0, 2, -8, 3,   4,   -1,   -100};
-  logic signed [9:0] expected_outputs[NUM_TESTS_8bit] = '{0, 3, 0,  127, 128, -128, -227}; 
+  logic signed [7:0] test_a[NumTests8bit] =           '{0, 1, 8,  124, 124, -127, -127};
+  logic signed [7:0] test_b[NumTests8bit] =           '{0, 2, -8, 3,   4,   -1,   -100};
+  logic signed [9:0] expected_outputs[NumTests8bit] = '{0, 3, 0,  127, 128, -128, -227};
 
   // Run tests
   initial begin
     $dumpfile("tb_config_adder.vcd");
     $dumpvars(0, tb_config_adder);
-    
-    for (int i = 0; i < NUM_TESTS_8bit; i++) begin // Updated loop condition
+
+    for (int i = 0; i < NumTests8bit; i++) begin // Updated loop condition
       a = test_a[i];
       b = test_b[i];
       expected_output = expected_outputs[i];
@@ -48,8 +48,8 @@ module tb_config_adder;
     end
 
     for (int i = 0; i < RANDOM_TESTS; i++) begin
-      a = $random;
-      b = $random;
+      a = $urandom;
+      b = $urandom;
       expected_output = a + b;
       halvedPrecision = 0;
       #5;
@@ -60,14 +60,14 @@ module tb_config_adder;
     end
     #10
     for (int i = 0; i < RANDOM_TESTS; i++) begin
-      a1 = $random;
-      b1 = $random;
-      a2 = $random;
-      b2 = $random;
+      a1 = $urandom;
+      b1 = $urandom;
+      a2 = $urandom;
+      b2 = $urandom;
       expected_out1 = a1 + b1;
       expected_out2 = a2 + b2;
       halvedPrecision = 1;
-      
+
       a = {a1, a2};
       b = {b1, b2};
       expected_output = {expected_out1, expected_out2};
@@ -75,10 +75,13 @@ module tb_config_adder;
       #5;
       out1 = out[9:5];
       out2 = out[4:0];
-      $display("a1 = %d    b1 = %d    out1 = %d    expected out1 = %d    a2 = %d    b2 = %d    out2 = %d    expected out2 = %d", a1, b1, out1, expected_out1, a2, b2, out2, expected_out2);
+      $display("a1 = %d   b1 = %d   out1 = %d    expected out1 = %d ",  a1, b1, out1, expected_out1,
+      "a2 = %d   b2 = %d   out2 = %d    expected out2 = %d", a2, b2, out2, expected_out2);
       assert(out == expected_output) else $fatal(
-        1, "Test %d failed: a1=%d, b1=%d, expected_output1=%d, got1 %d, a2=%d, b2=%d, expected_output2=%d, got2 %d",
-        i, a1, b1, expected_out1, out1, a2, b2, expected_out2, out2);
+        1, "Test %d failed: a1=%d, b1=%d, expected_output1=%d, got1 %d",
+        i, a1, b1, expected_out1, out1,
+        "a2=%d, b2=%d, expected_output2=%d, got2 %d",
+         a2, b2, expected_out2, out2);
     end
 
     $finish;

@@ -1,5 +1,5 @@
 module multiplexer_2to1 #(
-    parameter M
+    parameter int M
 ) (
     input [2*M-1:0] in,
     input sel,
@@ -9,7 +9,7 @@ module multiplexer_2to1 #(
 endmodule
 
 module multiplexer_4to1 #(
-    parameter M
+    parameter int M
 ) (
     input [4*M-1:0] in,
     input [1:0] sel,
@@ -44,7 +44,7 @@ module multiplexer_4to1 #(
 endmodule
 
 module multiplexer_8to1 #(
-    parameter M
+    parameter int M
 ) (
     input [8*M-1:0] in,
     input [2:0] sel,
@@ -79,7 +79,7 @@ module multiplexer_8to1 #(
 endmodule
 
 module multiplexer_16to1 #(
-    parameter M
+    parameter int M
 ) (
     input [16*M-1:0] in,
     input [3:0] sel,

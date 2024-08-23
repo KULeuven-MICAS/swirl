@@ -1,6 +1,6 @@
 module programmable_counter #(
     parameter int unsigned WIDTH = 4, // max bitwidth of counter
-    parameter UPDOWN = 0 // make counter revert at top
+    parameter int UPDOWN = 0 // make counter revert at top
     ) (
     input clk_i,
     input rst_ni,
@@ -8,11 +8,10 @@ module programmable_counter #(
     input en_i,
     input load_i,
     input down_i,
-    input logic [WIDTH-1:0] countSet, 
+    input logic [WIDTH-1:0] countSet,
     input logic [WIDTH-1:0] d_i,
     output logic [WIDTH-1:0] q_o,
     output logic last_o
-    
     );
 
     logic [WIDTH-1:0] counter_q, counter_d;
@@ -28,19 +27,19 @@ module programmable_counter #(
 
         if (clear_i) begin
             counter_d = '0;
-            hold <= 0;
+            hold = 0;
         end else if (load_i) begin
             counter_d = d_i;
         end else if (en_i) begin
                 if (down_i) begin
-                    counter_d = counter_q - 1; 
+                    counter_d = counter_q - 1;
                 end else begin
                     if (UPDOWN) begin
                         if (countSet == 0) begin
                             if (hold) begin
                                 counter_d = counter_q - 1;
                             end else begin
-                                hold <= 1;
+                                hold = 1;
                             end
                         end else begin
                         if (counter_q == countSet) begin

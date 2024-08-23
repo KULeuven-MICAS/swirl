@@ -1,6 +1,5 @@
 module tb_seq_MAC ();
-    
-        
+
         // Testbench signals
         logic signed [15:0] A [2][2];
         logic signed [15:0] B [2][2];
@@ -14,7 +13,7 @@ module tb_seq_MAC ();
         reg ready_out;
         logic clk_i;
         logic rst_ni;
-    
+
         // Module instantiation
         seq_MAC #(
             .K(2),
@@ -67,7 +66,7 @@ module tb_seq_MAC ();
             C[0][1] = 10;
             C[1][0] = 11;
             C[1][1] = 12;
-            
+
             valid_in = 1;
 
             #10;

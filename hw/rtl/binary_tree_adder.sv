@@ -9,18 +9,18 @@ module binary_tree_adder #(
 
     if (INPUTS_AMOUNT - 1 & INPUTS_AMOUNT) $fatal("ERROR: Binary adder input not power of 2");
 
-    localparam layerAmount = $clog2(INPUTS_AMOUNT);
-    logic signed [P+layerAmount-1:0] temp_output ;
+    localparam int LayerAmount = $clog2(INPUTS_AMOUNT);
+    logic signed [P+LayerAmount-1:0] temp_output ;
     generate
         genvar layer;
-        for(layer = 0; layer < layerAmount; layer = layer + 1) begin: gen_layer
+        for(layer = 0; layer < LayerAmount; layer = layer + 1) begin: gen_layer
             localparam int CurrentWidth = INPUTS_AMOUNT >> layer;
             localparam int NextWidth = INPUTS_AMOUNT >> (layer+1);
             logic signed [P+layer:0] connectingWires [NextWidth];
-            if(layer == layerAmount-1) begin
+            if(layer == LayerAmount-1) begin : gen_last_layer
                 assign temp_output = connectingWires[0];
             end
-            if(layer == 0) begin 
+            if(layer == 0) begin : gen_first_layer
                 binary_tree_adder_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P)
@@ -28,7 +28,7 @@ module binary_tree_adder #(
                     .inputs(inputs),
                     .outputs(connectingWires)
                 );
-            end else begin
+            end else begin : gen_mid_layers
                 binary_tree_adder_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P+layer)
@@ -37,12 +37,12 @@ module binary_tree_adder #(
                     .outputs(connectingWires)
                 );
             end
-
-            
         end
     endgenerate
 
-    assign out = { {(32-P-layerAmount+1){temp_output[P+layerAmount-1]}}, temp_output[P+layerAmount-1:0] };
+    assign out = {
+        {(32-P-LayerAmount+1){temp_output[P+LayerAmount-1]}},
+        temp_output[P+LayerAmount-1:0] };
 
 endmodule
 
@@ -55,9 +55,10 @@ module binary_tree_adder_layer #(
 );
     localparam int OutputsAmount = INPUTS_AMOUNT/2;
     generate
-        genvar adderIndex;
-        for (adderIndex = 0; adderIndex < OutputsAmount; adderIndex = adderIndex + 1) begin: gen_adder
-            assign outputs[adderIndex] = inputs[2*adderIndex] + inputs[2*adderIndex+1];
+        genvar i;
+        for (i = 0; i < OutputsAmount; i = i + 1) begin: gen_adder
+            assign outputs[i] = inputs[2*i] + inputs[2*i+1];
         end
     endgenerate
 endmodule
+

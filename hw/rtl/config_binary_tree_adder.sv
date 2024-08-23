@@ -10,18 +10,18 @@ module config_binary_tree_adder #(
 
     if (INPUTS_AMOUNT - 1 & INPUTS_AMOUNT) $fatal("ERROR: Binary adder input not power of 2");
 
-    localparam layerAmount = $clog2(INPUTS_AMOUNT);
-    logic signed [P+2*layerAmount-1:0] temp_out;
+    localparam int LayerAmount = $clog2(INPUTS_AMOUNT);
+    logic signed [P+2*LayerAmount-1:0] temp_out;
     generate
         genvar layer;
-        for(layer = 0; layer < layerAmount; layer = layer + 1) begin: gen_layer
+        for(layer = 0; layer < LayerAmount; layer = layer + 1) begin: gen_layer
             localparam int CurrentWidth = INPUTS_AMOUNT >> layer;
             localparam int NextWidth = INPUTS_AMOUNT >> (layer+1);
             logic signed [P+1+2*layer:0] connectingWires [NextWidth];
-            if(layer == layerAmount-1) begin
+            if(layer == LayerAmount-1) begin : gen_pass_through
                 assign temp_out = connectingWires[0];
             end
-            if(layer == 0) begin 
+            if(layer == 0) begin : gen_first_tree_layer
                 config_binary_tree_adder_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P)
@@ -30,7 +30,7 @@ module config_binary_tree_adder #(
                     .outputs(connectingWires),
                     .halvedPrecision(halvedPrecision)
                 );
-            end else begin
+            end else begin : gen_tree_layers
                 config_binary_tree_adder_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P+2*layer)
@@ -40,20 +40,20 @@ module config_binary_tree_adder #(
                     .halvedPrecision(halvedPrecision)
                 );
             end
-
-            
         end
     endgenerate
 
-    logic signed [P/2+layerAmount:0] halved_precision_out;
-    logic signed [(P+2*layerAmount)/2-1:0] term1;
-    assign term1 = temp_out[P+2*layerAmount-1:(P+2*layerAmount)/2];
-    logic signed [(P+2*layerAmount)/2-1:0] term2;
-    assign term2 = temp_out[(P+2*layerAmount)/2-1:0];
+    logic signed [P/2+LayerAmount:0] halved_precision_out;
+    logic signed [(P+2*LayerAmount)/2-1:0] term1;
+    assign term1 = temp_out[P+2*LayerAmount-1:(P+2*LayerAmount)/2];
+    logic signed [(P+2*LayerAmount)/2-1:0] term2;
+    assign term2 = temp_out[(P+2*LayerAmount)/2-1:0];
     assign halved_precision_out = term1 + term2;
 
-    assign out = halvedPrecision ? { {(32-P/2-layerAmount-1){halved_precision_out[P/2+layerAmount]}}, halved_precision_out[P/2+layerAmount:0] } :
-    { {(32-P-2*layerAmount){temp_out[P+2*layerAmount-1]}}, temp_out[P+2*layerAmount-1:0] };
+    assign out = halvedPrecision ?
+    { {(32-P/2-LayerAmount-1){halved_precision_out[P/2+LayerAmount]}},
+    halved_precision_out[P/2+LayerAmount:0] } :
+    { {(32-P-2*LayerAmount){temp_out[P+2*LayerAmount-1]}}, temp_out[P+2*LayerAmount-1:0] };
 
 endmodule
 
@@ -67,14 +67,14 @@ module config_binary_tree_adder_layer #(
 );
     localparam int OutputsAmount = INPUTS_AMOUNT/2;
     generate
-        genvar adderIndex;
-        for (adderIndex = 0; adderIndex < OutputsAmount; adderIndex = adderIndex + 1) begin
+        genvar i;
+        for (i = 0; i < OutputsAmount; i = i + 1) begin : gen_adders
             config_adder #(
                 .P(P)
                 ) add (
-                    .a(inputs[2*adderIndex]),
-                    .b(inputs[2*adderIndex+1]),
-                    .sum(outputs[adderIndex]),
+                    .a(inputs[2*i]),
+                    .b(inputs[2*i+1]),
+                    .sum(outputs[i]),
                     .halvedPrecision(halvedPrecision)
                 );
         end
