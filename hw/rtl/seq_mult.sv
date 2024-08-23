@@ -67,13 +67,12 @@ module seq_mult #(
     );
     end
 
-    adder #(2*P) adder (
-        .a(accumSum),
-        .b(prod),
-        .en(~lastOut),
-        .sum(nextAccumSum),
-        .cout(adderCout)
-    );
+    logic [2*P:0] sumWithCarry;
+    logic enableAdder;
+    assign enableAdder = ~lastOut;
+    assign sumWithCarry = enableAdder ? accumSum + prod : accumSum;
+    assign adderCout = sumWithCarry[2*P];
+    assign nextAccumSum = sumWithCarry[2*P-1:0];
 
     always_ff @(posedge clk, negedge rst_n) begin
         if (!rst_n | start) begin
@@ -119,35 +118,5 @@ module seq_mult #(
          end
      end
 
-
-
-
 endmodule
 
-module adder #(parameter int P) (
-    input logic [P-1:0] a,
-    input logic [P-1:0] b,
-    input logic en,
-    output logic [P-1:0] sum,
-    output logic cout
-);
-    logic [P-1:0] carryWires;
-    logic [P-1:0] sumWires;
-    assign cout = carryWires[P-1];
-
-    half_adder ha (.a(a[0]), .b(b[0]), .sum(sumWires[0]), .carry(carryWires[0]));
-
-    genvar i;
-    for (i = 1; i < P; i = i + 1) begin : gen_adder
-        full_adder fa(
-            .a(a[i]),
-            .b(b[i]),
-            .sum(sumWires[i]),
-            .cin(carryWires[i-1]),
-            .cout(carryWires[i])
-        );
-    end
-
-    assign sum = en? sumWires : a;
-
-endmodule

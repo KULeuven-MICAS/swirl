@@ -364,7 +364,8 @@ module tb_seq_mult_adder ();
                     wait(valid_out==1);
                     #1;
                     assert(D == product) else begin
-                        $display("#############TEST %dx%d-bit FAILED##############", 2*i, 2*j);
+                        $display("TEST %2d x %2d-bit FAILED:   %4d x %4d = %8d OUT: %8d",
+                        2*i, 2*j, a_list[i-1], b_list[j-1], product, D);
                         $fatal();
                     end
                     $display("TEST %2d x %2d-bit SUCCEEDED:   %4d x %4d = %8d OUT: %8d",

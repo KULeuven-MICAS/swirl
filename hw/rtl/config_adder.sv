@@ -66,21 +66,3 @@ module config_adder #(parameter int P = 8) (
 
 endmodule
 
-module half_adder (
-    input logic a,
-    input logic b,
-    output logic sum,
-    output logic carry
-);
-    assign {carry, sum} = a + b;
-endmodule
-
-module full_adder (
-    input logic a,
-    input logic b,
-    input logic cin,
-    output logic sum,
-    output logic cout
-);
-    assign {cout, sum} = a + b + cin;
-endmodule
