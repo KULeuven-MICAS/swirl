@@ -35,7 +35,7 @@ module tb_matmul;
     logic signed [31:0] tb_C [M][N];
     logic signed [31:0] tb_D [M][N];
     logic signed [31:0] tb_expected_D [M][N];
-    logic halvedPrecision;
+    logic [1:0] halvedPrecision;
     logic clk_i;
     logic rst_ni;
     logic valid_in;
@@ -83,7 +83,7 @@ module tb_matmul;
     bitSizeA = 4;
     bitSizeB = 4;
 
-    halvedPrecision = 0;
+    halvedPrecision = 2'b00;
     rst_ni = 0;
     ready_out = 1;
     #10;
@@ -100,7 +100,7 @@ module tb_matmul;
             $finish;
         end
 
-        halvedPrecision = 1;
+        halvedPrecision = 2'b10;
         for(int testIndex = 1; !$feof(file); testIndex++) begin
             read_next_test_from_file(file, M, N, K, halvedPrecision);
             #10
@@ -153,7 +153,7 @@ module tb_matmul;
 
     bitSizeA = 4;
     bitSizeB = 4;
-    halvedPrecision = 0;
+    halvedPrecision = 2'b00;
     for(int testIndex = 1; !$feof(file); testIndex++) begin
         read_next_test_from_file(file, M, N, K, halvedPrecision);
         valid_in = 1;
@@ -169,7 +169,6 @@ module tb_matmul;
         end
         $display("8-bit %0dx%0dx%0d Test #%0d passed", M, N, K, testIndex);
         #15;
-        $display("");
     end
   end
 
@@ -178,7 +177,7 @@ module tb_matmul;
       input int M,
       input int N,
       input int K,
-      input int halvedPrecision
+      input [1:0] halvedPrecision
   );
     int status;
     int read_M;
@@ -191,7 +190,7 @@ module tb_matmul;
             $fclose(file);
             $finish;
         end
-        if (halvedPrecision) begin
+        if (halvedPrecision[1]) begin
             K = 2 * K;
         end
         if (read_M != M || read_N != N || read_K != K) begin
@@ -203,7 +202,7 @@ module tb_matmul;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
 
-                if (halvedPrecision) begin
+                if (halvedPrecision[1]) begin
                     if (j % 2 == 0) begin
                         status = $fscanf(file, "%d ", tb_A[i][j/2][7:4]);
                     end else begin
@@ -224,7 +223,7 @@ module tb_matmul;
         for (int i = 0; i < K; i++) begin
             for (int j = 0; j < N; j++) begin
 
-                if (halvedPrecision) begin
+                if (halvedPrecision[1]) begin
                     if (i % 2 == 0) begin
                         status = $fscanf(file, "%d ", tb_B[i/2][j][7:4]);
                     end else begin

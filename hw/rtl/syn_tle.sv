@@ -199,7 +199,7 @@ module syn_tle #(
         .P(P),
         .TREE(TREE),
         .PIPESTAGES(PIPESTAGES),
-        .MODE(2)
+        .MODE(MODE)
     ) mma (
         .A(A_q),
         .B(B_q),

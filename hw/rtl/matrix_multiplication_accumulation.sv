@@ -18,7 +18,7 @@ module matrix_multiplication_accumulation #(
     input wire clk_i,
     input wire rst_ni,
 
-    input wire halvedPrecision = 0,
+    input wire [1:0] halvedPrecision = 0,
     input wire [3:0] bitSizeA = 4,
     input wire [3:0] bitSizeB = 4
 );
@@ -198,7 +198,7 @@ module matrix_multiplication_accumulation #(
                     ) tree_add (
                         .inputs(mults),
                         .out(mult_sum),
-                        .halvedPrecision(halvedPrecision)
+                        .halvedPrecision(halvedPrecision[1])
                     );
 
                     bitwise_add #(
