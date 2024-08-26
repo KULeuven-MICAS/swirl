@@ -26,7 +26,7 @@
 `define PIPESTAGES 2
 `endif
 `ifndef MODE
-`define MODE 0
+`define MODE 2
 `endif
 
 module syn_tle #(
@@ -35,7 +35,7 @@ module syn_tle #(
     parameter int K = `K,
     parameter int P = `P,
     parameter int PIPESTAGES = `PIPESTAGES,
-    parameter bit TREE = 1,
+    parameter bit TREE = `TREE,
     parameter bit MODE = `MODE
 )(
     input logic clk_i,
@@ -103,8 +103,8 @@ module syn_tle #(
 
 
     initial begin
-        $dumpfile($sformatf("syn_tle.vcd"));
-        $dumpvars(0, syn_tle);
+        // $dumpfile($sformatf("syn_tle.vcd"));
+        // $dumpvars(0, syn_tle);
 
         // $monitor("At time %t, D_o = %p, A_i = %p, B_i = %p, C_i = %p", $time, D_o, A_i, B_i, C_i);
         // $monitor("At time %t, A_q = %p, B_q = %p, C_q = %p", $time, A_q, B_q, C_q);
@@ -200,7 +200,7 @@ module syn_tle #(
         .P(P),
         .TREE(TREE),
         .PIPESTAGES(PIPESTAGES),
-        .MODE(MODE)
+        .MODE(2)
     ) mma (
         .A(A_q),
         .B(B_q),

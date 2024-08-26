@@ -7,4 +7,7 @@ set HDL_LIST [ list \
     ${HDL_PATH}/VX_pipe_register.sv \
     ${HDL_PATH}/matrix_flattener.sv \
     ${HDL_PATH}/matrix_multiplication_accumulation.sv \
+    ${HDL_PATH}/half_adder.sv \
+    ${HDL_PATH}/full_adder.sv \
+    ${HDL_PATH}/bitwise_add.sv \
 ]

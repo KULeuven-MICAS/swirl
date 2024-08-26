@@ -245,7 +245,6 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
             .rst_n(rst_ni),
             .a(row[element]),
             .b(column[element]),
-            .bitSize(bitSizeB_reg),
             .p(partial_mults[element]),
             .countDown(countDown),
             .countLast2(countLast2),

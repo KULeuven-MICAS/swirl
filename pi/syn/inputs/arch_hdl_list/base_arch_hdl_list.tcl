@@ -3,5 +3,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
 source ${INPUTS_DIR}/arch_hdl_list/common_hdl_list.tcl
-lappend HDL_LIST ${HDL_PATH}/biwise_add.sv
 lappend HDL_LIST ${HDL_PATH}/binary_tree_adder.sv
+lappend HDL_LIST ${HDL_PATH}/binary_tree_adder_layer.sv

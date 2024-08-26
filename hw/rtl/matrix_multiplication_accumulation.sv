@@ -5,7 +5,7 @@ module matrix_multiplication_accumulation #(
     parameter int P,
     parameter int TREE = 1,
     parameter int PIPESTAGES = 2,
-    parameter int MODE = 0 // 0 = 8-bit, 1 = partitioned 4-/8-bit, 2 = sequential
+    parameter int MODE // 0 = 8-bit, 1 = partitioned 4-/8-bit, 2 = sequential
 )(
     input wire signed [P-1:0] A [M][K],
     input wire signed [P-1:0] B [K][N],
@@ -33,8 +33,8 @@ module matrix_multiplication_accumulation #(
     wire ready_in_sequential;
 
     initial begin
-        $dumpfile("tb_matmul_module.vcd");
-        $dumpvars(0, matrix_multiplication_accumulation);
+        // $dumpfile("tb_matmul_module.vcd");
+        // $dumpvars(0, matrix_multiplication_accumulation);
         // $monitor("At time %t, ready_stage = %p, valid_stage = %p, A_in = %p, B_in = %p, C_in = %p, reset = %p, D_o = %p",
         // $time, ready_stage[0], valid_stage[0], A_stage[1], B_stage[1], C_stage[1], rst_ni, D);
     end

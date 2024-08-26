@@ -106,67 +106,91 @@ module seq_MAC #(
     (8'b00000010 << (2*(bitSizeB-1))) +
     (8'b00000010 << (2*(bitSizeA+bitSizeB-1)));
 
-always_ff @(posedge clk_i, negedge rst_ni) begin
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (~rst_ni) begin
+                bitSizeB_reg <= 0;
+                bitSizeA_reg <= 0;
+            end else if (start) begin
+                bitSizeB_reg <= bitSizeB;
+                bitSizeA_reg <= bitSizeA;
+            end
+    end
 
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                busy <= 0;
+            end else if (start) begin
+                busy <= 1'b1;
+            end
+    end
 
-        if (~rst_ni) begin
-            bitSizeB_reg <= 0;
-            bitSizeA_reg <= 0;
-        end else if (start) begin
-            bitSizeB_reg <= bitSizeB;
-            bitSizeA_reg <= bitSizeA;
-        end
-
-         if (!rst_ni) begin
-            countDown <= 0;
-            lastOut <= 0;
-            valid_out_reg <= 0;
-            busy <= 0;
-            newOut <= 0;
-            lastMultAccum <= 0;
-         end else if (start) begin
-            busy <= 1'b1;
-            if (bitSizeA == 1 | bitSizeB == 1) begin
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                countDown <= 1'b0;
+            end else if (start) begin
+                if (bitSizeA == 1 | bitSizeB == 1) begin
+                    countDown <= 1'b1;
+                end else begin
+                    countDown <= 1'b0;
+                end
+            end else if (countLast1 & countLast2 & countLast3 & ~countDown) begin
                 countDown <= 1'b1;
             end else begin
-                countDown <= 1'b0;
+                countDown <= countDown;
             end
-            newOut <= 0;
-            lastMultAccum <= 0;
-            lastOut <= 0;
-         end
-
-        if (countLast1 & countLast2 & countLast3 & ~countDown) begin
-            countDown <= 1'b1;
-        end
-
-        if (countOut1 == 0 & countDown & countLast3) begin
-            lastOut <= 1'b1;
-        end else begin
-            lastOut <= 1'b0;
-        end
-
-        if (lastOut) begin
-            lastOut <= 1'b0;
-            lastMultAccum <= 1'b1;
-        end
-
-        if (lastMultAccum) begin
-            lastMultAccum <= 1'b0;
-            valid_out_reg <= 1'b1;
-            busy <= 1'b0;
-        end else if (valid_out & stall) begin
-            valid_out_reg <= 1'b1;
-        end else begin
-            valid_out_reg <= 1'b0;
-        end
-
-        if ( (countLast2 | lastOut) & busy) begin
-            newOut <= 1'b1;
-        end else begin
-            newOut <= 1'b0;
-        end
     end
+
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                lastOut <= 1'b0;
+            end else if (start) begin
+                lastOut <= 1'b0;
+            end else if (countOut1 == 0 & countDown & countLast3) begin
+                lastOut <= 1'b1;
+            end else begin
+                lastOut <= 1'b0;
+            end
+    end
+
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                lastMultAccum <= 1'b0;
+            end else if (start) begin
+                lastMultAccum <= 1'b0;
+            end else if (lastOut) begin
+                lastOut <= 1'b0;
+                lastMultAccum <= 1'b1;
+            end else begin
+                lastOut <=  lastOut;
+                lastMultAccum <= lastMultAccum;
+            end
+    end
+
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                valid_out_reg <= 1'b0;
+            end else if (lastMultAccum) begin
+                valid_out_reg <= 1'b1;
+                lastMultAccum <= 1'b0;
+                busy <= 1'b0;
+            end else if (valid_out & stall) begin
+                valid_out_reg <= 1'b1;
+            end else begin
+                valid_out_reg <= 1'b0;
+            end
+    end
+
+    always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                newOut <= 1'b0;
+            end else if (start) begin
+                newOut <= 1'b0;
+            end else if ( (countLast2 | lastOut) & busy) begin
+                newOut <= 1'b1;
+            end else begin
+                newOut <= 1'b0;
+            end
+        end
 
     logic unsigned [MB-1:0] count1_start;
     assign count1_start =  bitSizeMin - 1'b1;
@@ -241,7 +265,6 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
                     .rst_n(rst_ni),
                     .a(A_mul[row][element]),
                     .b(B_mul[element][column]),
-                    .bitSize(bitSizeB_reg),
                     .p(partial_mults[element]),
                     .countDown(countDown),
                     .countLast2(countLast2),

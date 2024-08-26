@@ -70,7 +70,7 @@ elaborate ${DESIGN}
 
 check_design -unresolved
 set_attribute retime true matrix_multiplication_accumulation*
-set_attribute retime true matrix_multiplication_accumulation/*
+#set_attribute retime true matrix_multiplication_accumulation/*
 
 read_sdc ${INPUTS_DIR}/constraints.sdc
 

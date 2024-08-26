@@ -56,7 +56,6 @@ module programmable_counter #(
                         end
                     end
                 end
-
         end
     end
 

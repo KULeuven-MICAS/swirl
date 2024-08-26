@@ -6,7 +6,6 @@ module seq_mult #(
     input logic rst_n,
     input logic [MAX_WIDTH-1:0] a,
     input logic [MAX_WIDTH-1:0] b,
-    input logic unsigned [$clog2(MAX_WIDTH/P):0] bitSize,
     input logic countDown,
     input logic countLast2,
     input logic lastOut,
@@ -75,7 +74,9 @@ module seq_mult #(
     assign nextAccumSum = sumWithCarry[2*P-1:0];
 
     always_ff @(posedge clk, negedge rst_n) begin
-        if (!rst_n | start) begin
+        if (!rst_n) begin
+            out <= 0;
+        end else if (start) begin
             out <= 0;
         end else if (countLast2 | lastOut) begin
             out <= nextAccumSum[P-1:0];
