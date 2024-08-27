@@ -1,3 +1,28 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Module performing a matrix multiplication and accumulation operation: D = A * B + C
+// with dimensions: A[M][K], B[K][N], C[M][N], D[M][N]
+// Three different implementations are supported, configured using MODE:
+// 0: Single-precision design, supporting only P-bit input for A and B
+// 1: Partitioned design, supporting 8-/4-bit symmetric input for A and B
+// 2: Sequential design, supporting 2- to 14-bit and assymetric input for A and B
+// For MODE=0 the design can be configured to use a tree adder or chain adder for the accumulation operation,
+// other designs use a tree adder.
+//
+// Parameters:
+// - M: number of rows of the A matrix
+// - N: number of columns of the B matrix
+// - K: number of columns of the A matrix and rows of the B matrix
+// - P: number of bits of the input data
+// - TREE: 1 if the tree adder is used, 0 if chain adder is used
+// - PIPESTAGES: number of pipeline stages, 1 means no extra pipeline registers
+// - MODE: 0 for unpartitioned design, 1 for partitioned design, 2 for sequential design
+
 module matrix_multiplication_accumulation #(
     parameter int M,
     parameter int N,
@@ -5,23 +30,30 @@ module matrix_multiplication_accumulation #(
     parameter int P,
     parameter int TREE = 1,
     parameter int PIPESTAGES = 2,
-    parameter int MODE // 0 = 8-bit, 1 = partitioned 4-/8-bit, 2 = sequential
+    parameter int MODE
 )(
+    // Input and output matrices
     input wire signed [P-1:0] A [M][K],
     input wire signed [P-1:0] B [K][N],
-    input wire signed [4*P-1:0] C [M][N],
-    output wire signed [4*P-1:0] D [M][N],
+    input wire signed [31:0] C [M][N],
+    output wire signed [31:0] D [M][N],
 
+    // Handshake signals
     input wire valid_in, ready_out,
     output wire ready_in, valid_out,
 
+    // Clock and reset signals
     input wire clk_i,
     input wire rst_ni,
 
+    // Used in partitioned design, 1 if halved precision is used
     input wire [1:0] halvedPrecision = 0,
+
+    // Used in sequential design, bit size !DIVIDED BY 2! of the input data
     input wire [3:0] bitSizeA = 4,
     input wire [3:0] bitSizeB = 4
 );
+    // Pipeline logic
     logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
     logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
     logic signed [4*P-1:0] C_stage [PIPESTAGES] [M][N];
@@ -31,13 +63,6 @@ module matrix_multiplication_accumulation #(
     wire ready_out_sequential;
     wire valid_in_sequential;
     wire ready_in_sequential;
-
-    initial begin
-        // $dumpfile("tb_matmul_module.vcd");
-        // $dumpvars(0, matrix_multiplication_accumulation);
-        // $monitor("At time %t, ready_stage = %p, valid_stage = %p, A_in = %p, B_in = %p, C_in = %p, reset = %p, D_o = %p",
-        // $time, ready_stage[0], valid_stage[0], A_stage[1], B_stage[1], C_stage[1], rst_ni, D);
-    end
 
     assign A_stage[0] = A;
     assign B_stage[0] = B;
@@ -56,7 +81,6 @@ module matrix_multiplication_accumulation #(
         assign valid_in_sequential = valid_stage[PIPESTAGES-1];
     end
 
-     // Elastic pipeline logic
     localparam int TotalWidthA = M * K * P;
     localparam int TotalWidthB = K * N * P;
     localparam int TotalWidthC = M * N * 4 * P;
@@ -67,6 +91,8 @@ module matrix_multiplication_accumulation #(
     genvar i;
     generate
         for (i = 0; i < PIPESTAGES-1; i = i + 1) begin : gen_pipeline
+            // Packed matrix data needs to be unpacked for synthesis tool,
+            // for simulation matrix concatenation can be used e.g. {A, B, C}
             matrix_flattener #(
                 .WIDTH(K),
                 .HEIGHT(M),
@@ -219,6 +245,7 @@ module matrix_multiplication_accumulation #(
         logic signed [15:0] B_seq [K][N];
 
         genvar i, j;
+        // Padding the input matrices to 16 bits
         for ( i = 0; i < M; i = i + 1) begin : gen_seq_A_padding_row
             for ( j = 0; j < K; j = j + 1) begin : gen_seq_A_padding_column
                 assign A_seq[i][j] = {{(16-P){1'b0}}, A_mul[i][j]};

@@ -1,3 +1,24 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Matrix MAC (Multiplication Accumulation A*B+C) module that calculates result bit-serially.
+// The module uses the modified Baugh-Wooley algorithm to calculate the multiplication of two numbers in steps
+// of P bits (though only implemented for P=2) and accumulates these chunks of P(=2) bits to calculate the final result.
+// 2- to 14-bit signed numbers are supported, with the width of the numbers being a multiple of P(=2) and inputs can have different widths.
+// 
+//
+// Parameters:
+// - M: number of rows of the A matrix
+// - N: number of columns of the B matrix
+// - K: number of columns of the A matrix and rows of the B matrix
+// - MAX_WIDTH: maximum width of the input data
+// - P: number of bits calculated in each step (only implemented for P=2)
+//
+
 module seq_MAC #(
     parameter int M = 2,
     parameter int N = 2,

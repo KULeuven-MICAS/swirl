@@ -1,3 +1,6 @@
+// Module description:
+// Simple half adder module
+
 module half_adder (
     input logic a,
     input logic b,

@@ -1,3 +1,19 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Adder that can be configured to either:
+// 1) add two numbers a and b with full precision
+// 2) add the first and second halfs of a and b with halved precision, generating
+//    the two sums in the output respectively
+// The halvedPrecision input can be used to select between the two modes at runtime
+//
+// Parameters:
+// - P: number of bits of the input data
+
 module config_adder #(parameter int P = 8) (
     input logic [P-1:0] a,
     input logic [P-1:0] b,
@@ -14,7 +30,6 @@ module config_adder #(parameter int P = 8) (
     assign sum[P+1] = (a[P-1] ^ b[P-1]) ? halfwaySum[P-1] : carry[P-1];
 
     always_comb begin
-
         if (halvedPrecision) begin
             sum[P/2] = (a[P/2-1] ^ b[P/2-1]) ? sum[P/2-1] : carry[P/2-1];
             sum[P:P/2+1] = halfwaySum[P-1:P/2];

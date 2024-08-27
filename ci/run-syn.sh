@@ -98,7 +98,7 @@ esac
 done
 
 if [ -z "$OUTPUT_DIR" ]; then
-    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}_A${DOTP_ARCH}"
+    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}"
 fi
 
 echo "Running synthesis with the following parameters:"

@@ -1,3 +1,15 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Configurable 2-bit multiplier that can be configured to perform signed 2-bit multiplication
+// or be part of a higher precision multiplication.
+// The algorithm used is a modified Baugh-Wooley Algorithm, the invert signals are used to
+// correctly perform this algorithm for higher precision multiplications
+
 module mult_2bit (
     input logic [1:0] multiplier,
     input logic [1:0] multiplicand,

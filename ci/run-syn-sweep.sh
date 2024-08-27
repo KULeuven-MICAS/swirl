@@ -19,7 +19,7 @@ OUTPUT_DIR=
 # Loop over different pipeline depths and clock speeds
 for PIPE in 2
 do
-    for CLK_SPD in 10000 5000 3333
+    for CLK_SPD in 2500 2000
     do
     echo "Sweeping synthesis: PIPE=$PIPE, CLK_SPD=$CLK_SPD"
     ./ci/run-syn.sh --dataw=$DATAW --M_size=$M_SIZE --N_size=$N_SIZE --K_size=$K_SIZE --pipe=$PIPE --tree --clk_period=$CLK_SPD --arch=$DOTP_ARCH --output_dir="$OUTPUT_DIR"

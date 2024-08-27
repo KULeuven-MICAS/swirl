@@ -13,3 +13,4 @@ lappend HDL_LIST ${HDL_PATH}/seq_mult.sv
 lappend HDL_LIST ${HDL_PATH}/seq_MAC.sv
 lappend HDL_LIST ${HDL_PATH}/half_adder.sv
 lappend HDL_LIST ${HDL_PATH}/full_adder.sv
+lappend HDL_LIST ${HDL_PATH}/programmable_counter.sv

@@ -1,3 +1,21 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Configurable 8-bit multiplier that can be configured to either:
+// 1) perform a full signed 8-bit multiplication, when halvedPrecision is set to 00
+// 2) perform 2 signed 4-bit multiplications, when halvedPrecision is set to 10
+// 3) perform 4 signed 2-bit multiplications, when halvedPrecision is set to 01
+// Inputs are split up equally for lower precision, 4_4 or 2_2_2_2, and placed accordingly
+// in the output, 8_8 or 4_4_4_4
+//
+// The algorithm used is a modified Baugh-Wooley Algorithm, the invert signals are used to
+// correctly perform this algorithm
+// The multiplier is split up into 4 4-bit multipliers, which are instantiated in this module
+
 module config_multiplier_8bit (
     input logic signed [7:0] multiplier,
     input logic signed [7:0] multiplicand,

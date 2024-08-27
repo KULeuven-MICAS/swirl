@@ -1,3 +1,15 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Simple adder that applies saturated value on overflow
+//
+// Parameters:
+// - P: number of bits of the input data
+
 module bitwise_add #(
     parameter int P = 32
 )(

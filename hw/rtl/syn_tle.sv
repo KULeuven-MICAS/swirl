@@ -2,10 +2,20 @@
 // Licensed under the Apache License, Version 2.0, see LICENSE for details.
 // SPDX-License-Identifier: Apache-2.0
 
-// Author: Giuseppe Sarda <giuseppe.sarda@esat.kuleuven.be>
-//          Mats Vanhamel
-// TODO:
-// - Implement registers with elastic pipeline
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Top level module used for synthesis of matrix_multiplication_accumulation module
+// with input/output buffers and ready valid logic
+//
+// Parameters:
+// - M: number of rows of the A matrix
+// - N: number of columns of the B matrix
+// - K: number of columns of the A matrix and rows of the B matrix
+// - P: number of bits of the input data
+// - TREE: 1 if the tree adder is used, 0 if chain adder is used
+// - PIPESTAGES: number of pipeline stages, 1 means no extra pipeline registers
+// - MODE: 0 for unpartitioned design, 1 for partitioned design, 2 for sequential design
 
 `ifndef P
 `define P 8
