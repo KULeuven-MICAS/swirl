@@ -57,7 +57,7 @@ module programmable_counter #(
                         if (counter_q == countSet) begin
                             counter_d = 0;
                         end else begin
-                            counter_d = scounter_q + 1;
+                            counter_d = counter_q + 1;
                         end
                     end
                 end

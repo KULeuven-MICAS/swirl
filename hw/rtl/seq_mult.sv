@@ -2,7 +2,7 @@ module seq_mult #(
     parameter unsigned P = 2,
     parameter unsigned [4:0] MAX_WIDTH = 16
     ) (
-    input logic clk,
+    input logic clk_i,
     input logic rst_n,
     input logic [MAX_WIDTH-1:0] a,
     input logic [MAX_WIDTH-1:0] b,
@@ -73,7 +73,7 @@ module seq_mult #(
     assign adderCout = sumWithCarry[2*P];
     assign nextAccumSum = sumWithCarry[2*P-1:0];
 
-    always_ff @(posedge clk, negedge rst_n) begin
+    always_ff @(posedge clk_i, negedge rst_n) begin
         if (!rst_n) begin
             out <= 0;
         end else if (start) begin
@@ -85,7 +85,7 @@ module seq_mult #(
         end
     end
 
-    always_ff @(posedge clk, negedge rst_n) begin
+    always_ff @(posedge clk_i, negedge rst_n) begin
         if (!rst_n) begin
             accumSum <= 0;
         end else if (start) begin
@@ -97,7 +97,7 @@ module seq_mult #(
         end
     end
 
-    always_ff @(posedge clk, negedge rst_n) begin
+    always_ff @(posedge clk_i, negedge rst_n) begin
         if (!rst_n) begin
             carryCount <= 0;
         end else if (start) begin
@@ -109,7 +109,7 @@ module seq_mult #(
         end
     end
 
-     always_ff @(posedge clk, negedge rst_n) begin
+     always_ff @(posedge clk_i, negedge rst_n) begin
          if (!rst_n) begin
              reg_a <= 0;
              reg_b <= 0;

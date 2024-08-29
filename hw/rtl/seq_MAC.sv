@@ -9,7 +9,7 @@
 // The module uses the modified Baugh-Wooley algorithm to calculate the multiplication of two numbers in steps
 // of P bits (though only implemented for P=2) and accumulates these chunks of P(=2) bits to calculate the final result.
 // 2- to 14-bit signed numbers are supported, with the width of the numbers being a multiple of P(=2) and inputs can have different widths.
-// 
+//
 //
 // Parameters:
 // - M: number of rows of the A matrix
