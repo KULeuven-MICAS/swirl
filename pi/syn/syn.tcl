@@ -69,12 +69,13 @@ if {$DESIGN == "syn_tle"} {
     lappend HDL_LIST ${HDL_PATH}/syn_tle.sv
 
     read_hdl -sv -define M=${M_SIZE} -define N=${N_SIZE} -define K=${K_SIZE} \
-            -define P=${DATAW} -define PIPESTAGES=${PIPE_REGS} \
-            -define TREE=${TREE} -define MODE=${DOTP_ARCH} \
+            -define P=${DATAW} -define PIPESTAGES=(${PIPE_REGS}+1) \
+            -define TREE=${TREE} -define MODE=${DOTP_ARCH} -define MANUAL_PIPELINE=${MANUAL_PIPELINE} \
             ${HDL_LIST}
 } else {
     source ${INPUTS_DIR}/unit_hdl_list/${DESIGN}_hdl_list.tcl
-    read_hdl -sv ${HDL_LIST}
+    puts "MANUAL_PIPELINE: ${MANUAL_PIPELINE}"
+    read_hdl -sv -define MANUAL_PIPELINE=${MANUAL_PIPELINE} ${HDL_LIST}
 }
 
 elaborate ${DESIGN}
@@ -82,7 +83,10 @@ check_design -unresolved
 
 if {$RETIME} {
     if {$DESIGN == "syn_tle"} {
-        set_attribute retime true matrix_multiplication_accumulation*
+        set_attribute dont_retime true syn_tle/input_buffer
+        set_attribute dont_retime true syn_tle/output_buffer
+        set_attribute retime true syn_tle
+
     } else {
         set_attribute retime true ${DESIGN}*
     }

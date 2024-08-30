@@ -30,7 +30,8 @@ module matrix_multiplication_accumulation #(
     parameter int P,
     parameter int TREE = 1,
     parameter int PIPESTAGES = 2,
-    parameter int MODE
+    parameter int MODE,
+    parameter int MANUAL_PIPELINE = 0
 )(
     // Input and output matrices
     input wire signed [P-1:0] A [M][K],
@@ -53,97 +54,17 @@ module matrix_multiplication_accumulation #(
     input wire [3:0] bitSizeA = 4,
     input wire [3:0] bitSizeB = 4
 );
-    // Pipeline logic
-    logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
-    logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
-    logic signed [4*P-1:0] C_stage [PIPESTAGES] [M][N];
-    logic valid_stage[PIPESTAGES], ready_stage[PIPESTAGES];
-
-    wire valid_out_sequential;
-    wire ready_out_sequential;
-    wire valid_in_sequential;
-    wire ready_in_sequential;
-
-    assign A_stage[0] = A;
-    assign B_stage[0] = B;
-    assign C_stage[0] = C;
-
-    assign ready_in = ready_stage[0];
-    assign valid_stage[0] = valid_in;
-
-    if (MODE == 0 | MODE == 1) begin : gen_pipeline_combinatorial
-        assign ready_stage[PIPESTAGES-1] = ready_out;
-        assign valid_out = valid_stage[PIPESTAGES-1];
-    end else begin : gen_pipeline_sequential
-        assign ready_out_sequential = ready_out;
-        assign valid_out = valid_out_sequential;
-        assign ready_stage[PIPESTAGES-1] = ready_in_sequential;
-        assign valid_in_sequential = valid_stage[PIPESTAGES-1];
-    end
-
-    localparam int TotalWidthA = M * K * P;
-    localparam int TotalWidthB = K * N * P;
-    localparam int TotalWidthC = M * N * 4 * P;
-    localparam int TotalWidthD = M * N * 4 * P;
-    localparam int TotalWidth = TotalWidthA + TotalWidthB + TotalWidthC;
-    logic [TotalWidth-1:0] data_stage [PIPESTAGES];
-
-    genvar i;
-    generate
-        for (i = 0; i < PIPESTAGES-1; i = i + 1) begin : gen_pipeline
-            // Packed matrix data needs to be unpacked for synthesis tool,
-            // for simulation matrix concatenation can be used e.g. {A, B, C}
-            matrix_flattener #(
-                .WIDTH(K),
-                .HEIGHT(M),
-                .P(P)
-            ) A_flattener_stage (
-                .A(A_stage[i]),
-                .data_out(data_stage[i][TotalWidthA-1:0])
-            );
-
-            matrix_flattener #(
-                .WIDTH(N),
-                .HEIGHT(K),
-                .P(P)
-            ) B_flattener_stage (
-                .A(B_stage[i]),
-                .data_out(data_stage[i][TotalWidthA+TotalWidthB-1:TotalWidthA])
-            );
-
-            matrix_flattener #(
-                .WIDTH(N),
-                .HEIGHT(M),
-                .P(4*P)
-            ) C_flattener_stage (
-                .A(C_stage[i]),
-                .data_out(
-                    data_stage[i][TotalWidthA+TotalWidthB+TotalWidthC-1:TotalWidthA+TotalWidthB]
-                    )
-            );
-
-            VX_pipe_buffer #(
-                .DATAW   (P*M*K + P*K*N + 4*P*M*N),
-                .PASSTHRU(0)
-            ) buffer (
-                .clk       (clk_i),
-                .reset     (~rst_ni),
-                .valid_in  (valid_stage[i]),
-                .data_in   (data_stage[i]),
-                .ready_in  (ready_stage[i]),
-                .valid_out (valid_stage[i+1]),
-                .data_out  ({C_stage[i+1], B_stage[i+1], A_stage[i+1]}),
-                .ready_out (ready_stage[i+1])
-            );
-        end
-    endgenerate
-
     logic signed [P-1:0] A_mul [M][K];
     logic signed [P-1:0] B_mul [K][N];
     logic signed [4*P-1:0] C_mul [M][N];
-    assign A_mul = A_stage[PIPESTAGES-1];
-    assign B_mul = B_stage[PIPESTAGES-1];
-    assign C_mul = C_stage[PIPESTAGES-1];
+    assign A_mul = A;
+    assign B_mul = B;
+    assign C_mul = C;
+
+    if (MODE == 0 | MODE == 1) begin : gen_pipeline_combinatorial
+        assign ready_in = ready_out;
+        assign valid_out = valid_in;
+    end
 
     if (MODE == 0) begin : gen_non_config
         // Chain implementation
@@ -261,7 +182,8 @@ module matrix_multiplication_accumulation #(
             .N(N),
             .K(K),
             .P(2),
-            .MAX_WIDTH(16)
+            .MAX_WIDTH(16),
+            .MANUAL_PIPELINE(MANUAL_PIPELINE)
         ) seq_MAC (
             .clk_i(clk_i),
             .rst_ni(rst_ni),
@@ -269,10 +191,10 @@ module matrix_multiplication_accumulation #(
             .B_mul(B_seq),
             .C_mul(C_mul),
             .D(D),
-            .valid_in(valid_in_sequential),
-            .ready_in(ready_in_sequential),
-            .valid_out(valid_out_sequential),
-            .ready_out(ready_out_sequential),
+            .valid_in(valid_in),
+            .ready_in(ready_in),
+            .valid_out(valid_out),
+            .ready_out(ready_out),
             .bitSizeA(bitSizeA),
             .bitSizeB(bitSizeB)
         );

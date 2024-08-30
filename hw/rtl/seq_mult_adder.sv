@@ -1,7 +1,8 @@
 module seq_mult_adder #(
     parameter int K = 2,
     parameter int MAX_WIDTH = 16,
-    parameter int P = 2
+    parameter int P = 2,
+    parameter logic PIPELINED = 0
 )(
     input logic clk_i,
     input logic rst_ni,
@@ -42,6 +43,8 @@ module seq_mult_adder #(
     logic [M-1:0] bitSizeDiff;
     logic largerA;
     logic [4*P-1:0] initSum;
+
+    reg newOut_pipe;
 
 
     reg lastOut;
@@ -160,10 +163,25 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
             valid_out_reg <= 1'b0;
         end
 
-        if ( (countLast2 | lastOut) & busy) begin
-            newOut <= 1'b1;
+        if (PIPELINED) begin
+            if ( (countLast2 | lastOut) & busy) begin
+                newOut_pipe <= 1'b1;
+            end else begin
+                newOut_pipe <= 1'b0;
+            end
+
+            if (newOut_pipe) begin
+                newOut <= 1'b1;
+            end else begin
+                newOut <= 1'b0;
+            end
+
         end else begin
-            newOut <= 1'b0;
+            if ( (countLast2 | lastOut) & busy) begin
+            newOut <= 1'b1;
+            end else begin
+                newOut <= 1'b0;
+            end
         end
     end
 
@@ -241,7 +259,7 @@ always_ff @(posedge clk_i, negedge rst_ni) begin
             .P(P),
             .MAX_WIDTH(MAX_WIDTH)
         ) seq_mult (
-            .clk(clk_i),
+            .clk_i(clk_i),
             .rst_n(rst_ni),
             .a(row[element]),
             .b(column[element]),

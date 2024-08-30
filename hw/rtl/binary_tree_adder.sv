@@ -1,7 +1,8 @@
 // tree adder accepting only powers of 2 for amount of inputs
 module binary_tree_adder #(
     parameter int INPUTS_AMOUNT,
-    parameter int P
+    parameter int P,
+    parameter int MODE
 ) (
     input wire signed [P-1:0] inputs [INPUTS_AMOUNT],
     output wire signed [31:0] out

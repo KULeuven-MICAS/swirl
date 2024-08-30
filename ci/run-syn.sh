@@ -40,12 +40,13 @@ DATAW=8
 M_SIZE=1
 N_SIZE=1
 K_SIZE=2
-PIPE_REGS=1
+PIPE_REGS=0
 TREE=1
 CLK_SPD=10000
 DOTP_ARCH=2
 SYN_MODULE="syn_tle"
 RETIME=0
+MANUAL_PIPELINE=0
 OUTPUT_DIR=
 
 for i in "$@"
@@ -95,6 +96,10 @@ case $i in
         RETIME=1
         shift
         ;;
+    --manual_pipeline)
+        MANUAL_PIPELINE=1
+        shift
+        ;;
     --help)
         show_help
         exit 0
@@ -108,7 +113,7 @@ esac
 done
 
 if [ -z "$OUTPUT_DIR" ]; then
-    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}_RT${RETIME}"
+    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}_RT${RETIME}_MP${MANUAL_PIPELINE}"
 fi
 
 echo "Running synthesis with the following parameters:"
@@ -121,6 +126,8 @@ echo "  PIPE_REGS=$PIPE_REGS"
 echo "  TREE=$TREE"
 echo "  CLK_SPD=$CLK_SPD"
 echo "  DOTP_ARCH=$DOTP_ARCH"
+echo "  RETIME=$RETIME"
+echo "  MANUAL_PIPELINE=$MANUAL_PIPELINE"
 echo "  OUTPUT_DIR=$OUTPUT_DIR"
 
 cd "$ROOT_DIR/pi/syn"
@@ -129,4 +136,4 @@ cd ./work
 
 
 source /esat/micas-data/data/design/scripts/ddi_22.35.rc
-M_SIZE=$M_SIZE N_SIZE=$N_SIZE K_SIZE=$K_SIZE PIPE_REGS=$PIPE_REGS TREE=$TREE CLK_SPD=$CLK_SPD DOTP_ARCH=$DOTP_ARCH OUTPUT_DIR=$OUTPUT_DIR SYN_MODULE=$SYN_MODULE RETIME=$RETIME genus -legacy_ui -overwrite -files ../syn.tcl -log genCompile.log
+M_SIZE=$M_SIZE N_SIZE=$N_SIZE K_SIZE=$K_SIZE PIPE_REGS=$PIPE_REGS TREE=$TREE CLK_SPD=$CLK_SPD DOTP_ARCH=$DOTP_ARCH OUTPUT_DIR=$OUTPUT_DIR SYN_MODULE=$SYN_MODULE RETIME=$RETIME MANUAL_PIPELINE=$MANUAL_PIPELINE genus -legacy_ui -overwrite -files ../syn.tcl -log genCompile.log

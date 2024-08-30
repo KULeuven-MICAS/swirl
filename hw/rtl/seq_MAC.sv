@@ -24,15 +24,16 @@ module seq_MAC #(
     parameter int N = 2,
     parameter int K = 2,
     parameter int MAX_WIDTH = 16,
-    parameter int P = 2
+    parameter int P = 2,
+    parameter logic MANUAL_PIPELINE = 0
 )(
     input logic clk_i,
     input logic rst_ni,
     input wire signed [MAX_WIDTH-1:0] A_mul [M][K],
     input wire signed [MAX_WIDTH-1:0] B_mul [K][N],
     input wire signed [31:0] C_mul [M][N],
-    input logic unsigned [$clog2(MAX_WIDTH/P):0] bitSizeA,
-    input logic unsigned [$clog2(MAX_WIDTH/P):0] bitSizeB,
+    input logic unsigned [3:0] bitSizeA,
+    input logic unsigned [3:0] bitSizeB,
     input wire valid_in,
     output wire ready_in,
     output wire valid_out,
@@ -46,6 +47,7 @@ module seq_MAC #(
     localparam int MB = MaxBitWidth;
 
 
+    logic countLast1Active, countLast2Active, countLast3Active;
     logic countLast1, countLast2, countLast3;
     logic ce1, ce2, ce3, rstCount;
     logic [MB-1:0] countOut1, countOut2, countOut3;
@@ -73,6 +75,10 @@ module seq_MAC #(
 
     reg [MB-1:0] bitSizeB_reg;
     reg [MB-1:0] bitSizeA_reg;
+
+    assign countLast1Active = countLast1 & busy;
+    assign countLast2Active = countLast2 & busy;
+    assign countLast3Active = countLast3 & busy;
 
     assign valid_out = valid_out_reg;
     assign stall = (valid_out & ~ready_out) | busy;
@@ -105,18 +111,14 @@ module seq_MAC #(
 
     assign placeOne3 = (shiftCount == bitSizeA_reg + bitSizeB-1) ? 1'b1 : 1'b0;
 
-    assign countShiftInput = placeOne1 ? (
-        placeOne2 ? 2'b01 : 2'b10
-    ) : placeOne2 ? 2'b10 :
-    placeOne3 ? 2'b10 : 2'b00;
 
     assign placeOne = placeOne1 | placeOne2 | placeOne3;
     //assign placeOne = placeOne1 | placeOne2 | placeOne3;
 
     assign rstCount = start;
-    assign ce1 = countLast2 & busy & ~ce3;
+    assign ce1 = countLast2Active & ~ce3;
     assign ce2 = busy;
-    assign ce3 = countLast1 & countLast2 & ~countLast3;
+    assign ce3 = countLast1Active & countLast2Active & ~countLast3Active;
 
     assign largerA = bitSizeA_reg > bitSizeB_reg;
     assign bitSizeMin = largerA? bitSizeB_reg : bitSizeA_reg;
@@ -154,22 +156,99 @@ module seq_MAC #(
                 end else begin
                     countDown <= 1'b0;
                 end
-            end else if (countLast1 & countLast2 & countLast3 & ~countDown) begin
+            end else if (countLast1Active & countLast2Active & countLast3Active & ~countDown) begin
                 countDown <= 1'b1;
             end else begin
                 countDown <= countDown;
             end
     end
 
-    always_ff @(posedge clk_i, negedge rst_ni) begin
+    if (MANUAL_PIPELINE) begin : gen_pipeline_lastOut
+
+        reg [1:0] countShiftInput_pipe;
+        always_ff @(posedge clk_i or negedge rst_ni) begin
+            if (~rst_ni) begin
+                countShiftInput_pipe <= 2'b00;
+            end else begin
+                countShiftInput_pipe <= placeOne1 ? (
+                placeOne2 ? 2'b01 : 2'b10
+                ) : placeOne2 ? 2'b10 :
+                placeOne3 ? 2'b10 : 2'b00;
+            end
+        end
+
+        assign countShiftInput = countShiftInput_pipe;
+
+        reg lastOut_pipe;
+        always_ff @(posedge clk_i, negedge rst_ni) begin
+            if (!rst_ni) begin
+                lastOut_pipe <= 1'b0;
+            end else if (start) begin
+                lastOut_pipe <= 1'b0;
+            end else if (countOut1 == 0 & countDown & countLast3Active) begin
+                lastOut_pipe <= 1'b1;
+            end else begin
+                lastOut_pipe <= 1'b0;
+            end
+        end
+
+        always_ff @(posedge clk_i, negedge rst_ni) begin
             if (!rst_ni) begin
                 lastOut <= 1'b0;
-            end else if (start) begin
-                lastOut <= 1'b0;
-            end else if (countOut1 == 0 & countDown & countLast3) begin
-                lastOut <= 1'b1;
             end else begin
-                lastOut <= 1'b0;
+                lastOut <= lastOut_pipe;
+            end
+        end
+
+        reg newOut_pipe;
+        always_ff @(posedge clk_i, negedge rst_ni) begin
+                if (!rst_ni) begin
+                    newOut_pipe <= 1'b0;
+                end else if (start) begin
+                    newOut_pipe <= 1'b0;
+                end else if ( (countLast2Active | lastOut_pipe) & busy) begin
+                    newOut_pipe <= 1'b1;
+                end else begin
+                    newOut_pipe <= 1'b0;
+                end
+            end
+        always_ff @(posedge clk_i, negedge rst_ni) begin
+                if (!rst_ni) begin
+                    newOut <= 1'b0;
+                end else begin
+                    newOut <= newOut_pipe;
+                end
+        end
+
+    end else begin : gen_no_pipeline_lastOut
+
+        assign countShiftInput = placeOne1 ? (
+            placeOne2 ? 2'b01 : 2'b10
+        ) : placeOne2 ? 2'b10 :
+        placeOne3 ? 2'b10 : 2'b00;
+
+        always_ff @(posedge clk_i, negedge rst_ni) begin
+                if (!rst_ni) begin
+                    lastOut <= 1'b0;
+                end else if (start) begin
+                    lastOut <= 1'b0;
+                end else if (countOut1 == 0 & countDown & countLast3Active) begin
+                    lastOut <= 1'b1;
+                end else begin
+                    lastOut <= 1'b0;
+                end
+        end
+
+        always_ff @(posedge clk_i, negedge rst_ni) begin
+                if (!rst_ni) begin
+                    newOut <= 1'b0;
+                end else if (start) begin
+                    newOut <= 1'b0;
+                end else if ( (countLast2Active | lastOut) & busy) begin
+                    newOut <= 1'b1;
+                end else begin
+                    newOut <= 1'b0;
+                end
             end
     end
 
@@ -181,9 +260,6 @@ module seq_MAC #(
             end else if (lastOut) begin
                 lastOut <= 1'b0;
                 lastMultAccum <= 1'b1;
-            end else begin
-                lastOut <=  lastOut;
-                lastMultAccum <= lastMultAccum;
             end
     end
 
@@ -200,18 +276,6 @@ module seq_MAC #(
                 valid_out_reg <= 1'b0;
             end
     end
-
-    always_ff @(posedge clk_i, negedge rst_ni) begin
-            if (!rst_ni) begin
-                newOut <= 1'b0;
-            end else if (start) begin
-                newOut <= 1'b0;
-            end else if ( (countLast2 | lastOut) & busy) begin
-                newOut <= 1'b1;
-            end else begin
-                newOut <= 1'b0;
-            end
-        end
 
     logic unsigned [MB-1:0] count1_start;
     assign count1_start =  bitSizeMin - 1'b1;
@@ -262,7 +326,7 @@ module seq_MAC #(
         .clk_i(clk_i),
         .rst_ni(rst_ni),
         .clear_i(1'b0),
-        .en_i(countLast2),
+        .en_i(countLast2Active),
         .load_i(start),
         .down_i(1'b0),
         .countSet(TotalProductWidth),
@@ -280,15 +344,16 @@ module seq_MAC #(
                 for (element = 0; element < K; element = element + 1) begin : gen_element_block
                 seq_mult #(
                 .P(P),
-                .MAX_WIDTH(MAX_WIDTH)
+                .MAX_WIDTH(MAX_WIDTH),
+                .MANUAL_PIPELINE(MANUAL_PIPELINE)
                 ) seq_mult (
-                    .clk(clk_i),
+                    .clk_i(clk_i),
                     .rst_n(rst_ni),
                     .a(A_mul[row][element]),
                     .b(B_mul[element][column]),
                     .p(partial_mults[element]),
                     .countDown(countDown),
-                    .countLast2(countLast2),
+                    .countLast2(countLast2Active),
                     .invertFirstBit(invertFirstBit),
                     .invertSecondRow(invertSecondRow),
                     .muxSelA(muxSelA),

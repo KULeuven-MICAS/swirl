@@ -129,11 +129,12 @@ module tb_syn_tle;
                 C_i[i][j] = 3;
             end
         end
-        $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
+        $display("INPUT %0dx%0d-bit: at time %0t, A_i = %p, B_i = %p, C_i = %p",2*bitSizeA, 2*bitSizeB, $time, A_i, B_i, C_i);
         #10
         valid_i = 0;
         wait(valid_o == 1);
-        $display("OUTPUT: at time %t, D_o = %p", $time, D_o);
+        $display("OUTPUT:        at time %0t, D_o = %p", $time, D_o);
+        $display("");
         #5
 
         #10;
@@ -154,11 +155,12 @@ module tb_syn_tle;
                 C_i[i][j] = $urandom;
             end
         end
-        $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
+        $display("INPUT %0dx%0d-bit: at time %0t, A_i = %p, B_i = %p, C_i = %p",2*bitSizeA, 2*bitSizeB, $time, A_i, B_i, C_i);
         #10
         valid_i = 0;
         wait(valid_o == 1);
-        $display("OUTPUT: at time %t, D_o = %p", $time, D_o);
+        $display("OUTPUT:        at time %0t, D_o = %p", $time, D_o);
+        $display("");
         #5
 
         #10
@@ -182,11 +184,12 @@ module tb_syn_tle;
                 C_i[i][j] = 8'b00010001;
             end
         end
-        $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
+        $display("TEST FOR CORRECT BEHAVIOR OF 4-bit WITH 8-bit INPUTS, ACTUAL A,B INPUTS ARE NOT 17 BUT 1!");
+        $display("INPUT %0dx%0d-bit: at time %0t, A_i = %p, B_i = %p, C_i = %p",2*bitSizeA, 2*bitSizeB, $time, A_i, B_i, C_i);
         #10
         valid_i = 0;
         wait(valid_o == 1);
-        $display("OUTPUT: at time %t, D_o = %p", $time, D_o);
+        $display("OUTPUT:        at time %0t, D_o = %p", $time, D_o);
 
 
 
