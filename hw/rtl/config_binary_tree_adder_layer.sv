@@ -2,8 +2,8 @@ module config_binary_tree_adder_layer #(
     parameter int INPUTS_AMOUNT,
     parameter int P
 ) (
-    input logic signed [P-1:0] inputs [INPUTS_AMOUNT],
-    output logic signed [P+1:0] outputs [INPUTS_AMOUNT/2], // #outputs = #inputs halved
+    input logic [P-1:0] inputs [INPUTS_AMOUNT],
+    output logic [P+1:0] outputs [INPUTS_AMOUNT/2], // #outputs = #inputs halved
     input logic halvedPrecision
 );
     localparam int OutputsAmount = INPUTS_AMOUNT/2;

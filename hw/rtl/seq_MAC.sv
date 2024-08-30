@@ -369,13 +369,15 @@ module seq_MAC #(
                 logic unsigned [P + $clog2(K)-1:0] mult_sum;
                 logic unsigned [31:0] sum;
 
-                binary_tree_adder_unsigned #(
+                binary_tree_adder #(
                     .P(2),
-                    .INPUTS_AMOUNT(K)
+                    .INPUTS_AMOUNT(K),
+                    .MODE(1) // unsigned or signed mode (signedAddition set to 0 or 1)
                 ) tree_add (
                     .inputs(partial_mults),
                     .out(mult_sum),
-                    .signedAddition(lastMultAccum)
+                    .signedAddition(lastMultAccum),
+                    .out_32bit() // not used
                 );
 
 
