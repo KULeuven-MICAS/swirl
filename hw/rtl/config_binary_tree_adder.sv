@@ -1,4 +1,20 @@
-// tree adder accepting only powers of 2 for amount of inputs
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// A configurable binary tree adder, supporting P-bit or P/2-bit inputs and giving 1 summed output.
+// The halvedPrecision input can be used to select between the two modes at runtime.
+// For halved precision, the P-bit inputs are expected to be filled up with two P/2-bit inputs,
+// with the output giving the same format.
+// Inputs are expected to be in 2's complement format for signed addition.
+//
+// Parameters:
+// - INPUTS_AMOUNT: number of inputs, needs to be a power of 2
+// - P: number of bits of each seperate element of the inputs
+
 module config_binary_tree_adder #(
     parameter int INPUTS_AMOUNT,
     parameter int P

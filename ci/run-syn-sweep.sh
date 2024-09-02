@@ -9,20 +9,20 @@
 
 # Default values for fixed parameters
 DATAW=8
-M_SIZE=1
-N_SIZE=1
-K_SIZE=32
+M_SIZE=8
+N_SIZE=8
+K_SIZE=8
 TREE=1
-DOTP_ARCH=2
+DOTP_ARCH=0
 RETIME=1
 SYN_MODULE="syn_tle"
-MANUAL_PIPELINE=1
+MANUAL_PIPELINE=0
 OUTPUT_DIR=
 
 # Loop over different pipeline depths and clock speeds
 for PIPE in 0
 do
-    for CLK_SPD in 1428
+    for CLK_SPD in 10000
     do
 
     if [ $RETIME -eq 1 ]

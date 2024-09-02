@@ -1,3 +1,19 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// One layer of a binary tree adder, MODE 0 for always signed addition, MODE 1 for signed/unsigned addition
+// according to the signedAddition input. Every layer halves the amount of inputs by summing adjoining pairs.
+// Inputs are expected to be in 2's complement format for signed addition.
+//
+// Parameters:
+// - INPUTS_AMOUNT: number of inputs, needs to be a power of 2
+// - P: number of bits of each seperate element of the inputs
+// - MODE: 0 for always signed addition, 1 for signed/unsigned addition according to the signedAddition input
+
 module binary_tree_adder_layer #(
     parameter int INPUTS_AMOUNT,
     parameter int P,

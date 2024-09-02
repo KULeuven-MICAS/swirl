@@ -9,8 +9,8 @@
 // 1) perform a full signed 4-bit multiplication
 // 2) perform 2 signed 2-bit multiplications, when halvedPrecision is set
 // 3) perform part of a signed 8-bit (or higher) multiplication, when continueHigher is set
-// The algorithm used is a modified Baugh-Wooley Algorithm, the invert signals are used to
-// correctly perform this algorithm
+// The algorithm used is a modified Baugh-Wooley Algorithm (see doc/figs/modified_baugh_wooley.png),
+// the invert signals are used to correctly perform this algorithm
 // The multiplier is split up into 4 2-bit multipliers, which are instantiated in this module
 
 module config_multiplier_4bit (

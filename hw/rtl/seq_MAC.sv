@@ -6,16 +6,17 @@
 //
 // Module description:
 // Matrix MAC (Multiplication Accumulation A*B+C) module that calculates result bit-serially.
-// The module uses the modified Baugh-Wooley algorithm to calculate the multiplication of two numbers in steps
+// The module uses the modified Baugh-Wooley algorithm (see doc/figs/modified_baugh_wooley.png) to calculate the multiplication of two numbers in steps
 // of P bits (though only implemented for P=2) and accumulates these chunks of P(=2) bits to calculate the final result.
 // 2- to 14-bit signed numbers are supported, with the width of the numbers being a multiple of P(=2) and inputs can have different widths.
 //
+// SEE doc/figs/seq_MAC.pdf FOR A GRAPHICAL REPRESENTATION OF THE MODULE
 //
 // Parameters:
 // - M: number of rows of the A matrix
 // - N: number of columns of the B matrix
 // - K: number of columns of the A matrix and rows of the B matrix
-// - MAX_WIDTH: maximum width of the input data
+// - MAX_WIDTH: maximum width bits of the input data
 // - P: number of bits calculated in each step (only implemented for P=2)
 //
 
@@ -72,6 +73,9 @@ module seq_MAC #(
     reg lastMultAccum;
     reg valid_out_reg;
     reg countDown;
+
+    reg signed [MAX_WIDTH-1:0] A_mul_reg [M][K];
+    reg signed [MAX_WIDTH-1:0] B_mul_reg [M][K];
 
     reg [MB-1:0] bitSizeB_reg;
     reg [MB-1:0] bitSizeA_reg;
@@ -335,13 +339,39 @@ module seq_MAC #(
         .last_o()
     );
 
-        genvar column, row, element;
-        for (column = 0; column < N; column = column + 1) begin : gen_column_block
-            for (row = 0; row < M; row = row + 1) begin: gen_row_block
+        
+        genvar n, m, k;
+
+        for (m = 0; m < M; m = m + 1) begin : gen_A_row
+            for (k = 0; k < K; k = k + 1) begin : gen_A_column
+                always_ff @(posedge clk_i, negedge rst_ni) begin
+                    if (~rst_ni) begin
+                        A_mul_reg[m][k] <= 0;
+                    end else if (start) begin
+                        A_mul_reg[m][k] <= A_mul[m][k];
+                    end
+                end
+            end
+        end
+
+        for (k = 0; k < K; k = k + 1) begin : gen_B_row
+            for (n = 0; n < N; n = n + 1) begin : gen_B_column
+                always_ff @(posedge clk_i, negedge rst_ni) begin
+                    if (~rst_ni) begin
+                        B_mul_reg[k][n] <= 0;
+                    end else if (start) begin
+                        B_mul_reg[k][n] <= B_mul[k][n];
+                    end
+                end
+            end
+        end
+
+        for (n = 0; n < N; n = n + 1) begin : gen_column_block
+            for (m = 0; m < M; m = m + 1) begin: gen_row_block
 
                 logic [P-1:0] partial_mults [K];
 
-                for (element = 0; element < K; element = element + 1) begin : gen_element_block
+                for (k = 0; k < K; k = k + 1) begin : gen_element_block
                 seq_mult #(
                 .P(P),
                 .MAX_WIDTH(MAX_WIDTH),
@@ -349,9 +379,9 @@ module seq_MAC #(
                 ) seq_mult (
                     .clk_i(clk_i),
                     .rst_n(rst_ni),
-                    .a(A_mul[row][element]),
-                    .b(B_mul[element][column]),
-                    .p(partial_mults[element]),
+                    .a(A_mul_reg[m][k]),
+                    .b(B_mul_reg[k][n]),
+                    .p(partial_mults[k]),
                     .countDown(countDown),
                     .countLast2(countLast2Active),
                     .invertFirstBit(invertFirstBit),
@@ -396,7 +426,7 @@ module seq_MAC #(
                     if (~rst_ni) begin
                         accum_mult <= 0;
                     end else if (start) begin
-                        accum_mult <= C_mul[row][column];
+                        accum_mult <= C_mul[m][n];
                         offsetCount <= 0;
                     end else if (newOut) begin
                         accum_mult <= accum_mult_next;
@@ -412,7 +442,7 @@ module seq_MAC #(
                     .sum(accum_mult_next)
                 );
 
-                assign D[row][column] = accum_mult;
+                assign D[m][n] = accum_mult;
         end
     end
 endmodule

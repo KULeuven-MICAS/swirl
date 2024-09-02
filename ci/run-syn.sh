@@ -37,9 +37,9 @@ ROOT_DIR=$(realpath "$SCRIPT_DIR/..")
 
 # Default values
 DATAW=8
-M_SIZE=1
-N_SIZE=1
-K_SIZE=2
+M_SIZE=4
+N_SIZE=4
+K_SIZE=4
 PIPE_REGS=0
 TREE=1
 CLK_SPD=10000

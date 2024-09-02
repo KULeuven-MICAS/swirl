@@ -12,8 +12,8 @@
 // Inputs are split up equally for lower precision, 4_4 or 2_2_2_2, and placed accordingly
 // in the output, 8_8 or 4_4_4_4
 //
-// The algorithm used is a modified Baugh-Wooley Algorithm, the invert signals are used to
-// correctly perform this algorithm
+// The algorithm used is a modified Baugh-Wooley Algorithm (see doc/figs/modified_baugh_wooley.png),
+// the invert signals are used to correctly perform this algorithm
 // The multiplier is split up into 4 4-bit multipliers, which are instantiated in this module
 
 module config_multiplier_8bit (

@@ -1,3 +1,26 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Sequential multiplication module. The module calculates the result of a*b sequentially,
+// outputting the next P least significant of the product after varying amount of clock cycles, which
+// are need to be shifted to the output with the control signal 'shift'. Inputs of this module are mostly
+// controlled by logic in the seq_MAC module, which is shared by all seq_mult modules, only differing in
+// a and b input. The module uses a modified Baugh-Wooley algorithm to calculate the product of a and b.
+// (doc/figs/modified_baugh_wooley.png for example of the algorithm)
+//
+// SEE doc/figs/seq_MAC.pdf FOR A GRAPHICAL REPRESENTATION OF THE MODULE
+//
+// Parameters:
+// - P: number of bits calculated sequentially at a time (WARNING: only P=2 is supported at the time, but can be easily extended)
+// - MAX_WIDTH: maximum width of the input data
+// - MANUAL_PIPELINE: 0 for no extra pipeline stage, 1 for extra pipeline stage and slight timing improvement
+
+// defining default values for synthesis parameters
+//
 `ifndef MANUAL_PIPELINE
 `define MANUAL_PIPELINE 0
 `endif
@@ -12,7 +35,7 @@ module seq_mult #(
     input logic [MAX_WIDTH-1:0] a,
     input logic [MAX_WIDTH-1:0] b,
     input logic countDown,
-    input logic countLast2,
+    input logic shift,
     input logic lastOut,
     input logic [2:0] muxSelA,
     input logic [2:0] muxSelB,
@@ -31,8 +54,6 @@ module seq_mult #(
     logic unsigned [2*P-1:0] nextCarryCount;
     logic adderCout;
 
-    reg [MAX_WIDTH-1:0] reg_a;
-    reg [MAX_WIDTH-1:0] reg_b;
     reg [2*P-1:0] accumSum;
     reg unsigned [2*P-1:0] carryCount;
     reg [P-1:0] out;
@@ -44,8 +65,8 @@ module seq_mult #(
         .WIDTH(P),
         .NUMBER(8)
     ) mux_a (
-        .mux_in('{reg_a[P-1:0], reg_a[2*P-1:P], reg_a[3*P-1:2*P], reg_a[4*P-1:3*P],
-        reg_a[5*P-1:4*P], reg_a[6*P-1:5*P], reg_a[7*P-1:6*P], reg_a[8*P-1:7*P]}),
+        .mux_in('{a[P-1:0], a[2*P-1:P], a[3*P-1:2*P], a[4*P-1:3*P],
+        a[5*P-1:4*P], a[6*P-1:5*P], a[7*P-1:6*P], a[8*P-1:7*P]}),
         .sel(muxSelA),
         .out(input_a)
     );
@@ -54,8 +75,8 @@ module seq_mult #(
         .WIDTH(P),
         .NUMBER(8)
     ) mux_b (
-        .mux_in('{reg_b[P-1:0], reg_b[2*P-1:P], reg_b[3*P-1:2*P], reg_b[4*P-1:3*P],
-        reg_b[5*P-1:4*P], reg_b[6*P-1:5*P], reg_b[7*P-1:6*P], reg_b[8*P-1:7*P]}),
+        .mux_in('{b[P-1:0], b[2*P-1:P], b[3*P-1:2*P], b[4*P-1:3*P],
+        b[5*P-1:4*P], b[6*P-1:5*P], b[7*P-1:6*P], b[8*P-1:7*P]}),
         .sel(muxSelB),
         .out(input_b)
     );
@@ -110,12 +131,12 @@ module seq_mult #(
             if (!rst_n) begin
                 shiftAccumSum_pipe <= 0;
             end else begin
-                shiftAccumSum_pipe <= countLast2;
+                shiftAccumSum_pipe <= shift;
             end
         end
         assign shiftAccumSum = shiftAccumSum_pipe;
     end else begin : gen_no_pipeline_shift
-        assign shiftAccumSum = countLast2;
+        assign shiftAccumSum = shift;
     end
 
     always_ff @(posedge clk_i, negedge rst_n) begin
@@ -154,16 +175,6 @@ module seq_mult #(
             carryCount <= nextCarryCount;
         end
     end
-
-     always_ff @(posedge clk_i, negedge rst_n) begin
-         if (!rst_n) begin
-             reg_a <= 0;
-             reg_b <= 0;
-         end else if (start) begin
-             reg_a <= a;
-             reg_b <= b;
-         end
-     end
 
 endmodule
 

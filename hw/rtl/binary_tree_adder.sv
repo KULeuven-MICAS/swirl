@@ -1,4 +1,20 @@
-// tree adder accepting only powers of 2 for amount of inputs
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author: Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
+//
+// Module description:
+// Binary tree adder supporting 2^n inputs, giving 1 summed output,
+// MODE 0 for always signed addition, MODE 1 for signed/unsigned addition according to the signedAddition input.
+// Inputs are expected to be in 2's complement format for signed addition.
+// The output is a 32-bit value for MODE 0, and a P-bit value for MODE 1 as for this projects specific needs.
+//
+// Parameters:
+// - INPUTS_AMOUNT: number of inputs, needs to be a power of 2
+// - P: number of bits of each seperate element of the inputs
+// - MODE: 0 for always signed addition, 1 for signed/unsigned addition according to the signedAddition input
+
 module binary_tree_adder #(
     parameter int INPUTS_AMOUNT,
     parameter int P,
@@ -16,6 +32,9 @@ module binary_tree_adder #(
     localparam int LayerAmount = $clog2(INPUTS_AMOUNT);
     logic signed [P+LayerAmount-1:0] temp_output ;
     generate
+        if (INPUTS_AMOUNT == 1) begin : gen_single_input
+            assign temp_output = inputs[0];
+        end else begin : gen_tree
         genvar layer;
         for(layer = 0; layer < LayerAmount; layer = layer + 1) begin: gen_layer
             localparam int CurrentWidth = INPUTS_AMOUNT >> layer;
@@ -45,6 +64,7 @@ module binary_tree_adder #(
                     .signedAddition(signedAddition)
                 );
             end
+        end
         end
     endgenerate
 

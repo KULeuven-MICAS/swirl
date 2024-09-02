@@ -7,8 +7,8 @@
 // Module description:
 // Configurable 2-bit multiplier that can be configured to perform signed 2-bit multiplication
 // or be part of a higher precision multiplication.
-// The algorithm used is a modified Baugh-Wooley Algorithm, the invert signals are used to
-// correctly perform this algorithm for higher precision multiplications
+// The algorithm used is a modified Baugh-Wooley Algorithm (see doc/figs/modified_baugh_wooley.png),
+// the invert signals are used to correctly perform this algorithm for higher precision multiplications
 
 module mult_2bit (
     input logic [1:0] multiplier,

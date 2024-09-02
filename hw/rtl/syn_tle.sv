@@ -260,7 +260,7 @@ module syn_tle #(
         .P(P),
         .TREE(TREE),
         .PIPESTAGES(PIPESTAGES),
-        .MODE(2),
+        .MODE(0),
         .MANUAL_PIPELINE(MANUAL_PIPELINE)
     ) mma (
         .A(A_in_matmul),

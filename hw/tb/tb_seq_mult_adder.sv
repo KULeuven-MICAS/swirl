@@ -1,7 +1,7 @@
 module tb_seq_mult_adder ();
 
     localparam int K = 1;
-    localparam int PIPELINED = 1;
+    localparam int MANUAL_PIPELINE = 0;
     localparam int SWEEP = 1;
 
         // Testbench signals
@@ -9,8 +9,8 @@ module tb_seq_mult_adder ();
         logic signed [15:0] column [K][1];
         logic signed [31:0] C_in [1][1];
         logic signed [31:0] D[1][1];
-        logic unsigned [4:0] bitSizeA;
-        logic unsigned [4:0] bitSizeB;
+        logic unsigned [3:0] bitSizeA;
+        logic unsigned [3:0] bitSizeB;
         reg valid_in;
         wire ready_in;
         wire valid_out;
@@ -47,7 +47,7 @@ module tb_seq_mult_adder ();
             .K(K),
             .P(2),
             .MAX_WIDTH(16),
-            .PIPELINED(PIPELINED)
+            .MANUAL_PIPELINE(MANUAL_PIPELINE)
         ) seq_mult_adder (
             .clk_i(clk_i),
             .rst_ni(rst_ni),
@@ -71,7 +71,7 @@ module tb_seq_mult_adder ();
 
         // Run tests
         initial begin
-            if (PIPELINED) begin
+            if (MANUAL_PIPELINE) begin
                 $dumpfile("tb_seq_mult_adder_pipelined.vcd");
                 $dumpvars(0, tb_seq_mult_adder);
             end else begin

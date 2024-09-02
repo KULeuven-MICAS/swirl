@@ -53,7 +53,7 @@ module tb_syn_tle;
         .P(P),
         .PIPESTAGES(PIPESTAGES),
         .TREE(TREE),
-        .MODE(2)
+        .MODE(0)
     ) dut (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
