@@ -134,6 +134,5 @@ cd "$ROOT_DIR/pi/syn"
 mkdir -p ./work
 cd ./work
 
-
 source /esat/micas-data/data/design/scripts/ddi_22.35.rc
 M_SIZE=$M_SIZE N_SIZE=$N_SIZE K_SIZE=$K_SIZE PIPE_REGS=$PIPE_REGS TREE=$TREE CLK_SPD=$CLK_SPD DOTP_ARCH=$DOTP_ARCH OUTPUT_DIR=$OUTPUT_DIR SYN_MODULE=$SYN_MODULE RETIME=$RETIME MANUAL_PIPELINE=$MANUAL_PIPELINE genus -legacy_ui -overwrite -files ../syn.tcl -log genCompile.log
