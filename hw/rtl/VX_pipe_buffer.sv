@@ -1,11 +1,11 @@
 // Copyright 2019-2023
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,9 +21,9 @@
 // + ready_in and ready_out are coupled
 
 module VX_pipe_buffer #(
-    parameter DATAW    = 1,
-    parameter PASSTHRU = 0
-) ( 
+    parameter int DATAW    = 1,
+    parameter int PASSTHRU = 0
+) (
     input  wire             clk,
     input  wire             reset,
     input  wire             valid_in,
@@ -32,21 +32,21 @@ module VX_pipe_buffer #(
     output wire [DATAW-1:0] data_out,
     input  wire             ready_out,
     output wire             valid_out
-); 
-    if (PASSTHRU != 0) begin
+);
+    if (PASSTHRU != 0) begin : gen_passthru
         assign ready_in  = ready_out;
         assign valid_out = valid_in;
         assign data_out  = data_in;
-    end else begin
+    end else begin : gen_non_passthru
         wire stall = valid_out && ~ready_out;
 
         VX_pipe_register #(
-            .DATAW	(1 + DATAW),
+            .DATAW (1 + DATAW),
             .RESETW (1 + DATAW)
         ) pipe_register (
             .clk      (clk),
             .reset    (reset),
-            .enable	  (~stall),
+            .enable   (~stall),
             .data_in  ({valid_in,  data_in}),
             .data_out ({valid_out, data_out})
         );

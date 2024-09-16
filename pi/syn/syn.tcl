@@ -3,17 +3,21 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # Author: Giuseppe Sarda <giuseppe.sarda@esat.kuleuven.be>
-#         Mats Vanhamel
+#         Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
 # Basic synthesis script
 
 set_attribute information_level 2
 
+
+
 set SCRIPT_DIR [file dirname [info script]]
-set DESIGN syn_tle
 set PROJECT_DIR    $SCRIPT_DIR/../../
 set INPUTS_DIR     $SCRIPT_DIR/inputs
 
 source ${INPUTS_DIR}/defines.tcl
+
+set DESIGN ${SYN_MODULE}
+puts "Design: ${DESIGN}"
 
 set HDL_PATH [ list \
     $PROJECT_DIR/hw/rtl \
@@ -58,19 +62,35 @@ set_attribute interconnect_mode ple
 set_attribute init_hdl_search_path $HDL_PATH
 set_attr hdl_search_path $search_path
 
-source ${INPUTS_DIR}/gen_hdl_list.tcl
-lappend HDL_LIST ${HDL_PATH}/syn_tle.sv
+puts "Reading HDL files for ${DESIGN}"
 
-read_hdl -sv -define M=${M_SIZE} -define N=${N_SIZE} -define K=${K_SIZE} \
-             -define P=${DATAW} -define PIPESTAGES=${PIPE_REGS} \
-             -define TREE=${TREE} -define MODE=${DOTP_ARCH} \
-             ${HDL_LIST}
+if {$DESIGN == "syn_tle"} {
+    source ${INPUTS_DIR}/gen_hdl_list.tcl
+    lappend HDL_LIST ${HDL_PATH}/syn_tle.sv
+
+    read_hdl -sv -define M=${M_SIZE} -define N=${N_SIZE} -define K=${K_SIZE} \
+            -define P=${DATAW} -define PIPESTAGES=(${PIPE_REGS}+1) \
+            -define TREE=${TREE} -define MODE=${DOTP_ARCH} -define MANUAL_PIPELINE=${MANUAL_PIPELINE} \
+            ${HDL_LIST}
+} else {
+    source ${INPUTS_DIR}/unit_hdl_list/${DESIGN}_hdl_list.tcl
+    puts "MANUAL_PIPELINE: ${MANUAL_PIPELINE}"
+    read_hdl -sv -define MANUAL_PIPELINE=${MANUAL_PIPELINE} ${HDL_LIST}
+}
 
 elaborate ${DESIGN}
-
 check_design -unresolved
-set_attribute retime true matrix_multiplication_accumulation*
-set_attribute retime true matrix_multiplication_accumulation/*
+
+if {$RETIME} {
+    if {$DESIGN == "syn_tle"} {
+        set_attribute dont_retime true syn_tle/input_buffer
+        set_attribute dont_retime true syn_tle/output_buffer
+        set_attribute retime true syn_tle
+
+    } else {
+        set_attribute retime true ${DESIGN}*
+    }
+}
 
 read_sdc ${INPUTS_DIR}/constraints.sdc
 

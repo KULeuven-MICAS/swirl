@@ -42,8 +42,8 @@ tb_config_tree_adder:
 tb_config_multiplier_2bit:
 	SIMNAME=config_multiplier_2bit \
 	vsim -c -do run_sim.tcl
-tb_config_shiftadder_4bit:
-	SIMNAME=config_shiftadder_4bit \
+tb_config_multiplier_4bit:
+	SIMNAME=config_multiplier_4bit \
 	vsim -c -do run_sim.tcl
 tb_config_multiplier_8bit:
 	SIMNAME=config_multiplier_8bit \

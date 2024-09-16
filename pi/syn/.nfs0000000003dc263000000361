@@ -1,0 +1,405 @@
+Cadence Genus(TM) Synthesis Solution.
+Copyright 2024 Cadence Design Systems, Inc. All rights reserved worldwide.
+Cadence and the Cadence logo are registered trademarks and Genus is a trademark
+of Cadence Design Systems, Inc. in the United States and other countries.
+
+[13:49:42.411065] Configured Lic search path (22.01-s003): /esat/micas-data/software/Cadence/ddi_22.35/GENUS221/share/license/license.dat
+
+Version: 22.15-s086_1, built Wed Feb 28 07:52:45 PST 2024
+Options: -legacy_ui -overwrite -files ./syn.tcl -log genCompile.log 
+Date:    Mon Aug 26 13:49:42 2024
+Host:    eridani6.esat.kuleuven.be (x86_64 w/Linux 4.18.0-553.8.1.el8_10.x86_64) (1core*4cpus*4physical cpus*Intel Core Processor (Skylake, IBRS, no TSX) 16384KB) (24655900KB)
+PID:     3864156
+OS:      Rocky Linux release 8.10 (Green Obsidian)
+
+Checking out license: Genus_Synthesis
+[13:49:42.470977] Periodic Lic check successful
+[13:49:42.470985] Feature usage summary:
+[13:49:42.470985] Genus_Synthesis
+
+
+
+***********************************************************************************************************
+***********************************************************************************************************
+
+
+
+Finished executable startup (1 second elapsed).
+
+Loading tool scripts...
+Finished loading tool scripts (16 seconds elapsed).
+
+#@ Processing -files option
+@genus 1> source ./syn.tcl
+  Setting attribute of root '/': 'information_level' = 2
+Sourcing './inputs/defines.tcl' (Mon Aug 26 13:49:58 CEST 2024)...
+Sourcing './tech/skywater130_setup.tcl' (Mon Aug 26 13:49:58 CEST 2024)...
+Info    : An unsupported construct was detected in this library. [LBR-40]
+        : Unknown Liberty attribute 'library_features' encountered. Ignoring (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 316)
+        : Check to see if this construct is really needed for synthesis. Many liberty constructs are not actually required.
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_dc' used in group 'dc_current' on line 779 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+        : Add the look-up table definition, then reload the library.
+Warning : Ignoring the timing group. [LBR-709]
+        : The dc_current group 'ccsn_dc' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for dc_current group 'ccsn_dc' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 779)
+        : Fix the library cell error and then reload the library.
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_ovrf' used in group 'vector' on line 831 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_ovrf' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_ovrf' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 831)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_ovrf' used in group 'vector' on line 837 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_ovrf' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_ovrf' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 837)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_ovrf' used in group 'vector' on line 817 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_ovrf' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_ovrf' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 817)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_ovrf' used in group 'vector' on line 823 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_ovrf' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_ovrf' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 823)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 896 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 896)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 903 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 903)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 910 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 910)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 917 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 917)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 924 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 924)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 931 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 931)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 938 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 938)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 845 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 845)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 852 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 852)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 859 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 859)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 866 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 866)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 873 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 873)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 880 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 880)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_pnlh' used in group 'vector' on line 887 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The vector group 'ccsn_pnlh' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for vector group 'ccsn_pnlh' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 887)
+Error   : Could not find the look-up table definition. [LBR-517]
+        : Template name 'ccsn_dc' used in group 'dc_current' on line 949 is not defined in the library. To fix this issue, define the missing template in the library. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib)
+Warning : Ignoring the timing group. [LBR-709]
+        : The dc_current group 'ccsn_dc' is being ignored due to errors in this group. This group will be excluded for any further library checks. Refer to the previous messages issued for dc_current group 'ccsn_dc' to find the details of the issues in this group. (File /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib, Line 949)
+Warning : Maximum message print count reached. [MESG-11]
+        : Maximum print count of '20' reached for message 'LBR-517'.
+Warning : Maximum message print count reached. [MESG-11]
+        : Maximum print count of '20' reached for message 'LBR-709'.
+
+  Message Summary for Library sky130_fd_sc_hs__tt_025C_1v80.lib:
+  **************************************************************
+  Ignoring the timing group. [LBR-709]: 96732
+  Could not find the look-up table definition. [LBR-517]: 96732
+  An unsupported construct was detected in this library. [LBR-40]: 1
+  **************************************************************
+ 
+Info    : Created nominal operating condition. [LBR-412]
+        : Operating condition '_nominal_' was created for the PVT values (1.000000, 1.800000, 25.000000) in library 'sky130_fd_sc_hs__tt_025C_1v80.lib'.
+        : The nominal operating condition is represented, either by the nominal PVT values specified in the library source (via nom_process,nom_voltage and nom_temperature respectively), or by the default PVT values (1.0,1.0,1.0).
+Warning : Library cell has no output pins defined. [LBR-9]
+        : Library cell 'sky130_fd_sc_hs__decap_4' must have an output pin.
+        : Add the missing output pin(s), then reload the library. Else the library cell will be marked as timing model i.e. unusable. Timing_model means that the cell does not have any defined function. If there is no output pin, Genus will mark library cell as unusable i.e. the attribute 'usable' will be marked to 'false' on the libcell. Therefore, the cell is not used for mapping and it will not be picked up from the library for synthesis. If you query the attribute 'unusable_reason' on the libcell; result will be: 'Library cell has no output pins.'Note: The message LBR-9 is only for the logical pins and not for the power_ground pins. Genus will depend upon the output function defined in the pin group (output pin) of the cell, to use it for mapping. The pg_pin will not have any function defined.
+Warning : Library cell has no output pins defined. [LBR-9]
+        : Library cell 'sky130_fd_sc_hs__decap_4' must have an output pin.
+Warning : Library cell has no output pins defined. [LBR-9]
+        : Library cell 'sky130_fd_sc_hs__decap_8' must have an output pin.
+Warning : Library cell has no output pins defined. [LBR-9]
+        : Library cell 'sky130_fd_sc_hs__decap_8' must have an output pin.
+  Setting attribute of root '/': 'library' = /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/timing/sky130_fd_sc_hs__tt_025C_1v80.lib
+  Setting attribute of root '/': 'auto_ungroup' = none
+  Setting attribute of root '/': 'hdl_bidirectional_assign' = false
+Warning : This attribute will be obsolete in a next major release. [TUI-32]
+        : attribute: 'hdl_undriven_signal_value', object type: 'root'
+        : permitted values: { none 0 1 x X }
+Info    : Using the (old) attribute value(s) for driving unconnected input/ undriven signal or output to set the value of new variable "hdl_unconnected_value". [ELABUTL-134]
+        : Using attribute "hdl_undriven_signal_value" value '0' to set the attribute "hdl_unconnected_value".
+        : To revert to old behaviour set the value of the attribute "hdl_use_new_undriven_handling" to 0.
+  Setting attribute of root '/': 'hdl_undriven_signal_value' = 0
+  Setting attribute of root '/': 'lp_insert_clock_gating' = true
+  Setting attribute of root '/': 'lp_clock_gating_prefix' = lowp_cg
+Warning : This attribute will be obsolete in a next major release. [TUI-32]
+        : attribute: 'leakage_power_effort', object type: 'root'
+        : This attribute is obsolete. Use design_power_effort attribute instead.
+  Setting attribute of root '/': 'leakage_power_effort' = medium
+Warning : This attribute will be obsolete in a next major release. [TUI-32]
+        : attribute: 'lp_power_analysis_effort', object type: 'root'
+  Setting attribute of root '/': 'lp_power_analysis_effort' = medium
+  Setting attribute of root '/': 'hdl_generate_separator' = _
+  Setting attribute of root '/': 'hdl_generate_index_style' = %s_%d
+  Setting attribute of root '/': 'hdl_allow_inout_const_port_connect' = true
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'L1M1_PR' has no resistance value.
+        : If this is the expected behavior, this message can be ignored.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'L1M1_PR_R' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'L1M1_PR_M' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'L1M1_PR_MR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'L1M1_PR_C' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M1M2_PR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M1M2_PR_R' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M1M2_PR_M' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M1M2_PR_MR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M1M2_PR_C' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M2M3_PR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M2M3_PR_R' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M2M3_PR_M' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M2M3_PR_MR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M2M3_PR_C' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M3M4_PR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M3M4_PR_R' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M3M4_PR_M' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M3M4_PR_MR' has no resistance value.
+Info    : Via with no resistance will have a value of '0.0' assigned for resistance value. [PHYS-129]
+        : Via 'M3M4_PR_C' has no resistance value.
+Warning : Maximum message print count reached. [MESG-11]
+        : Maximum print count of '20' reached for message 'PHYS-129'.
+
+  According to lef_library, there are total 6 routing layers [ V(3) / H(3) ]
+
+Warning : The variant range of wire parameters is too large. An example of wire parameters are, a WIDTH for layer, PITCH for layer, MINSPACING for layers, etc. [PHYS-12]
+        : The variant range (0.14, 1.6) of 'WIDTH' for layers 'met2' and 'met5' is too large.
+        : Check the consistency of the parameters, and see if you can ignore this message or you're using different LEF file with wrong parameters.
+Warning : The variant range of wire parameters is too large. An example of wire parameters are, a WIDTH for layer, PITCH for layer, MINSPACING for layers, etc. [PHYS-12]
+        : The variant range (0.0285, 12.2) of 'RPERSQ' for layers 'met5' and 'li1' is too large.
+Warning : The variant range of wire parameters is too large. An example of wire parameters are, a WIDTH for layer, PITCH for layer, MINSPACING for layers, etc. [PHYS-12]
+        : The variant range (0.14, 1.6) of 'MINSPACING' for layers 'met2' and 'met5' is too large.
+Warning : None of the loaded LEF files have MACRO statements. [PHYS-20]
+        : Make sure the LEF file containing MACRO statement was not missed.
+        : The LEF file containing the cell specific information was not loaded. The LEF MACRO construct is used to set the physical data on cells in the timing library. It is likely that only the technology LEF file was loaded. Load all the associated LEF files.
+  Setting attribute of root '/': 'lef_library' = /volume1/users/r0952261/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/tech/sky130_fd_sc_hs.tlef
+  Setting attribute of root '/': 'interconnect_mode' = ple
+  Setting attribute of root '/': 'init_hdl_search_path' = ./../..//hw/rtl
+Warning : This attribute will be obsolete in a next major release. [TUI-32]
+        : attribute: 'hdl_search_path', object type: 'root'
+        : Attribute 'hdl_search_path' is going to be obsoleted, use the new attribute 'init_hdl_search_path'.
+  Setting attribute of root '/': 'hdl_search_path' = ./../..//hw/rtl
+Sourcing './inputs/gen_hdl_list.tcl' (Mon Aug 26 13:50:01 CEST 2024)...
+Sourcing './inputs/arch_hdl_list//part_arch_hdl_list.tcl' (Mon Aug 26 13:50:01 CEST 2024)...
+Sourcing './inputs/arch_hdl_list/common_hdl_list.tcl' (Mon Aug 26 13:50:01 CEST 2024)...
+    initial begin
+          |
+Warning : Ignoring unsynthesizable construct. [VLOGPT-37]
+        : Initial in file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv' on line 35, column 11.
+        : For example, the following constructs will be ignored:
+    - initial block
+    - final block
+    - program block
+    - property block
+    - sequence block
+    - covergroup
+    - checker block
+    - gate drive strength
+    - system task enable
+    - reg declaration with initial value
+    - specify block.
+Warning : Cannot open file. [VLOGPT-650]
+        : File './../..//hw/rtl/biwise_add.sv'.
+        : The specified file could not be opened.  Check the value of the init_hdl_search_path attribute.
+Warning : Cannot open file. [VLOGPT-650]
+        : File './../..//hw/rtl/config_shiftadder_4bit.sv'.
+    initial begin
+          |
+Warning : Ignoring unsynthesizable construct. [VLOGPT-37]
+        : Initial in file './../../hw/rtl/./../../hw/rtl/syn_tle.sv' on line 105, column 11.
+  Library has 305 usable logic and 62 usable sequential lib-cells.
+Info    : Elaborating Design. [ELAB-1]
+        : Elaborating top-level block 'syn_tle' from file './../../hw/rtl/./../../hw/rtl/syn_tle.sv'.
+Warning : Using default parameter value for module elaboration. [CDFG-818]
+        : Elaborating block 'syn_tle' with default parameters value.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'matrix_flattener_WIDTH2_HEIGHT1_P8' from file './../../hw/rtl/./../../hw/rtl/matrix_flattener.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'matrix_flattener_WIDTH1_HEIGHT2_P8' from file './../../hw/rtl/./../../hw/rtl/matrix_flattener.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'matrix_flattener_WIDTH1_HEIGHT1_P32' from file './../../hw/rtl/./../../hw/rtl/matrix_flattener.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'VX_pipe_buffer_DATAW64_PASSTHRU0' from file './../../hw/rtl/./../../hw/rtl/VX_pipe_buffer.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'VX_pipe_register_DATAW65_RESETW65' from file './../../hw/rtl/./../../hw/rtl/VX_pipe_register.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'VX_pipe_buffer_DATAW32_PASSTHRU0' from file './../../hw/rtl/./../../hw/rtl/VX_pipe_buffer.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'VX_pipe_register_DATAW33_RESETW33' from file './../../hw/rtl/./../../hw/rtl/VX_pipe_register.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' from file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv'.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'config_multiplier_8bit' from file './../../hw/rtl/./../../hw/rtl/config_multiplier_8bit.sv'.
+Warning : In legacy_ui mode, Genus creates a blackbox as description for a module is not found. Black boxes represent unresolved references in the design and are usually not expected. Another possible reason is, some libraries are not read and the tool could not get the content for some macros or lib_cells. [CDFG-428]
+        : A blackbox was created for instance 'multTopRight' in file './../../hw/rtl/./../../hw/rtl/config_multiplier_8bit.sv' on line 43.
+        : Check the kind of module a black box is. If it is a lib_cell or a macro, check why the corresponding .lib was not read in. This could be either due to a missing or faulty file or due to an incomplete init_lib_search_path attribute value making restricting access to the missing file. If it is a module of your design, verify whether the path to this module is a part of the files you read or else check that the init_hdl_search_path attribute is not missing some paths.
+Info    : Elaborating Subdesign. [ELAB-2]
+        : Elaborating block 'config_binary_tree_adder_INPUTS_AMOUNT2_P16' from file './../../hw/rtl/./../../hw/rtl/config_binary_tree_adder.sv'.
+    Renamed blackbox module 'config_binary_tree_adder_layer' of instance 'binary_tree_adder_layer' to 'config_binary_tree_adder_layer_INPUTS_AMOUNT2_P16' to include generic names. This is different from LEC behavior which does not include generic names for blackbox modules.
+Warning : In legacy_ui mode, Genus creates a blackbox as description for a module is not found. Black boxes represent unresolved references in the design and are usually not expected. Another possible reason is, some libraries are not read and the tool could not get the content for some macros or lib_cells. [CDFG-428]
+        : A blackbox was created for instance 'binary_tree_adder_layer' in file './../../hw/rtl/./../../hw/rtl/config_binary_tree_adder.sv' on line 28.
+    Renamed blackbox module 'bitwise_add' of instance 'C_add' to 'bitwise_add_P32' to include generic names. This is different from LEC behavior which does not include generic names for blackbox modules.
+Warning : In legacy_ui mode, Genus creates a blackbox as description for a module is not found. Black boxes represent unresolved references in the design and are usually not expected. Another possible reason is, some libraries are not read and the tool could not get the content for some macros or lib_cells. [CDFG-428]
+        : A blackbox was created for instance 'C_add' in file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv' on line 207.
+Info    : Unused module input port. [CDFG-500]
+        : Input port 'clk_i' is not used in module 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' in file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv' on line 18.
+        : (In port definition within the module, the input port is not used in any assignment statements or conditional expressions for decision statements.
+Info    : Unused module input port. [CDFG-500]
+        : Input port 'rst_ni' is not used in module 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' in file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv' on line 19.
+Info    : Unused module input port. [CDFG-500]
+        : Input port 'bitSizeA' is not used in module 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' in file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv' on line 22.
+Info    : Unused module input port. [CDFG-500]
+        : Input port 'bitSizeB' is not used in module 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' in file './../../hw/rtl/./../../hw/rtl/matrix_multiplication_accumulation.sv' on line 23.
+Warning : Module port is wider than connected signal. [CDFG-465]
+        : Signal width (1) does not match width of input port 'halvedPrecision' (2) of instance 'mma' of module 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' in file './../../hw/rtl/./../../hw/rtl/syn_tle.sv' on line 204.
+        : This may cause simulation mismatches between the original and synthesized designs.
+Warning : Undriven module input port. [ELABUTL-127]
+        : Undriven bits of port 'halvedPrecision' of instance 'mma' of module 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1' in file './../../hw/rtl/./../../hw/rtl/syn_tle.sv' on line 204, column 11, hid = 0.
+        : Run check_design to check 'Undriven Port(s)/Pin(s)' section for all undriven module input ports. It is better to double confirm with designer if these undriven ports are expected. During syn_gen the undriven ports are controlled by attribute 'hdl_unconnected_value', the default value is 0.
+Info    : Done Elaborating Design. [ELAB-3]
+        : Done elaborating 'syn_tle'.
+Warning : Black-boxes are represented as unresolved references in the design. [TUI-273]
+        : Cannot resolve reference to 'config_multiplier_4bit'.
+        : Run check_design to get all unresolved instance. To resolve the reference, either load a technology library containing the cell by appending to the 'library' attribute, or read in the hdl file containing the module before performing elaboration. As the design is incomplete, synthesis results may not correspond to the entire design.
+Warning : Black-boxes are represented as unresolved references in the design. [TUI-273]
+        : Cannot resolve reference to 'config_binary_tree_adder_layer_INPUTS_AMOUNT2_P16'.
+Warning : Black-boxes are represented as unresolved references in the design. [TUI-273]
+        : Cannot resolve reference to 'bitwise_add_P32'.
+Checking for analog nets...
+Check completed for analog nets.
+Checking for source RTL...
+Check completed for source RTL.
+Running Unified Mux Engine Tricks...
+Completed Unified Mux Engine Tricks
+
+Stage: post_elab
+-------------------------------------------------------
+| Trick             | Accepts | Rejects | Runtime (s) | 
+-------------------------------------------------------
+| ume_constant_bmux |       0 |       0 |        0.00 | 
+| ume_merge         |       0 |       0 |        0.00 | 
+| ume_ssm           |       0 |       0 |        0.00 | 
+| ume_cse           |       0 |       0 |        0.00 | 
+| ume_shrink        |       0 |       0 |        0.00 | 
+| ume_sweep         |       0 |       0 |        0.00 | 
+-------------------------------------------------------
+Starting optimize datapath shifters [v1.0] (stage: post_elab, startdef: syn_tle, recur: true)
+Completed optimize datapath shifters (accepts: 0, rejects: 0, runtime: 0.000s)
+Starting clip mux common data inputs [v1.0] (stage: post_elab, startdef: syn_tle, recur: true)
+Completed clip mux common data inputs (accepts: 0, rejects: 0, runtime: 0.000s)
+Starting clip the non-user hierarchies [v2.0] (stage: post_elab, startdef: syn_tle, recur: true)
+Completed clip the non-user hierarchies (accepts: 0, rejects: 0, runtime: 0.000s)
+Starting basic netlist cleanup [v1.0] (stage: post_elab, startdef: syn_tle, recur: true)
+Completed basic netlist cleanup (accepts: 0, rejects: 0, runtime: 0.000s)
+
+Stage: post_elab
+--------------------------------------------------------------------
+| Transform                      | Accepts | Rejects | Runtime (s) | 
+--------------------------------------------------------------------
+| hlo_optimize_datapath_shifters |       0 |       0 |        0.00 | 
+| hlo_clip_mux_input             |       0 |       0 |        0.00 | 
+| hlo_clip                       |       0 |       0 |        0.00 | 
+| hlo_cleanup                    |       0 |       0 |        0.00 | 
+--------------------------------------------------------------------
+
+
+ 	 Check Design Report (c)
+	 ------------------- 
+
+  Unresolved References & Empty Modules
+  ------------------------------------- 
+design 'syn_tle' has the following unresolved references
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_1_mult/instances_hier/multBottomLeft
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_1_mult/instances_hier/multBottomRight
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_1_mult/instances_hier/multTopLeft
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_1_mult/instances_hier/multTopRight
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_0_mult/instances_hier/multBottomLeft
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_0_mult/instances_hier/multBottomRight
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_0_mult/instances_hier/multTopLeft
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_gen_element_block_0_mult/instances_hier/multTopRight
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_tree_add/instances_hier/gen_layer_0_gen_first_tree_layer_binary_tree_adder_layer
+/designs/syn_tle/instances_hier/mma/instances_hier/gen_partitioned_gen_column_block_0_gen_row_block_0_C_add
+Total number of unresolved references in design 'syn_tle' : 10
+
+No empty modules in design 'syn_tle'
+
+  Done Checking the design.
+Info    : Retiming cannot be done on designs/subdesigns that do not contain flops. [RETIME-115]
+        : The following designs/subdesigns will not be retimed.
+        : Only set the retime attribute on designs/subdesigns that contain flops.
+        /designs/syn_tle/subdesigns/matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1
+  Setting attribute of subdesign 'matrix_multiplication_accumulation_M1_N1_K2_P8_TREE1_PIPESTAGES1_MODE1': 'retime' = false
+Error   : A required object parameter could not be found. [TUI-61] [set_attribute]
+        : An object of type 'instance|subdesign|design' named 'matrix_multiplication_accumulation/*' could not be found.
+        : Check to make sure that the object exists and is of the correct type.  The 'what_is' command can be used to determine the type of an object.
+
+Usage: set_attribute [-quiet] [-lock] <string> <string> [<instance|subdesign|design>+]
+
+    [-quiet]:
+        keeps quiet unless there are problems 
+    [-lock]:
+        attribute becomes read only once locked 
+    <string>:
+        attribute name 
+    <string>:
+        new value. A compound string (containing spaces) should be represented as a list (using double-quotes or braces). 
+    [<instance|subdesign|design>+]:
+        object(s) of interest 
+1
+Encountered problems processing file: ./syn.tcl
+legacy_genus:/> quit
+
+Lic Summary:
+[14:03:06.309514] Cdslmd servers: platinum
+[14:03:06.309520] Feature usage summary:
+[14:03:06.309520] Genus_Synthesis
+

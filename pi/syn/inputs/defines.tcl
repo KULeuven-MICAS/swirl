@@ -61,8 +61,29 @@ if {[info exists ::env(DOTP_ARCH)]} {
     set DOTP_ARCH 1
 }
 
+# SYN_MODULE = name of the top-level module
+if {[info exists ::env(SYN_MODULE)]} { 
+    set SYN_MODULE $::env(SYN_MODULE)
+} else {
+    set SYN_MODULE "syn_tle"
+}
+
+# RETIME = 1 to enable retiming, 0 to disable it
+if {[info exists ::env(RETIME)]} { 
+    set RETIME $::env(RETIME)
+} else {
+    set RETIME 0
+}
+
+# MANUAL_PIPELINE = 1 to enable manual pipeline, 0 to disable it
+if {[info exists ::env(MANUAL_PIPELINE)]} { 
+    set MANUAL_PIPELINE $::env(MANUAL_PIPELINE)
+} else {
+    set MANUAL_PIPELINE 0
+}
+
 if {[info exists ::env(OUTPUTS_DIR)]} { 
     set OUTPUTS_DIR $::env(OUTPUTS_DIR)
 } else {
-    set OUTPUTS_DIR $SCRIPT_DIR/outputs/W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}_A${DOTP_ARCH}
+    set OUTPUTS_DIR $SCRIPT_DIR/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}_RT${RETIME}_MP${MANUAL_PIPELINE}
 }

@@ -3,9 +3,14 @@
 # SPDX-License-Identifier: Apache-2.0
 
 source ${INPUTS_DIR}/arch_hdl_list/common_hdl_list.tcl
-lappend HDL_LIST ${HDL_PATH}/multiplexer_16to1.sv
+lappend HDL_LIST ${HDL_PATH}/generic_mux.sv
 lappend HDL_LIST ${HDL_PATH}/mult_2bit.sv
 lappend HDL_LIST ${HDL_PATH}/binary_tree_adder.sv
+lappend HDL_LIST ${HDL_PATH}/binary_tree_adder_layer.sv
 lappend HDL_LIST ${HDL_PATH}/binary_tree_adder_unsigned.sv
+lappend HDL_LIST ${HDL_PATH}/binary_tree_adder_layer_unsigned.sv
 lappend HDL_LIST ${HDL_PATH}/seq_mult.sv
 lappend HDL_LIST ${HDL_PATH}/seq_MAC.sv
+lappend HDL_LIST ${HDL_PATH}/half_adder.sv
+lappend HDL_LIST ${HDL_PATH}/full_adder.sv
+lappend HDL_LIST ${HDL_PATH}/programmable_counter.sv

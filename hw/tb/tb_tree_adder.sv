@@ -22,8 +22,6 @@ module tb_tree_adder;
 
   // Run tests
   initial begin
-    
-
     parameter int NUM_TESTS_8 = 5;
     static logic signed [7:0] test_inputs_8[NUM_TESTS_8][8] =  '{
         '{1, 2, 3, 4, 5, 6, 7, 8},
@@ -53,11 +51,10 @@ module tb_tree_adder;
         i, expected_outputs_8[i], out);
     end
 
-    
     for (i = 0; i < 50; i++) begin
       expected_output = 0;
        for (j = 0; j < 8; j++) begin
-        inputs_8[j] = $random;
+        inputs_8[j] = $urandom;
         expected_output += inputs_8[j];
       end;
       #5;

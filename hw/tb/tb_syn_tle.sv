@@ -42,7 +42,8 @@ module tb_syn_tle;
     logic ready_i;
     logic valid_o;
     logic halvedPrecision;
-    logic [3:0] bitSize;
+    logic [3:0] bitSizeA;
+    logic [3:0] bitSizeB;
 
     // Instantiate the DUT (Device Under Test)
     syn_tle #(
@@ -52,7 +53,7 @@ module tb_syn_tle;
         .P(P),
         .PIPESTAGES(PIPESTAGES),
         .TREE(TREE),
-        .MODE(2)
+        .MODE(0)
     ) dut (
         .clk_i(clk_i),
         .rst_ni(rst_ni),
@@ -65,9 +66,10 @@ module tb_syn_tle;
         .ready_i(ready_i),
         .valid_o(valid_o),
         .halvedPrecision(halvedPrecision),
-        .bitSize(bitSize)
+        .bitSizeA(bitSizeA),
+        .bitSizeB(bitSizeB)
     );
-    
+
 
     // Clock generation
     initial begin
@@ -90,7 +92,8 @@ module tb_syn_tle;
         valid_i = 0;
         ready_o = 0;
         halvedPrecision = 0;
-        bitSize = 4;
+        bitSizeA = 4;
+        bitSizeB = 4;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
                 A_i[i][j] = 0;
@@ -126,11 +129,12 @@ module tb_syn_tle;
                 C_i[i][j] = 3;
             end
         end
-        $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
+        $display("INPUT %0dx%0d-bit: at time %0t, A_i = %p, B_i = %p, C_i = %p",2*bitSizeA, 2*bitSizeB, $time, A_i, B_i, C_i);
         #10
         valid_i = 0;
         wait(valid_o == 1);
-        $display("OUTPUT: at time %t, D_o = %p", $time, D_o);
+        $display("OUTPUT:        at time %0t, D_o = %p", $time, D_o);
+        $display("");
         #5
 
         #10;
@@ -138,31 +142,33 @@ module tb_syn_tle;
         ready_o = 1;
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
-                A_i[i][j] = $random;
+                A_i[i][j] = $urandom;
             end
         end
         for (int i = 0; i < K; i++) begin
             for (int j = 0; j < N; j++) begin
-                B_i[i][j] = $random;
+                B_i[i][j] = $urandom;
             end
         end
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < N; j++) begin
-                C_i[i][j] = $random;
+                C_i[i][j] = $urandom;
             end
         end
-        $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
+        $display("INPUT %0dx%0d-bit: at time %0t, A_i = %p, B_i = %p, C_i = %p",2*bitSizeA, 2*bitSizeB, $time, A_i, B_i, C_i);
         #10
         valid_i = 0;
         wait(valid_o == 1);
-        $display("OUTPUT: at time %t, D_o = %p", $time, D_o);
+        $display("OUTPUT:        at time %0t, D_o = %p", $time, D_o);
+        $display("");
         #5
 
         #10
         valid_i = 1;
         halvedPrecision = 1;
-        bitSize = 2;
-        
+        bitSizeA = 2;
+        bitSizeB = 2;
+
         for (int i = 0; i < M; i++) begin
             for (int j = 0; j < K; j++) begin
                 A_i[i][j] = 8'b00010001;
@@ -178,11 +184,12 @@ module tb_syn_tle;
                 C_i[i][j] = 8'b00010001;
             end
         end
-        $display("INPUT: at time %t, A_i = %p, B_i = %p, C_i = %p", $time, A_i, B_i, C_i);
+        $display("TEST FOR CORRECT BEHAVIOR OF 4-bit WITH 8-bit INPUTS, ACTUAL A,B INPUTS ARE NOT 17 BUT 1!");
+        $display("INPUT %0dx%0d-bit: at time %0t, A_i = %p, B_i = %p, C_i = %p",2*bitSizeA, 2*bitSizeB, $time, A_i, B_i, C_i);
         #10
         valid_i = 0;
         wait(valid_o == 1);
-        $display("OUTPUT: at time %t, D_o = %p", $time, D_o);
+        $display("OUTPUT:        at time %0t, D_o = %p", $time, D_o);
 
 
 
