@@ -1,8 +1,0 @@
-# Cadence Genus(TM) Synthesis Solution, Version 22.15-s086_1, built Feb 28 2024 16:52:45
-
-# Date: Mon Aug 26 13:49:41 2024
-# Host: eridani6.esat.kuleuven.be (x86_64 w/Linux 4.18.0-553.8.1.el8_10.x86_64) (1core*4cpus*4physical cpus*Intel Core Processor (Skylake, IBRS, no TSX) 16384KB)
-# OS:   Rocky Linux release 8.10 (Green Obsidian)
-
-source ./syn.tcl
-quit

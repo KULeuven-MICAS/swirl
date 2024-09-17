@@ -28,7 +28,7 @@ A fixed interface defines the GeMM Unit:
 
 - all input operands (A, B, C) can have different bandwidths. 
 Matrix A and B have the same precision P, while C has a higher precision (at least 2xP). 
-The total maximum bandwidth to the GeMM unit (summed over the 3 operands is 96 words (384Byte). This bandwidth can be freely divided among the operands (unused bandwidth is also OK, but not ideal).
+The total maximum bandwidth to the GeMM unit (summed over the 3 operands is 96 words (384Byte)). This bandwidth can be freely divided among the operands (unused bandwidth is also OK, but not ideal).
 - The same applies to the D output. D bandwidth is 32 words (128Byte).
 - A valid input signal triggers the computation
 - When the result is ready, the valid output is raised.
