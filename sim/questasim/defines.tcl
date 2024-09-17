@@ -16,10 +16,10 @@ if {[info exists ::env(HDL_FILE_LIST)]} {
     set HDL_FILE_LIST $::env(HDL_FILE_LIST)
 } else {
     set HDL_FILE_LIST "${TEST_PATH}/hdl_file_list.tcl"
-    if {![file exists $HDL_FILE_LIST]} {
-        puts "ERROR: HDL_FILE_LIST not defined"
-        quit
-    }
+}
+if {![file exists $HDL_FILE_LIST]} {
+    puts "ERROR: HDL_FILE_LIST not defined"
+    quit
 }
 
 if {[info exists ::env(SIM_NAME)]} {
@@ -33,12 +33,6 @@ if {[info exists ::env(DBG)]} {
     set DBG [expr {$::env(DBG) == 1}]
 } else {
     set DBG 0
-}
-
-if {[info exists ::env(FORCE_BUILD)]} {
-    set FORCE_BUILD $::env(FORCE_BUILD)
-} else {
-    set FORCE_BUILD 1
 }
 
 if {[info exists ::env(DEFINES)]} {
@@ -55,7 +49,6 @@ puts "TEST_PATH: ${TEST_PATH}"
 puts "HDL_FILE_LIST: ${HDL_FILE_LIST}"
 puts "SIM_NAME: ${SIM_NAME}"
 puts "DBG: ${DBG}"
-puts "FORCE_BUILD: ${FORCE_BUILD}"
 puts "DEFINES: ${DEFINES}"
 puts "WLIB: ${WLIB}"
 puts "--------------------------------------------------------------------------------"

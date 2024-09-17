@@ -1,0 +1,13 @@
+[project]
+name = "Swirl"
+version = "0.1.0"
+description = "A tiny, fast, and elegant tensor core"
+
+[tool.ruff]
+line-length = 100
+
+[tool.black]
+line-length = 100
+
+[tool.flake8]
+max-line-length = 100
