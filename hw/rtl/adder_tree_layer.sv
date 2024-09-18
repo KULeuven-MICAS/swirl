@@ -28,7 +28,7 @@ module adder_tree_layer #(
     logic [DATAW:0] extd_data_i [NUM_INPUTS];
 
     generate
-        for (genvar i = 0; i < NUM_INPUTS; i = i + 1) begin: gen_extender
+        for (genvar i = 0; i < NUM_INPUTS; i = i + 1) begin: gen_sign_extension
             assign extd_data_i[i] = sign_unsign_ni ?
                 {data_i[i][DATAW-1], data_i[i]} :   // sign extension
                 {1'b0, data_i[i]};                  // zero extension

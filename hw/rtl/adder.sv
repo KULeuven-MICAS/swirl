@@ -37,8 +37,7 @@ module adder #(
         end else begin
             sat_sum = sum;
         end
-    end : saturate
-
+    end
     assign sum_o = sat_sum;
 
 endmodule
