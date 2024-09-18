@@ -38,19 +38,19 @@ module config_binary_tree_adder #(
                 assign temp_out = connectingWires[0];
             end
             if(layer == 0) begin : gen_first_tree_layer
-                config_binary_tree_adder_layer #(
+                config_adder_tree_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P)
-                ) binary_tree_adder_layer (
+                ) adder_tree_layer (
                     .inputs(inputs),
                     .outputs(connectingWires),
                     .halvedPrecision(halvedPrecision)
                 );
             end else begin : gen_tree_layers
-                config_binary_tree_adder_layer #(
+                config_adder_tree_layer #(
                 .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
                 .P(P+2*layer)
-                ) binary_tree_adder_layer (
+                ) adder_tree_layer (
                     .inputs(gen_layer[layer-1].connectingWires),
                     .outputs(connectingWires),
                     .halvedPrecision(halvedPrecision)

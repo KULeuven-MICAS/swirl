@@ -16,7 +16,7 @@
 // - INPUTS_AMOUNT: number of inputs, needs to be a power of 2
 // - P: number of bits of each seperate element of the inputs
 
-module config_binary_tree_adder_layer #(
+module config_adder_tree_layer #(
     parameter int INPUTS_AMOUNT,
     parameter int P
 ) (

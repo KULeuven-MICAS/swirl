@@ -339,7 +339,6 @@ module seq_MAC #(
         .last_o()
     );
 
-        
         genvar n, m, k;
 
         for (m = 0; m < M; m = m + 1) begin : gen_A_row
