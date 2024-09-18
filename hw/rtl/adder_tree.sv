@@ -14,7 +14,7 @@
 // - NUM_INPUTS: number of inputs, needs to be a power of 2
 // - DATAW: number of bits of each seperate element of the inputs
 
-//`include "platform.vh"
+`include "platform.vh"
 
 module adder_tree #(
     parameter int NUM_INPUTS,
@@ -28,11 +28,11 @@ module adder_tree #(
     output wire [OUT_DATAW-1:0] data_o
 );
 
-//    `STATIC_ASSERT(!(NUM_INPUTS-1 & NUM_INPUTS), "NUM_INPUTS must be a power of 2");
+    if(NUM_INPUTS-1 & NUM_INPUTS) $error("NUM_INPUTS must be a power of 2");
 
     generate
         if (NUM_INPUTS == 1) begin : gen_single_input
-            assign temp_output = inputs[0];
+            assign temp_output = data_i[0];
         end else begin : gen_tree
             for(genvar layer = 0; layer < NUM_LAYERS; layer = layer + 1) begin: gen_layer
                 localparam int LayerInputCnt = NUM_INPUTS >> layer;
