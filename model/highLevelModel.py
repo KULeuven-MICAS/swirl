@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def bitwise_add(a, b, precision):
+def adder(a, b, precision):
     sum = a + b
     if (not a & np.int32(1) << (precision-1) and
        not b & np.int32(1) << (precision-1) and
@@ -26,7 +26,7 @@ def matrix_multiplication_accumulation(A, B, C, M, N, K, P):
     for column in range(N):
         for row in range(M):
             for element in range(K):
-                D[row, column] = bitwise_add(
+                D[row, column] = adder(
                     D[row, column],
                     multiply(
                         A[row][element],

@@ -10,12 +10,12 @@ module tb_adder;
 
 
   // Module instantiation
-  bitwise_add #(
-    .P(8)
+  adder #(
+    .DATAW(8)
   ) adder1 (
-    .a(a),
-    .b(b),
-    .sum(out)
+    .dataa_i(a),
+    .datab_i(b),
+    .sum_o(out)
   );
 
   // Testcases
