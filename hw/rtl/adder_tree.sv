@@ -60,10 +60,8 @@ module adder_tree #(
                         .data_o(data),
                         .sign_unsign_ni(sign_unsign_ni)
                     );
+                end
             end
-        end
         end
     endgenerate
 endmodule
-
-
