@@ -44,24 +44,24 @@ module binary_tree_adder #(
                 assign temp_output = connectingWires[0];
             end
             if(layer == 0) begin : gen_first_layer
-                binary_tree_adder_layer #(
-                .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
-                .P(P),
+                adder_tree_layer #(
+                .NUM_INPUTS(INPUTS_AMOUNT>>layer),
+                .DATAW(P),
                 .MODE(MODE)
-                ) binary_tree_adder_layer (
-                    .inputs(inputs),
-                    .outputs(connectingWires),
-                    .signedAddition(signedAddition)
+                ) adder_tree_layer (
+                    .data_i(inputs),
+                    .data_o(connectingWires),
+                    .sign_unsign_ni(signedAddition)
                 );
             end else begin : gen_mid_layers
-                binary_tree_adder_layer #(
-                .INPUTS_AMOUNT(INPUTS_AMOUNT>>layer),
-                .P(P+layer),
+                adder_tree_layer #(
+                .NUM_INPUTS(INPUTS_AMOUNT>>layer),
+                .DATAW(P+layer),
                 .MODE(MODE)
-                ) binary_tree_adder_layer (
-                    .inputs(gen_layer[layer-1].connectingWires),
-                    .outputs(connectingWires),
-                    .signedAddition(signedAddition)
+                ) adder_tree_layer (
+                    .data_i(gen_layer[layer-1].connectingWires),
+                    .data_o(connectingWires),
+                    .sign_unsign_ni(signedAddition)
                 );
             end
         end

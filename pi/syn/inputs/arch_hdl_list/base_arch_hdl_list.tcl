@@ -4,4 +4,4 @@
 
 source ${INPUTS_DIR}/arch_hdl_list/common_hdl_list.tcl
 lappend HDL_LIST ${HDL_PATH}/binary_tree_adder.sv
-lappend HDL_LIST ${HDL_PATH}/binary_tree_adder_layer.sv
+lappend HDL_LIST ${HDL_PATH}/adder_tree_layer.sv
