@@ -9,5 +9,5 @@ set HDL_LIST [ list \
     ${HDL_PATH}/matrix_multiplication_accumulation.sv \
     ${HDL_PATH}/half_adder.sv \
     ${HDL_PATH}/full_adder.sv \
-    ${HDL_PATH}/bitwise_add.sv \
+    ${HDL_PATH}/adder.sv \
 ]

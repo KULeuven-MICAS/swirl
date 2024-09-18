@@ -77,13 +77,13 @@ module matrix_multiplication_accumulation #(
                     for (element = 0; element < K; element = element + 1) begin : gen_element_block
                         logic [4*P-1:0] mult;
                         assign mult = A_mul[row][element] * B_mul[element][column];
-                        bitwise_add #(
-                            .P(4*P)
-                            ) add (
-                                .a(temp_sum[element]),
-                                .b(mult),
-                                .sum(temp_sum[element+1])
-                            );
+                        adder #(
+                            .DATAW(4*P)
+                        ) add (
+                            .dataa_i(temp_sum[element]),
+                            .datab_i(mult),
+                            .sum_o(temp_sum[element+1])
+                        );
                     end // gen_element_block
                     assign D[row][column] = temp_sum[K];
                 end // gen_row_block
@@ -113,12 +113,12 @@ module matrix_multiplication_accumulation #(
                         .signedAddition() // not used
                     );
 
-                    bitwise_add #(
-                        .P(4*P)
+                    adder #(
+                        .DATAW(4*P)
                     ) C_add (
-                        .a(mult_sum),
-                        .b(C_mul[row][column]),
-                        .sum(sum)
+                        .dataa_i(mult_sum),
+                        .datab_i(C_mul[row][column]),
+                        .sum_o(sum)
                     );
 
                     assign D[row][column] = sum;
@@ -152,12 +152,12 @@ module matrix_multiplication_accumulation #(
                         .halvedPrecision(halvedPrecision[1])
                     );
 
-                    bitwise_add #(
-                        .P(32)
+                    adder #(
+                        .DATAW(32)
                     ) C_add (
-                        .a(mult_sum),
-                        .b(C_mul[row][column]),
-                        .sum(sum)
+                        .dataa_i(mult_sum),
+                        .datab_i(C_mul[row][column]),
+                        .sum_o(sum)
                     );
 
                     assign D[row][column] = sum;

@@ -434,12 +434,12 @@ module seq_MAC #(
                     end
                 end
 
-                bitwise_add #(
-                    .P(32)
+                adder #(
+                    .DATAW(32)
                 ) C_add (
-                    .a(accum_mult),
-                    .b(mult_sum_extend),
-                    .sum(accum_mult_next)
+                    .dataa_i(accum_mult),
+                    .datab_i(mult_sum_extend),
+                    .sum_o(accum_mult_next)
                 );
 
                 assign D[m][n] = accum_mult;
