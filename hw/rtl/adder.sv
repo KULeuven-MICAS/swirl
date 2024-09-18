@@ -13,7 +13,6 @@
 // - DATAW: number of bits of the input data
 //
 // TODO:
-// - Add support for overflowless mode
 // - Add configurable pipeline stages
 
 module adder #(
