@@ -15,6 +15,9 @@
 // - NUM_INPUTS: number of inputs, needs to be a power of 2
 // - DATAW: number of bits of each seperate element of the inputs
 
+// TODO:
+// - Move to packed array for data_i and data_o
+
 module adder_tree_layer #(
     parameter int NUM_INPUTS,
     parameter int DATAW,
