@@ -8,13 +8,13 @@
 # run-syn-sweep.sh: Run synthesis with multiple configurations
 
 # Default values for fixed parameters
-DATAW=8
+DATAW=16
 M_SIZE=8
-N_SIZE=8
-K_SIZE=8
+N_SIZE=4
+K_SIZE=16
 TREE=1
 DOTP_ARCH=0
-RETIME=1
+RETIME=0
 SYN_MODULE="syn_tle"
 MANUAL_PIPELINE=0
 OUTPUT_DIR=

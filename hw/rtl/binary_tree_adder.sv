@@ -69,14 +69,16 @@ module binary_tree_adder #(
     endgenerate
 
     if (MODE==0) begin
-        assign out_32bit = {
-        {(32-P-LayerAmount+1){temp_output[P+LayerAmount-1]}},
-        temp_output[P+LayerAmount-1:0] };
+        if (P+LayerAmount > 32) begin : gen_limit_precision
+            assign out_32bit = temp_output[31:0];
+        end else begin
+            assign out_32bit = {
+            {(32-P-LayerAmount+1){temp_output[P+LayerAmount-1]}},
+            temp_output[P+LayerAmount-1:0] };
+        end
     end else if (MODE==1) begin
         assign out = temp_output[P+LayerAmount-1:0];
     end
 
 
 endmodule
-
-

@@ -53,7 +53,8 @@ module tb_matmul;
     .K(K),
     .P(P),
     .TREE(TREE),
-    .MODE(MODE)
+    .MODE(MODE),
+    .MANUAL_PIPELINE(0)
   ) matmul (
     .A(tb_A),
     .B(tb_B),
@@ -161,7 +162,7 @@ module tb_matmul;
         valid_in = 0;
         wait (valid_out == 1);
         assert(tb_D == tb_expected_D) else begin
-            $display("\nTest #%0d failed\nExpected:", testIndex);
+            $display("\n8-bit %0dx%0dx%0d test #%0d failed\nExpected:", M, N, K, testIndex);
             display_2d_array(tb_expected_D, M, N);
             $display("\nGot:");
             display_2d_array(tb_D, M, N);
@@ -272,7 +273,7 @@ module tb_matmul;
     int i, j;
     foreach (arr[i]) begin
       foreach (arr[i][j]) begin
-        $write("%0d ", arr[i][j]);
+        $write("%b ", arr[i][j]);
       end
       $display(""); // Newline after each row
     end

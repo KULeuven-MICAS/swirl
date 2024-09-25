@@ -32,13 +32,11 @@ module seq_mult #(
     ) (
     input logic clk_i,
     input logic rst_n,
-    input logic [MAX_WIDTH-1:0] a,
-    input logic [MAX_WIDTH-1:0] b,
+    input logic [1:0] a_i,
+    input logic [1:0] b_i,
     input logic countDown,
     input logic shift,
     input logic lastOut,
-    input logic [2:0] muxSelA,
-    input logic [2:0] muxSelB,
     input logic invertFirstBit,
     input logic invertSecondRow,
     input logic start,
@@ -48,7 +46,6 @@ module seq_mult #(
     output logic [P-1:0] p
 
 );
-    logic [P-1:0] input_a, input_b;
     logic [2*P-1:0] prod_out;
     logic [2*P-1:0] nextAccumSum;
     logic unsigned [2*P-1:0] nextCarryCount;
@@ -61,31 +58,11 @@ module seq_mult #(
     assign p = out;
     assign nextCarryCount = adderCout? carryCount + 1'b1 : carryCount;
 
-    generic_mux #(
-        .WIDTH(P),
-        .NUMBER(8)
-    ) mux_a (
-        .mux_in('{a[P-1:0], a[2*P-1:P], a[3*P-1:2*P], a[4*P-1:3*P],
-        a[5*P-1:4*P], a[6*P-1:5*P], a[7*P-1:6*P], a[8*P-1:7*P]}),
-        .sel(muxSelA),
-        .out(input_a)
-    );
-
-    generic_mux #(
-        .WIDTH(P),
-        .NUMBER(8)
-    ) mux_b (
-        .mux_in('{b[P-1:0], b[2*P-1:P], b[3*P-1:2*P], b[4*P-1:3*P],
-        b[5*P-1:4*P], b[6*P-1:5*P], b[7*P-1:6*P], b[8*P-1:7*P]}),
-        .sel(muxSelB),
-        .out(input_b)
-    );
-
     // MULTIPLIER IS NOT YET PARAMETRIZED FOR DIFFERENT P !!!
     if (P == 2) begin : gen_mult_2bit
     mult_2bit mult_2bit (
-        .multiplier(input_a),
-        .multiplicand(input_b),
+        .multiplier(a_i),
+        .multiplicand(b_i),
         .product(prod_out),
         .invertFirstBit(invertFirstBit),
         .invertSecondRow(invertSecondRow)

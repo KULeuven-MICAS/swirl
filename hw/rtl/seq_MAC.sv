@@ -41,6 +41,11 @@ module seq_MAC #(
     output wire [31:0] D [M][N],
     input wire ready_out
 );
+    // initial begin
+    //     $dumpfile("seq_MAC.vcd");
+    //     $dumpvars(0, B_mul_reg);
+    // end
+
     // bits needed to represent bitSize in steps of P
     localparam int MaxBitWidth = $clog2(MAX_WIDTH/P) + 1;
 
@@ -74,8 +79,8 @@ module seq_MAC #(
     reg valid_out_reg;
     reg countDown;
 
-    reg signed [MAX_WIDTH-1:0] A_mul_reg [M][K];
-    reg signed [MAX_WIDTH-1:0] B_mul_reg [M][K];
+    reg [MAX_WIDTH-1:0] A_mul_reg [M][K];
+    reg [MAX_WIDTH-1:0] B_mul_reg [K][N];
 
     reg [MB-1:0] bitSizeB_reg;
     reg [MB-1:0] bitSizeA_reg;
@@ -323,7 +328,7 @@ module seq_MAC #(
         .last_o(countLast3)
     );
 
-    localparam int TotalProductWidth = 2*MAX_WIDTH/P; // width in chunks of P
+    localparam logic [MB:0] TotalProductWidth = 2*MAX_WIDTH/P; // width in chunks of P
     logic [MB:0] count4_start = 4;
 
     programmable_counter #(.WIDTH(MB+1), .UPDOWN(1'b0)) count4 (
@@ -339,8 +344,10 @@ module seq_MAC #(
         .last_o()
     );
 
-        
         genvar n, m, k;
+
+        logic [1:0] a_i[M][K];
+        
 
         for (m = 0; m < M; m = m + 1) begin : gen_A_row
             for (k = 0; k < K; k = k + 1) begin : gen_A_column
@@ -351,8 +358,43 @@ module seq_MAC #(
                         A_mul_reg[m][k] <= A_mul[m][k];
                     end
                 end
+
+                generic_mux #(
+                    .WIDTH(P),
+                    .NUMBER(8)
+                ) mux_a (
+                    .mux_in('{
+                        A_mul_reg[m][k][P-1:0], A_mul_reg[m][k][2*P-1:P],
+                        A_mul_reg[m][k][3*P-1:2*P], A_mul_reg[m][k][4*P-1:3*P],
+                        A_mul_reg[m][k][5*P-1:4*P], A_mul_reg[m][k][6*P-1:5*P],
+                        A_mul_reg[m][k][7*P-1:6*P], A_mul_reg[m][k][8*P-1:7*P]}),
+                    .sel(muxSelA),
+                    .out(a_i[m][k])
+                );
             end
         end
+
+        logic [1:0] b_i[K][N];
+
+        // logic [15:0] b_reg_test_1;
+        // logic [15:0] b_reg_test_2;
+        // assign b_reg_test_1 = B_mul_reg[0][0];
+        // assign b_reg_test_2 = B_mul_reg[1][0];
+        // logic [15:0] b_mul_test_1;
+        // logic [15:0] b_mul_test_2;
+        // assign b_mul_test_1 = B_mul[0][0];
+        // assign b_mul_test_2 = B_mul[1][0];
+
+        // always_ff @(posedge clk_i, negedge rst_ni) begin
+        //     if (~rst_ni) begin
+        //         B_mul_reg[0][0] <= 0;
+        //         B_mul_reg[1][0] <= 0;
+        //     end else if (start) begin
+        //         B_mul_reg[0][0] <= 5;
+        //         B_mul_reg[1][0] <= 5;
+        //     end
+        // end
+
 
         for (k = 0; k < K; k = k + 1) begin : gen_B_row
             for (n = 0; n < N; n = n + 1) begin : gen_B_column
@@ -363,8 +405,23 @@ module seq_MAC #(
                         B_mul_reg[k][n] <= B_mul[k][n];
                     end
                 end
+
+                generic_mux #(
+                    .WIDTH(P),
+                    .NUMBER(8)
+                ) mux_b (
+                    .mux_in('{
+                        B_mul_reg[k][n][P-1:0], B_mul_reg[k][n][2*P-1:P],
+                        B_mul_reg[k][n][3*P-1:2*P], B_mul_reg[k][n][4*P-1:3*P],
+                        B_mul_reg[k][n][5*P-1:4*P], B_mul_reg[k][n][6*P-1:5*P],
+                        B_mul_reg[k][n][7*P-1:6*P], B_mul_reg[k][n][8*P-1:7*P]}),
+                    .sel(muxSelB),
+                    .out(b_i[k][n])
+                );
             end
         end
+
+
 
         for (n = 0; n < N; n = n + 1) begin : gen_column_block
             for (m = 0; m < M; m = m + 1) begin: gen_row_block
@@ -379,15 +436,17 @@ module seq_MAC #(
                 ) seq_mult (
                     .clk_i(clk_i),
                     .rst_n(rst_ni),
-                    .a(A_mul_reg[m][k]),
-                    .b(B_mul_reg[k][n]),
+                    // .a(A_mul_reg[m][k]),
+                    // .b(B_mul_reg[k][n]),
+                    .a_i(a_i[m][k]),
+                    .b_i(b_i[k][n]),
                     .p(partial_mults[k]),
                     .countDown(countDown),
-                    .countLast2(countLast2Active),
+                    .shift(countLast2Active),
                     .invertFirstBit(invertFirstBit),
                     .invertSecondRow(invertSecondRow),
-                    .muxSelA(muxSelA),
-                    .muxSelB(muxSelB),
+                    // .muxSelA(muxSelA),
+                    // .muxSelB(muxSelB),
                     .start(start),
                     .placeOne(placeOne),
                     .lastOut(lastOut),
