@@ -13,12 +13,17 @@
 // Parameters:
 // - NUM_INPUTS: number of inputs, needs to be a power of 2
 // - DATAW: number of bits of each seperate element of the inputs
+//
+// TODO:
+// - Add backpressure signals
+// - Add pipeline support
 
-`include "platform.vh"
+`include "assertions.svh"
 
 module adder_tree #(
     parameter int NUM_INPUTS,
     parameter int DATAW,
+    parameter int PIPES = 0,
     // Derived
     parameter int NUM_LAYERS = $clog2(NUM_INPUTS),
     parameter int OUT_DATAW = DATAW + NUM_LAYERS
@@ -28,7 +33,8 @@ module adder_tree #(
     output wire [OUT_DATAW-1:0] data_o
 );
 
-    if(NUM_INPUTS-1 & NUM_INPUTS) $error("NUM_INPUTS must be a power of 2");
+    `ASSERT_INIT("Power of 2 error: NUM_INPUTS", NUM_INPUTS-1 & NUM_INPUTS);
+    `ASSERT_INIT("Not implemented error: PIPES", PIPES > 0);
 
     generate
         if (NUM_INPUTS == 1) begin : gen_single_input

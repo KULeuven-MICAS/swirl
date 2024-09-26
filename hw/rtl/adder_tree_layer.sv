@@ -21,6 +21,7 @@
 module adder_tree_layer #(
     parameter int NUM_INPUTS,
     parameter int DATAW,
+    parameter int PIPES = 0,
     // Derived
     parameter int NUM_OUTPUTS = NUM_INPUTS/2
 ) (
@@ -38,7 +39,8 @@ module adder_tree_layer #(
         end
         for (genvar i = 0; i < NUM_OUTPUTS; i = i + 1) begin: gen_adder
             adder #(
-                .DATAW(DATAW+1)
+                .DATAW(DATAW+1),
+                .PIPES(PIPES)
             ) adder (
                 .dataa_i(extd_data_i[2*i]),
                 .datab_i(extd_data_i[2*i+1]),
