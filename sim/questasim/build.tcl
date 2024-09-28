@@ -4,6 +4,8 @@
 
 # Author: Giuseppe Sarda <giuseppe.sarda@esat.kuleuven.be>
 # Basic build script for QuestaSim
+# TODO
+# - Add function to quit the script if a command fails
 
 if {[info exists ::env(BUILD_ONLY)]} {
     set BUILD_ONLY $::env(BUILD_ONLY)
@@ -22,9 +24,21 @@ vmap work ${WLIB}
 source ${HDL_FILE_LIST}
 
 puts "Building ${SIM_NAME} ..."
+
+#add +incdir+ to all include directories
+set INCLUDES "+incdir"
+foreach dir $INCLUDE_DIRS {
+    set INCLUDES ${INCLUDES}+${dir}
+}
+
 foreach file $HDL_FILES {
     puts "Compiling ${file} ..."
-    vlog -sv -work ${WLIB} ${DEFINES} ${file}
+    catch "vlog -sv -work ${WLIB} ${DEFINES} ${INCLUDES} ${file}" comperror
+    if {$comperror != ""} {
+        puts "ERROR: Compilation failed for ${file}"
+        puts $comperror
+        quit -code 1
+    }
 }
 
 

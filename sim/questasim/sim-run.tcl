@@ -39,7 +39,8 @@ set IterationLimit 200000
 # Run simulation
 vsim -quiet \
      -wlf work/${SIM_NAME}.wlf \
-     -msgmode both -displaymsgmode both \
+     -msgmode both \
+     -displaymsgmode both \
      -L work_lib  \
      -work ${WLIB} \
      -modelsimini ./modelsim.ini \
