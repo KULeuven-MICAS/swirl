@@ -37,8 +37,13 @@ if {[info exists ::env(DBG)]} {
 
 if {[info exists ::env(DEFINES)]} {
     set DEFINES $::env(DEFINES)
+    if {[string match "" $DEFINES]} {
+        set DEFINES "+define+QUESTA"
+    } else {
+        set DEFINES "${DEFINES}+QUESTA"
+    }
 } else {
-    set DEFINES ""
+    set DEFINES "+define+QUESTA"
 }
 
 set WLIB "${TEST_PATH}/work/work_${SIM_NAME}"

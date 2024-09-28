@@ -13,7 +13,7 @@
 // - DATAW: number of bits of the input data
 //
 // TODO:
-// - Add backpressure signals
+// - Add backpressure signals (with FF enable)
 
 `include "registers.svh"
 

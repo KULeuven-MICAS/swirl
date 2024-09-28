@@ -7,7 +7,8 @@ vars_dict = {}
 with open(parser.args.file, 'r') as file:
     IN_FILE_LIST = False
     for line in file:
-        if line.startswith('set HDL_FILES'):
+        # MAybe try 'endswith(list)' instead of 'startswith'
+        if line.startswith('set HDL_FILES') or line.startswith('set INCLUDE_DIRS'):
             IN_FILE_LIST = True
             continue
         elif line.startswith(']'):
