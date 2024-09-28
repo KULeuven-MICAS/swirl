@@ -42,6 +42,7 @@ module tb_adder;
     // Run tests
     initial begin
         $display("Running tests...");
+        $display("DATAW = %d, PIPES = %d", DATAW, PIPES);
         `DUMP_VARS(tb_adder);
         @(posedge rst_n);
         @(negedge clk);
