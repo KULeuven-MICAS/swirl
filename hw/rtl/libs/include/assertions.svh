@@ -14,7 +14,7 @@
 //  - Provides boiler plate template for common assertions
 
 // TODO
-//  - Add warinings
+//  - Add warinings as a separate parameter to the assertion macros
 
 `ifndef PRIM_ASSERT_SV
 `define PRIM_ASSERT_SV
@@ -59,6 +59,7 @@
 `endif
 
 // WARNING_RPT is available to change the reporting mechanism when a warning is issued
+// Note! Never tried with UVM
 `define WARNING_RPT(__name)                                         \
 `ifdef UVM                                                          \
   assert_rpt_pkg::assert_rpt($sformatf("[WARNING] %s (%s:%0d)",     \

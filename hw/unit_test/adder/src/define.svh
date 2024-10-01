@@ -39,6 +39,8 @@ typedef struct packed {
     logic signed [`DATAW:0] correct_sum;
 } test_vector_t;
 
+// Function to generate random vectors
+// Does not work with odd DATAW
 function automatic test_vector_t adder_gen_test();
     test_vector_t test_vector;
 
