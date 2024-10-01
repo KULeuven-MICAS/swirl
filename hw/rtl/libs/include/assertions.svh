@@ -13,6 +13,9 @@
 //  - Provides default clk and rst options to simplify code
 //  - Provides boiler plate template for common assertions
 
+// TODO
+//  - Add warinings
+
 `ifndef PRIM_ASSERT_SV
 `define PRIM_ASSERT_SV
 
@@ -55,6 +58,15 @@
   $error("[ASSERT FAILED] [%m] %s (%s:%0d)", __name, `__FILE__, `__LINE__); \
 `endif
 
+// WARNING_RPT is available to change the reporting mechanism when a warning is issued
+`define WARNING_RPT(__name)                                         \
+`ifdef UVM                                                          \
+  assert_rpt_pkg::assert_rpt($sformatf("[WARNING] %s (%s:%0d)",     \
+                             __name, `__FILE__, `__LINE__));        \
+`else                                                               \
+  $warning("[WARNING] %s (%s:%0d)", __name, `__FILE__, `__LINE__);  \
+`endif
+
 ///////////////////////////////////////
 // Simple assertion and cover macros //
 ///////////////////////////////////////
@@ -82,6 +94,17 @@
         `ASSERT_RPT(`PRIM_STRINGIFY(__name)) \
       end                                    \
   end                                        \
+`endif
+
+// Warning in initial block. Can be used for things like parameter checking.
+`define WARNING_INIT(__name, __prop)          \
+`ifdef INC_ASSERT                             \
+  initial begin                               \
+    __name: assert (__prop)                   \
+      else begin                              \
+        `WARNING_RPT(`PRIM_STRINGIFY(__name)) \
+    end                                       \
+  end                                         \
 `endif
 
 // Assertion in final block. Can be used for things like queues being empty

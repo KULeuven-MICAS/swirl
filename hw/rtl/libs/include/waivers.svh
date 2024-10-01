@@ -69,7 +69,9 @@
 `define UNUSED_ARG(x)   /* verilator lint_off UNUSED */ \
                         x \
                         /* verilator lint_on UNUSED */
+
 `else // !VERILATOR
+
 `define TRACING_ON
 `define TRACING_OFF
 `ifndef NDEBUG
@@ -88,4 +90,5 @@
 `define UNUSED_VAR(x)
 `define UNUSED_PIN(x) . x ()
 `define UNUSED_ARG(x) x
+
 `endif // VERILATOR
