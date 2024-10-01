@@ -34,8 +34,9 @@ module tb_adder;
 
     logic signed [DATAW-1:0] dataa;
     logic signed [DATAW-1:0] datab;
-    logic signed [DATAW-1:0] correct_sum;
+    logic signed [DATAW-1:0] correct_sum = 0;
     logic signed [DATAW-1:0] sum;
+    logic signed [DATAW-1:0] got_sum = 0;
 
     // Simulation signals
     logic input_gen_done = 0;
@@ -92,13 +93,13 @@ module tb_adder;
 
     // Clock generation
     always begin
-        #5 clk = ~clk;
+        #`CLK_T_2 clk = ~clk;
     end
 
     // Reset generation
     initial begin
         rst_n = 0;
-        #11;
+        #(2*`CLK_T_2 + 1);
         rst_n = 1;
     end
 
@@ -106,7 +107,7 @@ module tb_adder;
     initial begin
         valid_i = 0;
         @(posedge rst_n);
-        @(posedge clk);
+        @(negedge clk);
         if (`RND_VALID == 0) begin
             valid_i = 1;
         end else begin
@@ -121,7 +122,7 @@ module tb_adder;
     initial begin
         ready_i = 1;
         @(posedge rst_n);
-
+        @(negedge clk);
         if (BACKPRESSURE == 0) begin
             ready_i = 1;
         end else begin
@@ -140,22 +141,22 @@ module tb_adder;
     initial begin
         dataa = 0;
         datab = 0;
-        if (`RND_TEST) begin
+        if (`RND_TEST) begin : random_test_init
             for (int i = 0; i < `NUM_TESTS; i++) begin
                 test_vectors[i] = adder_gen_test();
             end
         end
         @(posedge rst_n);
-        #1;
+        @(negedge clk);
+        #1; // a bit later than valid_i generation
         for (int i = 0; i < `NUM_TESTS; i++) begin
             dataa = test_vectors[i].dataa;
             datab = test_vectors[i].datab;
-            @(negedge clk);
-            #1;
-            while ((valid_i == 0) || (ready_o == 0)) begin
+            while (valid_i == 0 || ready_o == 0) begin
                 @(posedge clk);
             end
-            @(posedge clk);
+            @(negedge clk);
+            #1;
         end
         input_gen_done = 1;
     end
@@ -164,27 +165,29 @@ module tb_adder;
     initial begin
         @(posedge rst_n);
         for (int i = 0; i < `NUM_TESTS; i++) begin
-            correct_sum = test_vectors[i].correct_sum;
+            correct_sum = test_vectors[i].correct_sum; // for vcd visibility
             while ((valid_o == 0) || (ready_i == 0)) begin
-                @(posedge clk);
+                @(negedge clk);
+                #1;
             end
-            assert(sum == correct_sum) else
+            got_sum = sum;
+            @(negedge clk);
+            #1;
+            assert(got_sum == correct_sum) else
                 $fatal(1,"Test %d failed: %d + %d = %d, expected %d",
                         i,
                         test_vectors[i].dataa,
                         test_vectors[i].datab,
-                        sum,
+                        got_sum,
                         correct_sum);
             if (`DBG_MSG > 0) begin
                 $display("TEST %d: dataa = %d, datab = %d, got = %d, expected = %d",
                     i,
                     test_vectors[i].dataa,
                     test_vectors[i].datab,
-                    sum,
+                    got_sum,
                     correct_sum);
             end
-            @(posedge clk);
-            #1;
         end
         sim_done = 1;
     end
