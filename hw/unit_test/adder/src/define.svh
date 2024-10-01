@@ -29,6 +29,10 @@
 `define RND_READY 0
 `endif
 
+`ifndef CLK_T_2
+`define CLK_T_2 5
+`endif
+
 typedef struct packed {
     logic signed [`DATAW-1:0] dataa;
     logic signed [`DATAW-1:0] datab;
@@ -77,12 +81,12 @@ test_vector_t test_ovf_neg = '{-2**(`DATAW-1), -1, -2**(`DATAW-1)};
 // } test_codes_t;
 
 test_vector_t test_vectors[`NUM_TESTS] = {
-    smoke_test_nul,
     smoke_test_pos,
     smoke_test_neg,
     smoke_test_mix,
     test_ovf_pos,
-    test_ovf_neg
+    test_ovf_neg,
+    smoke_test_nul
 };
 `else // !SMOKE_TEST
 `define RND_TEST 1
