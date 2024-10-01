@@ -66,21 +66,8 @@ test_vector_t smoke_test_nul = '{0, 0, 0};
 test_vector_t smoke_test_pos = '{1, 2, 3};
 test_vector_t smoke_test_neg = '{-1, -2, -3};
 test_vector_t smoke_test_mix = '{-1, 2, 1};
-
-//test_vector_t random_test = '{$urandom(), $urandom(), $urandom()};
-
 test_vector_t test_ovf_pos = '{2**(`DATAW-1)-1, 1, 2**(`DATAW-1)-1};
 test_vector_t test_ovf_neg = '{-2**(`DATAW-1), -1, -2**(`DATAW-1)};
-
-// typedef enum test_codes {
-//     SMOKE_TEST_NUL,
-//     SMOKE_TEST_POS,
-//     SMOKE_TEST_NEG,
-//     SMOKE_TEST_MIX,
-//     RANDOM_TEST,
-//     TEST_OVF_POS,
-//     TEST_OVF_NEG
-// } test_codes_t;
 
 test_vector_t test_vectors[`NUM_TESTS] = {
     smoke_test_pos,
@@ -90,11 +77,14 @@ test_vector_t test_vectors[`NUM_TESTS] = {
     test_ovf_neg,
     smoke_test_nul
 };
+
 `else // !SMOKE_TEST
+
 `define RND_TEST 1
 `ifndef NUM_TESTS
 `define NUM_TESTS 100
 `endif
-//random test vectors generation
+
 test_vector_t test_vectors[`NUM_TESTS];
+
 `endif // SMOKE_TEST
