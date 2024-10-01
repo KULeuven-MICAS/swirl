@@ -15,8 +15,10 @@
 // - BACKPRESSURE: 0 if backpressure is not used, 1 if backpressure is used
 //
 // TODO:
+// - Fix PIPES > 1
 // - Add support for configurable saturation
 // - Add support for ovf_o
+// - Add support for valid in regular pipeline
 
 `include "registers.svh"
 `include "waivers.svh"

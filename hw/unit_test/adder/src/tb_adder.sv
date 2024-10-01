@@ -5,6 +5,20 @@
 // Author:
 //  Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
 //  Giuseppe Sarda <giuseppe.sarda@esat.kuleuven.be>
+//
+// Testbench for the adder module
+// Configurable parameters:
+// - DATAW: data width (not working for odd DATAW) (default: 8)
+// - PIPES: number of pipeline stages (default: 0)
+// - BACKPRESSURE: enable backpressure (default: 0)
+// - RND_VALID: randomize valid signal in tests (only if BACKPRESSURE is enabled) (default: 0)
+// - RND_READY: randomize ready signal in tests (only if BACKPRESSURE is enabled) (default: 0)
+// - NUM_TESTS: number of tests to run (fixed to 6 for smoke test) (default: 100)
+
+// TODO:
+// - Add sh script to run different configurations
+// - no pipe test is broken
+// - refactor (?)
 
 `include "define.svh"
 `include "assertions.svh"
