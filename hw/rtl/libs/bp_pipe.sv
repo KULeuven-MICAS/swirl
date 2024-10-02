@@ -51,11 +51,11 @@ module bp_pipe #(
             assign pipe_ready[PIPES] = ready_i;
 
             for (genvar i = 0; i < PIPES; i++) begin : g_pipe_stage
-                assign pipe_load[i] = (pipe_valid[i] && ~pipe_valid[i+1])       //pipe is free
-                                    || (pipe_ready[PIPES-i] && pipe_valid[i+1]); //pipe is sampled
+                assign pipe_load[i] = (pipe_valid[i] && ~pipe_valid[i+1])    //pipe is free
+                                    || (pipe_ready[i+1] && pipe_valid[i+1]); //pipe is sampled
                 `FFL(pipe_data[i+1], pipe_data[i], pipe_load[i], '0, clk_i, rst_ni);
                 `FFL(pipe_valid[i+1], pipe_valid[i], pipe_load[i], '0, clk_i, rst_ni);
-                assign pipe_ready[PIPES-i-1] = pipe_ready[PIPES-i] || ~pipe_valid[i+1];
+                assign pipe_ready[i] = pipe_ready[i+1] || ~pipe_valid[i+1];
             end
 
             assign data_o = pipe_data[PIPES];

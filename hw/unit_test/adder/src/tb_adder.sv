@@ -16,6 +16,8 @@
 // - NUM_TESTS: number of tests to run (fixed to 6 for smoke test) (default: 100)
 
 // TODO:
+// - Fix no pipe test
+// - Fix no backpressure, random valid generation test
 // - Add sh script to run different configurations
 // - no pipe test is broken
 // - refactor (?)
