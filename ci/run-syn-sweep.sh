@@ -16,13 +16,13 @@ TREE=1
 DOTP_ARCH=0
 RETIME=0
 SYN_MODULE="syn_tle"
-MANUAL_PIPELINE=0
+MANUAL_PIPELINE=1
 OUTPUT_DIR=
 
 # Loop over different pipeline depths and clock speeds
 for PIPE in 0
 do
-    for CLK_SPD in 10000
+    for CLK_SPD in 6667
     do
 
     if [ $RETIME -eq 1 ]

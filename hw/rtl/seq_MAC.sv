@@ -18,6 +18,23 @@
 // - K: number of columns of the A matrix and rows of the B matrix
 // - MAX_WIDTH: maximum width bits of the input data
 // - P: number of bits calculated in each step (only implemented for P=2)
+// - MANUAL_PIPELINE: one pipeline stage added for minor frequency increase
+//
+// Possible improvements / explorations:
+// - Remove internal accumulation inside sequential multipliers => place this in/after
+//   tree adder. This is expected to reduce the unit's area significantly.
+//   Possibility: push 2x2 mult 4-bit output straight to tree adder and remove
+//   carry count and shifting of the seq_mult unit. Note: Baugh-Wooley correction ones
+//   would need to be implemented outside of multipliers (now done in carry count).
+// - Reconsider accumulation after tree adder. Right now this is done in 32 bits because
+//   for two 16-bit inputs the multiplication result can be 32 bits, so tree output is shifted
+//   and extended to 32 bits to be added in 32-bit adder. However if we assume a 16-bit total
+//   input size, the multiplication result will be 16 bits max and we can maybe accumulate in
+//   16-bit, then extend to 32-bit for output.
+// - Detect zeros at start of inputs and change the bitsize input accordingly.
+// - Accumulating from MSB to LSB could reduce the shifting logic after adder tree, but carries
+//   would ripple more in the accumulation adder.
+// - Pipelining to drive up clockspeed
 //
 
 module seq_MAC #(
@@ -122,7 +139,6 @@ module seq_MAC #(
 
 
     assign placeOne = placeOne1 | placeOne2 | placeOne3;
-    //assign placeOne = placeOne1 | placeOne2 | placeOne3;
 
     assign rstCount = start;
     assign ce1 = countLast2Active & ~ce3;
@@ -347,7 +363,6 @@ module seq_MAC #(
         genvar n, m, k;
 
         logic [1:0] a_i[M][K];
-        
 
         for (m = 0; m < M; m = m + 1) begin : gen_A_row
             for (k = 0; k < K; k = k + 1) begin : gen_A_column
@@ -375,26 +390,6 @@ module seq_MAC #(
         end
 
         logic [1:0] b_i[K][N];
-
-        // logic [15:0] b_reg_test_1;
-        // logic [15:0] b_reg_test_2;
-        // assign b_reg_test_1 = B_mul_reg[0][0];
-        // assign b_reg_test_2 = B_mul_reg[1][0];
-        // logic [15:0] b_mul_test_1;
-        // logic [15:0] b_mul_test_2;
-        // assign b_mul_test_1 = B_mul[0][0];
-        // assign b_mul_test_2 = B_mul[1][0];
-
-        // always_ff @(posedge clk_i, negedge rst_ni) begin
-        //     if (~rst_ni) begin
-        //         B_mul_reg[0][0] <= 0;
-        //         B_mul_reg[1][0] <= 0;
-        //     end else if (start) begin
-        //         B_mul_reg[0][0] <= 5;
-        //         B_mul_reg[1][0] <= 5;
-        //     end
-        // end
-
 
         for (k = 0; k < K; k = k + 1) begin : gen_B_row
             for (n = 0; n < N; n = n + 1) begin : gen_B_column
@@ -436,8 +431,6 @@ module seq_MAC #(
                 ) seq_mult (
                     .clk_i(clk_i),
                     .rst_n(rst_ni),
-                    // .a(A_mul_reg[m][k]),
-                    // .b(B_mul_reg[k][n]),
                     .a_i(a_i[m][k]),
                     .b_i(b_i[k][n]),
                     .p(partial_mults[k]),
@@ -445,8 +438,6 @@ module seq_MAC #(
                     .shift(countLast2Active),
                     .invertFirstBit(invertFirstBit),
                     .invertSecondRow(invertSecondRow),
-                    // .muxSelA(muxSelA),
-                    // .muxSelB(muxSelB),
                     .start(start),
                     .placeOne(placeOne),
                     .lastOut(lastOut),
