@@ -16,9 +16,8 @@
 //
 // TODO:
 // - Fix PIPES > 1
-// - Add support for configurable saturation
+// - Add support for carry_o (and no saturation)
 // - Add support for ovf_o
-// - Add support for valid in regular pipeline
 
 `include "registers.svh"
 `include "waivers.svh"
@@ -65,7 +64,7 @@ module adder #(
                 logic [PIPES:0][DATAW-1:0] pipe_sum;
                 logic [PIPES:0] pipe_valid;
                 for (genvar i = 0; i < PIPES; i++) begin : g_pipe_stage
-                    `FF(pipe_sum[i+1], pipe_sum[i], '0, clk_i, rst_ni);
+                    `FFL(pipe_sum[i+1], pipe_sum[i], pipe_valid[i], '0, clk_i, rst_ni);
                     `FF(pipe_valid[i+1], pipe_valid[i], '0, clk_i, rst_ni);
                 end
                 assign pipe_sum[0] = sat_sum;

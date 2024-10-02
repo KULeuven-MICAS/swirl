@@ -2,6 +2,12 @@
 
 set -e
 
+CURRENT_DIR=$(pwd)
+WORK_DIR=$(dirname $0)
+if [ $WORK_DIR != $CURRENT_DIR ]; then
+  cd $WORK_DIR
+fi
+
 smoke_test_nopipe() {
   echo "Smoke test ..."
   DEFINES="+define+SMOKE_TEST=1+DATAW=8+PIPES=0" make clean questa-run
@@ -15,6 +21,11 @@ smoke_test_pipe() {
 smoke_test_2xpipe() {
   echo "Smoke test ..."
   DEFINES="+define+SMOKE_TEST=1+DATAW=8+PIPES=2" make clean questa-run
+}
+
+smoke_test_nobackpress_rndvalid() {
+  echo "Smoke test ..."
+  DEFINES="+define+SMOKE_TEST=1+DATAW=8+PIPES=2+RND_VALID=1" make clean questa-run
 }
 
 smoke_test_backpressure() {
@@ -76,6 +87,8 @@ while [ "$1" != "" ]; do
         ;;
     -smoke-2xpipe ) smoke_test_2xpipe
         ;;
+    -smoke-nobackpress-rndvalid ) smoke_test_nobackpress_rndvalid
+        ;;
     -smoke-backpressure ) smoke_test_backpressure
         ;;
     -smoke-backpressure-2xpipe ) smoke_test_backpressure_2xpipe
@@ -93,6 +106,7 @@ while [ "$1" != "" ]; do
     -all ) smoke_test_nopipe
            smoke_test_pipe
            smoke_test_2xpipe
+           smoke_test_nobackpress_rndvalid
            smoke_test_backpressure
            smoke_test_backpressure_2xpipe
            smoke_test_rndvalid
@@ -108,4 +122,6 @@ while [ "$1" != "" ]; do
         exit 1
   esac
   shift
+
+  cd $CURRENT_DIR
 done
