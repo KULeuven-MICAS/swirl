@@ -33,6 +33,7 @@ module matrix_multiplication_accumulation #(
     parameter int MODE,
     parameter int MANUAL_PIPELINE = 0
 )(
+    
     // Input and output matrices
     input wire signed [P-1:0] A [M][K],
     input wire signed [P-1:0] B [K][N],
@@ -54,9 +55,11 @@ module matrix_multiplication_accumulation #(
     input wire [3:0] bitSizeA = 4,
     input wire [3:0] bitSizeB = 4
 );
+
+    
     logic signed [P-1:0] A_mul [M][K];
     logic signed [P-1:0] B_mul [K][N];
-    logic signed [4*P-1:0] C_mul [M][N];
+    logic signed [31:0] C_mul [M][N];
     assign A_mul = A;
     assign B_mul = B;
     assign C_mul = C;
@@ -72,13 +75,13 @@ module matrix_multiplication_accumulation #(
             genvar column, row, element;
             for (column = 0; column < N; column = column + 1) begin : gen_column_block
                 for (row = 0; row < M; row = row + 1) begin: gen_row_block
-                    logic [4*P-1:0] temp_sum[K+1];
+                    logic [31:0] temp_sum[K+1];
                     assign temp_sum[0] = C_mul[row][column];
                     for (element = 0; element < K; element = element + 1) begin : gen_element_block
-                        logic [4*P-1:0] mult;
+                        logic [31:0] mult;
                         assign mult = A_mul[row][element] * B_mul[element][column];
                         bitwise_add #(
-                            .P(4*P)
+                            .P(32)
                             ) add (
                                 .a(temp_sum[element]),
                                 .b(mult),
@@ -99,8 +102,8 @@ module matrix_multiplication_accumulation #(
                         assign mults[element] = A_mul[row][element] * B_mul[element][column];
                     end // gen_element_block
 
-                    logic signed [4*P-1:0] mult_sum;
-                    logic signed [4*P-1:0] sum;
+                    logic signed [31:0] mult_sum;
+                    logic signed [31:0] sum;
 
                     binary_tree_adder #(
                         .P(2*P),
@@ -114,7 +117,7 @@ module matrix_multiplication_accumulation #(
                     );
 
                     bitwise_add #(
-                        .P(4*P)
+                        .P(32)
                     ) C_add (
                         .a(mult_sum),
                         .b(C_mul[row][column]),
@@ -140,7 +143,7 @@ module matrix_multiplication_accumulation #(
 
                     end
 
-                    logic [4*P-1:0] mult_sum;
+                    logic [31:0] mult_sum;
                     logic [31:0] sum;
 
                     config_binary_tree_adder #(

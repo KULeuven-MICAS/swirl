@@ -21,74 +21,109 @@ module config_multiplier_4bit (
     input bit invertFirstBit,
     input bit invertSecondRow,
     output logic signed [7:0] product
-);
-    logic [3:0] partialMultTopRight;
-    logic [3:0] partialMultTopLeft;
-    logic [3:0] partialMultBottomRight;
-    logic [3:0] partialMultBottomLeft;
+ );
 
-    logic [7:0] partialMultTopRightExtend;
-    logic [7:0] partialMultTopLeftExtend;
-    logic [7:0] partialMultBottomRightExtend;
-    logic [7:0] partialMultBottomLeftExtend;
+    logic [3:0] partialMult1;
+    logic [3:0] partialMult2;
+    logic [3:0] partialMult3;
+    logic [3:0] partialMult4;
+
+    assign partialMult1 = {multiplier[0] ? (invertFirstBit? ! multiplicand[3] : multiplicand[3])
+    : (invertFirstBit ? 1'b1 : 1'b0) ,multiplier[0] ? multiplicand[2:0] : 3'b0};
+    assign partialMult2 = {multiplier[1] ? (invertFirstBit? ! multiplicand[3] : multiplicand[3])
+    : (invertFirstBit ? 1'b1 : 1'b0) ,multiplier[1] ? multiplicand[2:0] : 3'b0};
+    assign partialMult3 = {multiplier[2] ? (invertFirstBit? ! multiplicand[3] : multiplicand[3])
+    : (invertFirstBit ? 1'b1 : 1'b0) ,multiplier[2] ? multiplicand[2:0] : 3'b0};
+    assign partialMult4 = {multiplier[3] ? (invertFirstBit? ! multiplicand[3] : multiplicand[3])
+    : (invertFirstBit ? 1'b1 : 1'b0) ,multiplier[3] ? multiplicand[2:0] : 3'b0};
+
+    logic [7:0] partialMultExtend1;
+    logic [7:0] partialMultExtend2;
+    logic [7:0] partialMultExtend3;
+    logic [7:0] partialMultExtend4;
+
+    assign partialMultExtend1 = {4'b0, partialMult1};
+    assign partialMultExtend2 = {3'b0, partialMult2, 1'b0};
+    assign partialMultExtend3 = {2'b0, partialMult3, 2'b0};
+    assign partialMultExtend4 = {1'b0, invertSecondRow? ~partialMult4 : partialMult4, 3'b0};
+
     logic [7:0] correctionOnes8bit;
-    logic [3:0] correctionOnes4bit;
+
+    assign correctionOnes8bit = continueHigher? 8'b0000_0000 : 8'b1001_0000;
 
     logic [7:0] fullProduct;
-    logic [7:0] halvedProducts;
 
-    assign partialMultTopRightExtend = {4'b0, partialMultTopRight};
-    assign partialMultTopLeftExtend = {2'b0, partialMultTopLeft, 2'b0};
-    assign partialMultBottomRightExtend = {2'b0, partialMultBottomRight, 2'b0};
-    assign partialMultBottomLeftExtend = {partialMultBottomLeft, 4'b0};
-    // For used algorithm logic, see modified Baugh-Wooley Algorithm
-    assign correctionOnes8bit = continueHigher? 8'b0000_0000 : 8'b1001_0000;
-    assign correctionOnes4bit = 4'b1100;
+    assign product = partialMultExtend1 + partialMultExtend2 + partialMultExtend3 + partialMultExtend4 + correctionOnes8bit;
 
-    assign fullProduct =
-    partialMultTopRightExtend +
-    partialMultTopLeftExtend +
-    partialMultBottomRightExtend +
-    partialMultBottomLeftExtend +
-    correctionOnes8bit;
+// THIS CODE WAS MADE TO EXTEND THE PARTITIONED DESIGN TO 2-BIT FUNCTIONALITY IN PLACE OF ABOVE CODE AND WORKED
+// BUT TREE ADDER WAS NEVER ADJUSTED TO THIS SO THIS WAS NOT USED FURTHER
+//     logic [3:0] partialMultTopRight;
+//     logic [3:0] partialMultTopLeft;
+//     logic [3:0] partialMultBottomRight;
+//     logic [3:0] partialMultBottomLeft;
 
-    assign halvedProducts = {
-        partialMultBottomLeft + correctionOnes4bit,
-        partialMultTopRight + correctionOnes4bit
-        };
+//     logic [7:0] partialMultTopRightExtend;
+//     logic [7:0] partialMultTopLeftExtend;
+//     logic [7:0] partialMultBottomRightExtend;
+//     logic [7:0] partialMultBottomLeftExtend;
+//     logic [7:0] correctionOnes8bit;
+//     logic [3:0] correctionOnes4bit;
 
-    assign product = halvedPrecision ? halvedProducts : fullProduct;
+//     logic [7:0] fullProduct;
+//     logic [7:0] halvedProducts;
 
-    mult_2bit multTopRight (
-        .multiplier(multiplier[1:0]),
-        .multiplicand(multiplicand[1:0]),
-        .product(partialMultTopRight),
-        .invertFirstBit(halvedPrecision),
-        .invertSecondRow(halvedPrecision)
-    );
+//     assign partialMultTopRightExtend = {4'b0, partialMultTopRight};
+//     assign partialMultTopLeftExtend = {2'b0, partialMultTopLeft, 2'b0};
+//     assign partialMultBottomRightExtend = {2'b0, partialMultBottomRight, 2'b0};
+//     assign partialMultBottomLeftExtend = {partialMultBottomLeft, 4'b0};
+//     // For used algorithm logic, see modified Baugh-Wooley Algorithm
+//     assign correctionOnes8bit = continueHigher? 8'b0000_0000 : 8'b1001_0000;
+//     assign correctionOnes4bit = 4'b1100;
 
-    mult_2bit multTopLeft (
-        .multiplier(multiplier[1:0]),
-        .multiplicand(multiplicand[3:2]),
-        .product(partialMultTopLeft),
-        .invertFirstBit(invertFirstBit),
-        .invertSecondRow(1'b0)
-    );
+//     assign fullProduct =
+//     partialMultTopRightExtend +
+//     partialMultTopLeftExtend +
+//     partialMultBottomRightExtend +
+//     partialMultBottomLeftExtend +
+//     correctionOnes8bit;
 
-    mult_2bit multBottomRight (
-        .multiplier(multiplier[3:2]),
-        .multiplicand(multiplicand[1:0]),
-        .product(partialMultBottomRight),
-        .invertFirstBit(1'b0),
-        .invertSecondRow(invertSecondRow)
-    );
+//     assign halvedProducts = {
+//         partialMultBottomLeft + correctionOnes4bit,
+//         partialMultTopRight + correctionOnes4bit
+//         };
 
-    mult_2bit multBottomLeft (
-        .multiplier(multiplier[3:2]),
-        .multiplicand(multiplicand[3:2]),
-        .product(partialMultBottomLeft),
-        .invertFirstBit(halvedPrecision ? 1'b1 : invertFirstBit),
-        .invertSecondRow(halvedPrecision ? 1'b1 : invertSecondRow)
-    );
+//     assign product = halvedPrecision ? halvedProducts : fullProduct;
+
+//     mult_2bit multTopRight (
+//         .multiplier(multiplier[1:0]),
+//         .multiplicand(multiplicand[1:0]),
+//         .product(partialMultTopRight),
+//         .invertFirstBit(halvedPrecision),
+//         .invertSecondRow(halvedPrecision)
+//     );
+
+//     mult_2bit multTopLeft (
+//         .multiplier(multiplier[1:0]),
+//         .multiplicand(multiplicand[3:2]),
+//         .product(partialMultTopLeft),
+//         .invertFirstBit(invertFirstBit),
+//         .invertSecondRow(1'b0)
+//     );
+
+//     mult_2bit multBottomRight (
+//         .multiplier(multiplier[3:2]),
+//         .multiplicand(multiplicand[1:0]),
+//         .product(partialMultBottomRight),
+//         .invertFirstBit(1'b0),
+//         .invertSecondRow(invertSecondRow)
+//     );
+
+//     mult_2bit multBottomLeft (
+//         .multiplier(multiplier[3:2]),
+//         .multiplicand(multiplicand[3:2]),
+//         .product(partialMultBottomLeft),
+//         .invertFirstBit(halvedPrecision ? 1'b1 : invertFirstBit),
+//         .invertSecondRow(halvedPrecision ? 1'b1 : invertSecondRow)
+//     );
 
 endmodule

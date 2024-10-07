@@ -57,13 +57,13 @@ module syn_tle #(
     input logic rst_ni,
     input wire signed [P-1:0] A_i [M][K],
     input wire signed [P-1:0] B_i [K][N],
-    input wire signed [4*P-1:0] C_i [M][N],
+    input wire signed [31:0] C_i [M][N],
     input logic valid_i,
     input logic ready_o,
     input logic halvedPrecision,
     input logic [3:0] bitSizeA = 4,
     input logic [3:0] bitSizeB = 4,
-    output logic signed [4*P-1:0] D_o [M][N],
+    output logic signed [31:0] D_o [M][N],
     output logic ready_i,
     output logic valid_o
 );
@@ -72,10 +72,10 @@ module syn_tle #(
     logic signed [P-1:0] A_in_matmul [M][K];
     logic signed [P-1:0] B_d [K][N];
     logic signed [P-1:0] B_in_matmul [K][N];
-    logic signed [4*P-1:0] C_d [M][N];
-    logic signed [4*P-1:0] C_in_matmul [M][N];
-    logic signed [4*P-1:0] D_out_matmul [M][N];
-    logic signed [4*P-1:0] D_q [M][N];
+    logic signed [31:0] C_d [M][N];
+    logic signed [31:0] C_in_matmul [M][N];
+    logic signed [31:0] D_out_matmul [M][N];
+    logic signed [31:0] D_q [M][N];
 
     // Elastic pipeline logic
     logic valid_o_matmul, ready_o_matmul, valid_i_matmul, ready_i_matmul;
@@ -143,7 +143,7 @@ module syn_tle #(
 
     logic signed [P-1:0] A_stage [PIPESTAGES] [M][K];
     logic signed [P-1:0] B_stage [PIPESTAGES] [K][N];
-    logic signed [4*P-1:0] C_stage [PIPESTAGES] [M][N];
+    logic signed [31:0] C_stage [PIPESTAGES] [M][N];
 
     logic valid_stage[PIPESTAGES];
     logic ready_stage[PIPESTAGES];
@@ -163,14 +163,14 @@ module syn_tle #(
         .data_out(data_in[TotalWidthA+TotalWidthB-1:TotalWidthA])
     );
 
-    matrix_flattener #(.WIDTH(N),.HEIGHT(M),.P(4*P)
+    matrix_flattener #(.WIDTH(N),.HEIGHT(M),.P(32)
     ) C_flattener_input (
         .A(C_d),
         .data_out(data_in[TotalWidthA+TotalWidthB+TotalWidthC-1:TotalWidthA+TotalWidthB])
     );
 
     VX_pipe_buffer #(
-        .DATAW   (P*M*K + P*K*N + 4*P*M*N),
+        .DATAW   (P*M*K + P*K*N + 32*M*N),
         .PASSTHRU(0)
     ) input_buffer (
         .clk       (clk_i),
@@ -200,7 +200,7 @@ module syn_tle #(
                 .data_out(data_stage[i][TotalWidthA+TotalWidthB-1:TotalWidthA])
             );
 
-            matrix_flattener #(.WIDTH(N),.HEIGHT(M),.P(4*P)
+            matrix_flattener #(.WIDTH(N),.HEIGHT(M),.P(32)
             ) C_flattener_stage (
                 .A(C_stage[i]),
                 .data_out(
@@ -208,7 +208,7 @@ module syn_tle #(
             );
 
             VX_pipe_buffer #(
-                .DATAW   (P*M*K + P*K*N + 4*P*M*N),
+                .DATAW   (P*M*K + P*K*N + 32*M*N),
                 .PASSTHRU(0)
             ) buffer (
                 .clk       (clk_i),
@@ -233,14 +233,14 @@ module syn_tle #(
     matrix_flattener #(
         .WIDTH(N),
         .HEIGHT(M),
-        .P(4*P)
+        .P(32)
     ) D_flattener_output (
         .A(D_out_matmul),
         .data_out(data_out)
     );
 
     VX_pipe_buffer #(
-        .DATAW   (4*P*M*N),
+        .DATAW   (32*M*N),
         .PASSTHRU(0)
     ) output_buffer (
         .clk       (clk_i),
@@ -260,7 +260,7 @@ module syn_tle #(
         .P(P),
         .TREE(TREE),
         .PIPESTAGES(PIPESTAGES),
-        .MODE(0),
+        .MODE(MODE),
         .MANUAL_PIPELINE(MANUAL_PIPELINE)
     ) mma (
         .A(A_in_matmul),
