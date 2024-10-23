@@ -31,7 +31,7 @@ module adder_tree_layer #(
     input logic rst_n,
 
     input logic [DATAW-1:0] data_i [NUM_INPUTS],
-    output logic [DATAW:0] data_o [NUM_OUTPUTS], // #outputs = #inputs halved
+    output logic [DATAW:0] data_o_layer [NUM_OUTPUTS], // #outputs = #inputs halved
     input logic sign_unsign_ni,
 
     input logic valid_i,
@@ -62,7 +62,7 @@ module adder_tree_layer #(
 
                 .dataa_i(extd_data_i[2*i]),
                 .datab_i(extd_data_i[2*i+1]),
-                .sum_o(data_o[i]),
+                .sum_o(data_o_layer[i]),
 
                 .valid_i(valid_i),
                 .valid_o(valid_o_array_layer[i]),
