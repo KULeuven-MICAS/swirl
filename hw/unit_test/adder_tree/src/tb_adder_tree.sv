@@ -34,6 +34,7 @@ module tb_adder_tree;
   logic ready_o;
 
   parameter int NUM_TESTS_8 = 5;
+
   logic signed [DATAW-1:0] test_inputs_8[NUM_TESTS_8][NUM_INPUTS] =  '{
     {1, 2, 3, 4, 5, 6, 7, 8},
     {1, -2, 3, -4, 5, -6, 7, -8},
@@ -164,12 +165,19 @@ module tb_adder_tree;
       valid_i = 0;
       ready_i = 0;
 
+
       //check output
       if (data_o !== expected_outputs_8[i]) begin
         $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs_8[i], data_o);
+        rst_n = 1'b0;
+        #5
+        rst_n = 1'b1;
         $finish(1);
       end else begin
         $display("Test %0d passed: Output %0d is correct", i, data_o);
+        rst_n = 1'b0;
+        #5
+        rst_n = 1'b1;
       end
 
       if (i == NUM_TESTS_8-1) begin
