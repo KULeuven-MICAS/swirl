@@ -5,6 +5,7 @@
 // Author:
 //  Mats Vanhamel <mats.vanhamel@student.kuleuven.be>
 //  Giuseppe Sarda <giuseppe.sarda@esat.kuleuven.be>
+//  Quinten Guelinckx <quinten.guelinckx@student.kuleuven.be>
 //
 // Module description:
 // One layer of a binary tree adder, MODE 0 for always signed addition, MODE 1 for signed/unsigned addition
@@ -22,14 +23,27 @@ module adder_tree_layer #(
     parameter int NUM_INPUTS,
     parameter int DATAW,
     parameter int PIPES = 0,
+    parameter int BACKPRESSURE = 0,
     // Derived
     parameter int NUM_OUTPUTS = NUM_INPUTS/2
 ) (
+    input logic clk,
+    input logic rst_n,
+
     input logic [DATAW-1:0] data_i [NUM_INPUTS],
     output logic [DATAW:0] data_o [NUM_OUTPUTS], // #outputs = #inputs halved
-    input logic sign_unsign_ni
+    input logic sign_unsign_ni,
+
+    input logic valid_i,
+    output logic valid_o,
+
+    input logic ready_i,
+    output logic ready_o
 );
+
     logic [DATAW:0] extd_data_i [NUM_INPUTS];
+    logic [NUM_OUTPUTS-1:0] valid_o_array_layer;
+    logic [NUM_OUTPUTS-1:0] ready_o_array_layer;
 
     generate
         for (genvar i = 0; i < NUM_INPUTS; i = i + 1) begin: gen_sign_extension
@@ -40,13 +54,40 @@ module adder_tree_layer #(
         for (genvar i = 0; i < NUM_OUTPUTS; i = i + 1) begin: gen_adder
             adder #(
                 .DATAW(DATAW+1),
-                .PIPES(PIPES)
+                .PIPES(PIPES),
+                .BACKPRESSURE(BACKPRESSURE)
             ) adder (
+                .clk_i(clk),
+                .rst_ni(rst_n),
+
                 .dataa_i(extd_data_i[2*i]),
                 .datab_i(extd_data_i[2*i+1]),
-                .sum_o(data_o[i])
+                .sum_o(data_o[i]),
+
+                .valid_i(valid_i),
+                .valid_o(valid_o_array_layer[i]),
+
+                .ready_i(ready_i),
+                .ready_o(ready_o_array_layer[i])
             );
         end
+
     endgenerate
+
+    assign ready_o = &ready_o_array_layer;
+    assign valid_o = &valid_o_array_layer;
+    //always_comb begin
+    //    if (ready_o_array_layer.sum() == NUM_OUTPUTS) begin
+    //        ready_o = 1'b1;
+    //    end else begin
+    //        ready_o = 1'b0;
+    //    end
+//
+    //    if (valid_o_array_layer.sum() == NUM_OUTPUTS) begin
+    //        valid_o = 1'b1;
+    //    end else begin
+    //        valid_o = 1'b0;
+    //    end
+    //end
 
 endmodule
