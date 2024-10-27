@@ -16,7 +16,7 @@ module tb_adder_tree;
   // parameters
   parameter int NUM_INPUTS = 8;
   parameter int DATAW = 8;
-  parameter int PIPES = 1;
+  parameter int PIPES = 0;
   parameter int BACKPRESSURE = 0;
 
   //derived params
@@ -167,14 +167,14 @@ module tb_adder_tree;
 
 
       //check output
-      if (data_o !== expected_outputs_8[i]) begin
-        $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs_8[i], data_o);
+      if ($signed(data_o) !== expected_outputs_8[i]) begin
+        $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs_8[i], $signed(data_o));
         rst_n = 1'b0;
         #5
         rst_n = 1'b1;
         $finish(1);
       end else begin
-        $display("Test %0d passed: Output %0d is correct", i, data_o);
+        $display("Test %0d passed: Output %0d is correct", i, $signed(data_o));
         rst_n = 1'b0;
         #5
         rst_n = 1'b1;
