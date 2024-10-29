@@ -8,6 +8,18 @@
 // Module description:
 // Binary tree adder testbench supporting 2^n inputs, giving 1 summed output (no overflows).
 // Inputs are expected to be in 2's complement format or decimal format for signed addition.
+// Testbench provides: corner cases for overflow, normal cases for positive and negative numbers.
+// Testbench also provides a maximum simulation time limit.
+//
+// Parameters:
+// - NUM_INPUTS: number of inputs, needs to be a power of 2 (8 taken as example for this testbench here)
+// - DATAW: number of bits of each seperate element of the inputs
+// - PIPES: number of pipeline stages
+// - BACKPRESSURE: 0 for no backpressure, 1 for backpressure
+// - NUM_TESTS_8: number of tests for 8 inputs
+// - test_inputs_8: test inputs for 8 inputs
+// - sign_unsign_ni_8: signed or unsigned for 8 inputs
+// - expected_outputs_8: expected outputs for 8 inputs
 
 `timescale 1ns / 1ps
 
@@ -115,10 +127,6 @@ module tb_adder_tree;
     end
   endgenerate
 
-  //clock generation
-  //initial begin
-  //  clk = 1'b0;
-  //end
 
   initial begin
     $display("Running tests...");
