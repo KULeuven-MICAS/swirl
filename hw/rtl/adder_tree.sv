@@ -30,7 +30,7 @@ module adder_tree #(
     parameter int NUM_LAYERS = $clog2(NUM_INPUTS),
     parameter int OUT_DATAW = DATAW + NUM_LAYERS
 ) (
-    input logic clk,
+    input logic clk_i,
     input logic rst_n,
 
     input logic [DATAW-1:0] data_i [NUM_INPUTS],
@@ -66,7 +66,7 @@ module adder_tree #(
                         .PIPES(PIPES),
                         .BACKPRESSURE(BACKPRESSURE)
                     ) adder_tree_layer (
-                        .clk(clk),
+                        .clk_i(clk_i),
                         .rst_n(rst_n),
 
                         .data_i(gen_layer[layer-1].mid_data),
@@ -89,7 +89,7 @@ module adder_tree #(
                         .PIPES(PIPES),
                         .BACKPRESSURE(BACKPRESSURE)
                     ) adder_tree_layer (
-                        .clk(clk),
+                        .clk_i(clk_i),
                         .rst_n(rst_n),
 
                         .data_i(data_i),
@@ -109,7 +109,7 @@ module adder_tree #(
                         .PIPES(PIPES),
                         .BACKPRESSURE(BACKPRESSURE)
                     ) adder_tree_layer (
-                        .clk(clk),
+                        .clk_i(clk_i),
                         .rst_n(rst_n),
 
                         .data_i(gen_layer[layer-1].mid_data),
