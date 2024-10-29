@@ -199,42 +199,6 @@ module tb_adder_tree;
     end
   end
 
-  /*
-  // Valid generation
-  initial begin
-      valid_i = 0;
-      @(posedge rst_n);
-      @(negedge clk);
-      if (`RND_VALID == 0) begin
-          valid_i = 1;
-      end else begin
-          while(!input_gen_done) begin
-              valid_i = $urandom_range(0, 1);
-              @(negedge clk);
-          end
-      end
-  end
-
-  // Ready generation
-  initial begin
-      ready_i = 1;
-      @(posedge rst_n);
-      @(negedge clk);
-      if (BACKPRESSURE == 0) begin
-          ready_i = 1;
-      end else begin
-          if (`RND_READY == 0) begin
-              ready_i = 1;
-          end else begin
-              while(!sim_done) begin
-                  ready_i = $urandom_range(0, 1);
-                  @(negedge clk);
-              end
-          end
-      end
-  end
-
-  */
 
   //simulation finished
   initial begin
