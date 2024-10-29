@@ -38,7 +38,7 @@ module tb_multiplier;
   parameter int BACKPRESSURE = 0;
 
   //signals
-  logic [DATAW-1:0] data_i [2];
+  logic signed [DATAW-1:0] data_i [2];
   logic [2*DATAW-1:0] data_o;
 
   logic valid_i;
@@ -46,7 +46,7 @@ module tb_multiplier;
   logic ready_i;
   logic ready_o;
 
-  parameter int NUM_TESTS_8 = 6;
+  parameter int NUM_TESTS_8 = 7;
 
   logic signed [DATAW-1:0] test_inputs[NUM_TESTS_8][2] =  '{
     {1, 2},
@@ -136,7 +136,6 @@ module tb_multiplier;
   //initialize signals
   initial begin
     rst_n = 1'b0;
-    sign_unsign_ni = 0;
     valid_i = 0;
     ready_i = 0;
 
@@ -168,7 +167,7 @@ module tb_multiplier;
 
       //check output
       if ($signed(data_o) !== expected_outputs[i]) begin
-        $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs[i], $signed(data_o));
+        $display("Test %0d failed: expected %0d from inputs %0d and %0d, got %0d", i, expected_outputs[i], $signed(data_i[0]), $signed(data_i[1]), $signed(data_o));
         rst_n = 1'b0;
         #5
         rst_n = 1'b1;

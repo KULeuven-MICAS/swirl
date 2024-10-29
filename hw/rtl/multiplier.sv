@@ -35,9 +35,9 @@ module multiplier #(
     input logic ready_i,
     output logic ready_o
 );
-    logic [2*DATAW-1:0] prod;
+    logic signed [2*DATAW-1:0] prod;
 
-    assign prod = dataa_i * datab_i;
+    assign prod = $signed(dataa_i) * $signed(datab_i);
 
     generate
         if (PIPES > 0) begin : g_pipe
