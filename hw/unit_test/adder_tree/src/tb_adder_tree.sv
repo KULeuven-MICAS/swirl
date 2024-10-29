@@ -1,3 +1,14 @@
+// Copyright 2024 KU Leuven.
+// Licensed under the Apache License, Version 2.0, see LICENSE for details.
+// SPDX-License-Identifier: Apache-2.0
+
+// Author:
+//  Quinten Guelinckx <quinten.guelinckx@student.kuleuven.be>
+//
+// Module description:
+// Binary tree adder testbench supporting 2^n inputs, giving 1 summed output (no overflows).
+// Inputs are expected to be in 2's complement format or decimal format for signed addition.
+
 `timescale 1ns / 1ps
 
 `define MAX_SIM 5000
