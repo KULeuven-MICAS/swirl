@@ -34,7 +34,7 @@ module tb_multiplier;
 
   // parameters
   parameter int DATAW = 8;
-  parameter int PIPES = 0;
+  parameter int PIPES = 1;
   parameter int BACKPRESSURE = 0;
 
   //signals

@@ -42,7 +42,7 @@ module multiplier #(
     generate
         if (PIPES > 0) begin : g_pipe
             if (BACKPRESSURE == 0) begin : g_pipe_nobackpressure
-                logic [PIPES:0][DATAW-1:0] pipe_prod;
+                logic [PIPES:0][2*DATAW-1:0] pipe_prod;
                 logic [PIPES:0] pipe_valid;
                 for (genvar i = 0; i < PIPES; i++) begin : g_pipe_stage
                     `FFL(pipe_prod[i+1], pipe_prod[i], pipe_valid[i], '0, clk_i, rst_ni);
@@ -50,7 +50,7 @@ module multiplier #(
                 end
                 assign pipe_prod[0] = prod;
                 assign pipe_valid[0] = valid_i;
-                assign sum_o = pipe_prod[PIPES];
+                assign prod_o = pipe_prod[PIPES];
                 assign valid_o = pipe_valid[PIPES];
 
                 `UNUSED_VAR(ready_i);
