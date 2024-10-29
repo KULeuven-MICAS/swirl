@@ -57,7 +57,7 @@ module multiplier #(
                 assign ready_o = 1'b1;
             end else begin : g_pipe_backpressure
                 bp_pipe #(
-                    .DATAW(DATAW),
+                    .DATAW(2*DATAW),
                     .PIPES(PIPES)
                 ) bp_pipe_inst (
                     .clk_i(clk_i),
