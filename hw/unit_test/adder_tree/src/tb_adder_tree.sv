@@ -32,7 +32,7 @@ module tb_adder_tree;
     $dumpvars(0, tb_adder_tree);
   end
   // Testbench signals
-  logic clk = 0;
+  logic clk_i = 0;
   logic rst_n;
   logic unsigned [15:0] timer=0;
 
@@ -97,7 +97,7 @@ module tb_adder_tree;
         .PIPES(PIPES),
         .BACKPRESSURE(0)
       ) addertree1 (
-        .clk(clk),
+        .clk_i(clk_i),
         .rst_n(rst_n),
         .data_i(data_i),
         .data_o(data_o),
@@ -114,7 +114,7 @@ module tb_adder_tree;
         .PIPES(PIPES),
         .BACKPRESSURE(1)
       ) addertree1 (
-        .clk(clk),
+        .clk_i(clk_i),
         .rst_n(rst_n),
         .data_i(data_i),
         .data_o(data_o),
@@ -136,11 +136,11 @@ module tb_adder_tree;
   end
 
   always begin
-    #5 clk = ~clk;
+    #5 clk_i = ~clk_i;
   end
 
   always begin
-    @(posedge clk);
+    @(posedge clk_i);
     if (timer >= `MAX_SIM) begin
       $display("Simulation reached maximum time limit of %0d", `MAX_SIM);
       $finish(3);
@@ -176,9 +176,9 @@ module tb_adder_tree;
 
 
       //wait for output
-      @(posedge clk);
+      @(posedge clk_i);
       while (valid_o != 1'b1) begin
-        @(posedge clk);
+        @(posedge clk_i);
       end
 
       valid_i = 0;
@@ -211,7 +211,7 @@ module tb_adder_tree;
   //simulation finished
   initial begin
       while (!sim_done) begin
-          @(negedge clk);
+          @(negedge clk_i);
       end
       $display("Simulation finished");
       $finish(2);
