@@ -27,7 +27,7 @@ module adder_tree_layer #(
     // Derived
     parameter int NUM_OUTPUTS = NUM_INPUTS/2
 ) (
-    input logic clk,
+    input logic clk_i,
     input logic rst_n,
 
     input logic [DATAW-1:0] data_i [NUM_INPUTS],
@@ -57,7 +57,7 @@ module adder_tree_layer #(
                 .PIPES(PIPES),
                 .BACKPRESSURE(BACKPRESSURE)
             ) adder (
-                .clk_i(clk),
+                .clk_i_i(clk_i),
                 .rst_ni(rst_n),
 
                 .dataa_i(extd_data_i[2*i]),
