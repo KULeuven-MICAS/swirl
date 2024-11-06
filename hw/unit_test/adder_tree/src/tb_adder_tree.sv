@@ -37,9 +37,9 @@ module tb_adder_tree;
   logic unsigned [15:0] timer=0;
 
   // parameters
-  parameter int NUM_INPUTS = 8;
+  parameter int NUM_INPUTS = 16;
   parameter int DATAW = 8;
-  parameter int PIPES = 0;
+  parameter int PIPES = 8;
   parameter int BACKPRESSURE = 0;
 
   //derived params
@@ -59,11 +59,11 @@ module tb_adder_tree;
   parameter int NUM_TESTS_8 = 5;
 
   logic signed [DATAW-1:0] test_inputs_8[NUM_TESTS_8][NUM_INPUTS] =  '{
-    {1, 2, 3, 4, 5, 6, 7, 8},
-    {1, -2, 3, -4, 5, -6, 7, -8},
-    {127, -128, 0, 1, 0, 0, 0, 0},
-    {127, 5, 2, 1, 6, 1, 35, 6},
-    {-127, 5, 2, 1, -6, 1, -35, 6}
+    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
+    {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16},
+    {127, -128, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 6, 0, 0, 1},
+    {127, 5, 2, 1, 6, 1, 35, 6, 127, 5, 2, 1, 6, 1, 35, 6},
+    {-127, 5, 2, 1, -6, 1, -35, 6, 0, 0, 0, 0, 0, 0, 0, 0}
   };
 
   static logic signed sign_unsign_ni_8[NUM_TESTS_8] = '{
@@ -75,10 +75,10 @@ module tb_adder_tree;
   };
 
   static logic signed [31:0] expected_outputs_8[NUM_TESTS_8] = '{
-    36,
-    -4,
-    0,
-    183,
+    136,
+    -8,
+    8,
+    366,
     -153
   };
 
