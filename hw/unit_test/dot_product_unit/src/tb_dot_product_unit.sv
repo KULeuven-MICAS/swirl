@@ -37,7 +37,7 @@ module tb_dot_product_unit;
   parameter int PIPES_MUL = 1;
   parameter int PIPES_TREE = 1;
   parameter int BACKPRESSURE = 1;
-  parameter int NUM_INPUTS = 4;
+  parameter int NUM_INPUTS = 8;
   parameter int NUM_LAYERS = $clog2(NUM_INPUTS);
   parameter int OUT_DATAW = (2 * DATAW) + NUM_LAYERS;
 
@@ -52,39 +52,45 @@ module tb_dot_product_unit;
   logic ready_i;
   logic ready_o;
 
-  parameter int NUM_TESTS_8 = 7;
+  parameter int NUM_TESTS_8 = 8;
 
+// Updated test inputs with 8-element vectors
   logic signed [DATAW-1:0] test_inputs_a[NUM_TESTS_8][NUM_INPUTS] =  '{
-    {1, 2},
-    {1, -2},
-    {127, -128},
-    {127, 5},
-    {-8, 127},
-    {0, 0},
-    {7, 0}
+    {1, 2, -3, 4, -5, 6, -7, 8},
+    {1, -2, 3, -4, 5, -6, 7, -8},
+    {127, -128, 127, -128, 64, -64, 32, -32},
+    {127, 5, -12, 8, -6, 9, -4, 11},
+    {-8, 127, -127, 8, 3, -3, 10, -10},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {7, 0, -7, 14, -14, 21, -21, 28},
+    {7, 0, 0, 14, -14, 21, -21, 28}
   };
 
   logic signed [DATAW-1:0] test_inputs_b[NUM_TESTS_8][NUM_INPUTS] =  '{
-    {1, 2},
-    {1, 2},
-    {127, 127},
-    {127, 5},
-    {127, 8},
-    {0, 0},
-    {7, 0}
+    {1, 2, 3, 4, 5, 6, 7, 8},
+    {1, 2, -3, -4, -5, -6, -7, -8},
+    {127, 127, 64, 64, 32, 32, 16, 16},
+    {127, 5, 12, -8, 6, -9, 4, -11},
+    {127, 8, -8, 127, -3, 3, -10, 10},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {7, 0, 7, -14, 14, -21, 21, -28},
+    {7, 0, 7, -14, 14, -21, 21, -28}
   };
 
+  // Calculated expected outputs based on the element-wise multiplication and summation
   static logic signed [OUT_DATAW-1:0] expected_outputs[NUM_TESTS_8] = '{
-    5,
-    -3,
-    -127,
-    16154,
-    0,
-    0,
-    49
+    38,          // (1*1) + (2*2) + (-3*3) + (4*4) + (-5*5) + (6*6) + (-7*7) + (8*8)
+    30,         // (1*1) + (-2*2) + (3*-3) + (-4*-4) + (5*-5) + (-6*-6) + (7*-7) + (-8*-8)
+    -191,       // (127*127) + (-128*127) + (127*64) + (-128*64) + (64*32) + (-64*32) + (32*16) + (-32*16)
+    15692,         // (127*127) + (5*5) + (-12*12) + (8*-8) + (-6*6) + (9*-9) + (-4*4) + (11*-11)
+    1814,         // (-8*127) + (127*8) + (-127*-8) + (8*127) + (3*-3) + (-3*3) + (10*-10) + (-10*10)
+    0,            // all zeros
+    -2058,           // (7*7) + (0*0) + (-7*7) + (14*-14) + (-14*14) + (21*-21) + (-21*21) + (28*-28)
+    -2009           // (7*7) + (0*0) + (0*7) + (14*-14) + (-14*14) + (21*-21) + (-21*21) + (28*-28)
   };
 
   static logic signed sign_unsign_ni_8[NUM_TESTS_8] = '{
+    1,
     1,
     1,
     1,
@@ -148,7 +154,8 @@ module tb_dot_product_unit;
   initial begin
     $display("Running tests...");
     $display("DATAW = %d", DATAW);
-    $display("PIPES = %d", PIPES);
+    $display("PIPES_MUL = %d", PIPES_MUL);
+    $display("PIPES_TREE = %d", PIPES_TREE);
     $display("BACKPRESSURE = %d", BACKPRESSURE);
   end
 
@@ -182,6 +189,7 @@ module tb_dot_product_unit;
       //apply inputs
       data_i_a = test_inputs_a[i];
       data_i_b = test_inputs_b[i];
+      sign_unsign_ni = sign_unsign_ni_8[i];
 
       //apply sign_unsign_ni
 
