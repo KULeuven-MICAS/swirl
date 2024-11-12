@@ -19,7 +19,7 @@
 // - PIPEs_MUL: number of pipeline stages in the multiplier
 
 module dot_product_unit #(
-    parameter int NUM_INPUTS = 16,
+    parameter int NUM_INPUTS = 8,
     parameter int DATAW = 8,
     parameter int PIPES_TREE = 0,
     parameter int PIPES_MUL = 0,
@@ -38,14 +38,14 @@ module dot_product_unit #(
     input logic ready_i,
     output logic ready_o,
 
-    input logic [DATAW-1:0] in1 [NUM_INPUTS],
-    input logic [DATAW-1:0] in2 [NUM_INPUTS],
-    output logic [OUT_DATAW-1:0] out
+    input logic signed [DATAW-1:0] in1 [NUM_INPUTS],
+    input logic signed [DATAW-1:0] in2 [NUM_INPUTS],
+    output logic signed [OUT_DATAW-1:0] out
 );
 
     logic [DATAW*2-1:0] mul_out [NUM_INPUTS];
-    logic ready_o_mult [NUM_INPUTS];
-    logic valid_o_mult [NUM_INPUTS];
+    logic [NUM_INPUTS-1:0] ready_o_mult;
+    logic [NUM_INPUTS-1:0] valid_o_mult;
     logic valid_i_tree;
     logic ready_i_tree;
 
@@ -70,24 +70,22 @@ module dot_product_unit #(
         assign valid_i_tree = &valid_o_mult;
         assign ready_i_tree = &ready_o_mult;
 
-        if (valid_i_tree & ready_i_tree) begin : gen_adder_tree
-            adder_tree #(
-                .NUM_INPUTS(NUM_INPUTS),
-                .DATAW(DATAW*2),
-                .PIPES(PIPES_TREE),
-                .BACKPRESSURE(BACKPRESSURE)
-            ) adder_tree_inst (
-                .clk_i(clk),
-                .rst_n(rst_n),
-                .data_i(mul_out),
-                .sign_unsign_ni(sign_unsign),
-                .valid_i(valid_i_tree),
-                .ready_i(ready_i_tree),
-                .data_o(out),
-                .valid_o(valid_o),
-                .ready_o(ready_o)
-            );
-        end
+        adder_tree #(
+            .NUM_INPUTS(NUM_INPUTS),
+            .DATAW(DATAW*2),
+            .PIPES(PIPES_TREE),
+            .BACKPRESSURE(BACKPRESSURE)
+        ) adder_tree_inst (
+            .clk_i(clk),
+            .rst_n(rst_n),
+            .data_i(mul_out),
+            .sign_unsign_ni(sign_unsign),
+            .valid_i(valid_i_tree),
+            .ready_i(ready_i_tree),
+            .data_o(out),
+            .valid_o(valid_o),
+            .ready_o(ready_o)
+        );
 
     endgenerate
 
