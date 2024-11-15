@@ -16,7 +16,22 @@
 // - NUM_INPUTS: number of inputs of each vector, needs to be a power of 2 and need to be the same for both vectors
 // - DATAW: number of bits of each seperate element of the inputs
 // - PIPES_TREE: number of pipeline stages in the adder tree
-// - PIPEs_MUL: number of pipeline stages in the multiplier
+// - PIPES_MUL: number of pipeline stages in the multiplier
+// - BACKPRESSURE: 1 if backpressure is used, 0 if not
+//
+// Inputs:
+// - clk: clock signal
+// - rst_n: active low reset signal
+// - sign_unsign: 1 for signed, 0 for unsigned
+// - valid_i: input valid signal
+// - ready_i: input ready signal
+// - in1: input vector 1
+// - in2: input vector 2
+//
+// Outputs:
+// - valid_o: output valid signal
+// - ready_o: output ready signal
+// - out: output dot product
 
 module dot_product_unit #(
     parameter int NUM_INPUTS = 8,
