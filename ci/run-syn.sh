@@ -12,7 +12,7 @@ set -e
 show_usage()
 {
     echo "Swirl: Synthesis script"
-    echo "Usage: $0 [[--dataw=#n] [--M_size=#n] [--N_size=#n] [--K_size=#n] [--pipe=#n] [--tree] [--clk_period=#n] [--arch=#code] [--output_dir=#path] [--help]]"
+    echo "Usage: $0 [[--dataw=#n] [--M_size=#n] [--N_size=#n] [--K_size=#n] [--pipestree=#n] [--pipesmul=#n] [--tree] [--clk_period=#n] [--arch=#code] [--output_dir=#path] [--help]]"
 }
 
 show_help()
@@ -24,8 +24,8 @@ show_help()
     echo "  --M_size=#n: number of rows in the matrix (default: 1)"
     echo "  --N_size=#n: number of columns in the matrix (default: 1)"
     echo "  --K_size=#n: number of columns in the matrix (default: 2)"
-    echo "  --pipe=#n: pipeline depth (default: 1)"
-    echo "  --tree: use tree-based architecture (default: 1)"
+    echo "  --pipestree=#n: pipeline depth for adder tree(default: 1)"
+    echo "  --pipesmul=#n: pipeline depth for multiplier (default: 1)"
     echo "  --clk_period=#n: target clock period in ps (default: 10000)"
     echo "  --arch=#name: 0: baseline, 1: partitioned, 2: sequential (default: 1)"
     echo "  --output_dir=#path: output directory (default: ./outputs/)"
@@ -37,16 +37,15 @@ ROOT_DIR=$(realpath "$SCRIPT_DIR/..")
 
 # Default values
 DATAW=8
-M_SIZE=4
-N_SIZE=4
-K_SIZE=4
-PIPE_REGS=0
-TREE=1
-CLK_SPD=10000
-DOTP_ARCH=2
-SYN_MODULE="syn_tle"
+M_SIZE=1
+N_SIZE=1
+K_SIZE=8
+PIPE_REGS_TREE=1
+PIPE_REGS_MUL=1
+CLK_SPD=1000
+DOTP_ARCH=1
+SYN_MODULE="syn_tle_dotp"
 RETIME=0
-MANUAL_PIPELINE=0
 OUTPUT_DIR=
 
 for i in "$@"
@@ -68,12 +67,12 @@ case $i in
         K_SIZE="${i#*=}"
         shift
         ;;
-    --pipe=*)
-        PIPE_REGS="${i#*=}"
+    --pipestree=*)
+        PIPE_REGS_TREE="${i#*=}"
         shift
         ;;
-    --tree)
-        TREE=1
+    --pipesmul=*)
+        PIPE_REGS_MUL="${i#*=}"
         shift
         ;;
     --clk_period=*)
@@ -96,10 +95,6 @@ case $i in
         RETIME=1
         shift
         ;;
-    --manual_pipeline)
-        MANUAL_PIPELINE=1
-        shift
-        ;;
     --help)
         show_help
         exit 0
@@ -113,7 +108,7 @@ esac
 done
 
 if [ -z "$OUTPUT_DIR" ]; then
-    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_P${PIPE_REGS}_T${TREE}_C${CLK_SPD}_RT${RETIME}_MP${MANUAL_PIPELINE}"
+    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_PT${PIPE_REGS_TREE}_PM${PIPE_REGS_MUL}_C${CLK_SPD}_RT${RETIME}"
 fi
 
 echo "Running synthesis with the following parameters:"
@@ -122,12 +117,11 @@ echo "  DATAW=$DATAW"
 echo "  M_SIZE=$M_SIZE"
 echo "  N_SIZE=$N_SIZE"
 echo "  K_SIZE=$K_SIZE"
-echo "  PIPE_REGS=$PIPE_REGS"
-echo "  TREE=$TREE"
+echo "  PIPE_REGS_TREE=$PIPE_REGS_TREE"
+echo "  PIPE_REGS_MUL=$PIPE_REGS_MUL"
 echo "  CLK_SPD=$CLK_SPD"
 echo "  DOTP_ARCH=$DOTP_ARCH"
 echo "  RETIME=$RETIME"
-echo "  MANUAL_PIPELINE=$MANUAL_PIPELINE"
 echo "  OUTPUT_DIR=$OUTPUT_DIR"
 
 cd "$ROOT_DIR/pi/syn"
@@ -135,4 +129,4 @@ mkdir -p ./work
 cd ./work
 
 source /esat/micas-data/data/design/scripts/ddi_22.35.rc
-M_SIZE=$M_SIZE N_SIZE=$N_SIZE K_SIZE=$K_SIZE PIPE_REGS=$PIPE_REGS TREE=$TREE CLK_SPD=$CLK_SPD DOTP_ARCH=$DOTP_ARCH OUTPUT_DIR=$OUTPUT_DIR SYN_MODULE=$SYN_MODULE RETIME=$RETIME MANUAL_PIPELINE=$MANUAL_PIPELINE genus -legacy_ui -overwrite -files ../syn.tcl -log genCompile.log
+M_SIZE=$M_SIZE N_SIZE=$N_SIZE K_SIZE=$K_SIZE PIPE_REGS_TREE=$PIPE_REGS_TREE PIPE_REGS_MUL=$PIPE_REGS_MUL CLK_SPD=$CLK_SPD DOTP_ARCH=$DOTP_ARCH OUTPUT_DIR=$OUTPUT_DIR SYN_MODULE=$SYN_MODULE RETIME=$RETIME genus -legacy_ui -overwrite -files ../syn.tcl -log genCompile.log

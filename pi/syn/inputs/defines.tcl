@@ -40,6 +40,20 @@ if {[info exists ::env(PIPE_REGS)]} {
     set PIPE_REGS 1
 }
 
+# PIPE_REGS_TREE = number of pipeline stages for tree
+if {[info exists ::env(PIPE_REGS_TREE)]} { 
+    set PIPE_REGS_TREE $::env(PIPE_REGS_TREE)
+} else {
+    set PIPE_REGS_TREE 1
+}
+
+# PIPE_REGS_MUL = number of pipeline stages
+if {[info exists ::env(PIPE_REGS_MUL)]} { 
+    set PIPE_REGS_MUL $::env(PIPE_REGS_MUL)
+} else {
+    set PIPE_REGS_MUL 1
+}
+
 # TREE = 1 for tree-based architecture, 0 for chain-based architecture
 if {[info exists ::env(TREE)]} { 
     set TREE $::env(TREE)

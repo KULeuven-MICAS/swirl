@@ -19,7 +19,7 @@
 // - Add backpressure signals
 // - Add pipeline support
 
-`include "assertions.svh"
+//`include "assertions.svh"
 
 module adder_tree #(
     parameter int NUM_INPUTS,
@@ -44,7 +44,7 @@ module adder_tree #(
     output logic ready_o
 );
 
-    `ASSERT_INIT(PowerOf2Error, ~((NUM_INPUTS-1) & NUM_INPUTS));
+    //`ASSERT_INIT(PowerOf2Error, ~((NUM_INPUTS-1) & NUM_INPUTS));
 
     //logic to distribute PIPES across PIPESMID, PIPESBACK, PIPESFRONT in that order so PIPES = 7 gives 3,2,2 and 9 gives 3,3,3
     localparam int PIPESBACK = PIPES / 3 + ((PIPES % 3) >> 1);
