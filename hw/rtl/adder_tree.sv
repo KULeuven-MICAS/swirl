@@ -75,7 +75,7 @@ module adder_tree #(
                         .rst_n(rst_n),
 
                         .data_i(gen_layer[layer-1].mid_data),
-                        .data_o_layer(mid_data),
+                        .data_o_layer(gen_layer[layer].mid_data),
                         .sign_unsign_ni(sign_unsign_ni),
 
                         .valid_i(gen_layer[layer-1].mid_valid_o),
@@ -98,7 +98,7 @@ module adder_tree #(
                         .rst_n(rst_n),
 
                         .data_i(data_i),
-                        .data_o_layer(mid_data),
+                        .data_o_layer(gen_layer[layer].mid_data),
                         .sign_unsign_ni(sign_unsign_ni),
 
                         .valid_i(valid_i),
@@ -119,7 +119,7 @@ module adder_tree #(
                             .rst_n(rst_n),
 
                             .data_i(gen_layer[layer-1].mid_data),
-                            .data_o_layer(mid_data),
+                            .data_o_layer(gen_layer[layer].mid_data),
                             .sign_unsign_ni(sign_unsign_ni),
 
                             .valid_i(gen_layer[layer-1].mid_valid_o),
@@ -139,7 +139,7 @@ module adder_tree #(
                             .rst_n(rst_n),
 
                             .data_i(gen_layer[layer-1].mid_data),
-                            .data_o_layer(mid_data),
+                            .data_o_layer(gen_layer[layer].mid_data),
                             .sign_unsign_ni(sign_unsign_ni),
 
                             .valid_i(gen_layer[layer-1].mid_valid_o),
