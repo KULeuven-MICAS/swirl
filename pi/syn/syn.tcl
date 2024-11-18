@@ -26,7 +26,8 @@ set HDL_PATH [ list \
 #Add other paths here
 
 set search_path [ join "$HDL_PATH
-                        $HDL_PATH/libs/include" ]
+                        $HDL_PATH/libs/include
+                        $HDL_PATH/libs" ]
 
 #if multiple IPs are used, add them to the list
 #set search_path [ join "$HDL_PATH 
