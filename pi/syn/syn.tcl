@@ -98,9 +98,7 @@ if {$RETIME} {
         set_attribute dont_retime true syn_tle/output_buffer
         set_attribute retime true syn_tle
     } elseif {$DESIGN == "syn_tle_dotp"} {
-        set_attribute dont_retime true syn_tle_dotp/input_buffer
-        set_attribute dont_retime true syn_tle_dotp/output_buffer
-        set_attribute retime true syn_tle_dotp
+        set_attribute retime true *dot_product_unit*
     } else {
         set_attribute retime true ${DESIGN}*
     }

@@ -45,7 +45,7 @@ PIPE_REGS_MUL=1
 CLK_SPD=1000
 DOTP_ARCH=1
 SYN_MODULE="syn_tle_dotp"
-RETIME=0
+RETIME=1
 OUTPUT_DIR=
 
 for i in "$@"
