@@ -15,9 +15,8 @@
 // - NUM_INPUTS: number of inputs, needs to be a power of 2
 // - DATAW: number of bits of each seperate element of the inputs
 //
-// TODO:
-// - Add backpressure signals
-// - Add pipeline support
+// PROBLEM:
+// - The adder_tree module is not synthesizable when PIPESFRONT = 0
 
 //`include "assertions.svh"
 
@@ -91,7 +90,7 @@ module adder_tree #(
                     adder_tree_layer #(
                         .NUM_INPUTS(NUM_INPUTS),
                         .DATAW(DATAW),
-                        .PIPES(PIPESFRONT),
+                        .PIPES(PIPESFRONT + 1), //added +1 to make always synthesizable
                         .BACKPRESSURE(BACKPRESSURE)
                     ) adder_tree_layer (
                         .clk_i(clk_i),
