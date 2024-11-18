@@ -77,39 +77,39 @@ module syn_tle_dotp #(
     end
 
     for (genvar i = 0; i < NUM_INPUTS-1; i++) begin : g_input_registers
-        bq_pipe #(
+        bp_pipe #(
             .DATAW(DATAW),
             .PIPES(1)
-        ) bq_pipe_1 (
+        ) bp_pipe_1 (
             .clk_i(clk_i),
             .rst_ni(rst_n),
             .data_i(in1[i]),
             .data_o(in1_passed[i]),
-            .valid_i(1),
+            .valid_i(1'b1),
             .valid_o(),
-            .ready_i(1),
+            .ready_i(1'b1),
             .ready_o()
         );
 
-        bq_pipe #(
+        bp_pipe #(
             .DATAW(DATAW),
             .PIPES(1)
-        ) bq_pipe_2 (
+        ) bp_pipe_2 (
             .clk_i(clk_i),
             .rst_ni(rst_n),
             .data_i(in2[i]),
             .data_o(in2_passed[i]),
-            .valid_i(1),
+            .valid_i(1'b1),
             .valid_o(),
-            .ready_i(1),
+            .ready_i(1'b1),
             .ready_o()
         );
     end
 
-    bq_pipe #(
+    bp_pipe #(
         .DATAW(DATAW),
         .PIPES(1)
-    ) bq_pipe_1 (
+    ) bp_pipe_1 (
         .clk_i(clk_i),
         .rst_ni(rst_n),
         .data_i(in1[NUM_INPUTS-1]),
@@ -120,18 +120,18 @@ module syn_tle_dotp #(
         .ready_o(ready_i_passed)
     );
 
-    bq_pipe #(
+    bp_pipe #(
         .DATAW(DATAW),
         .PIPES(1)
-    ) bq_pipe_2 (
+    ) bp_pipe_2 (
         .clk_i(clk_i),
         .rst_ni(rst_n),
         .data_i(in2[NUM_INPUTS-1]),
         .data_o(in2_passed[NUM_INPUTS-1]),
         .valid_i(valid_i),
-        .valid_o(valid_i_passed),
+        .valid_o(),
         .ready_i(ready_i),
-        .ready_o(ready_i_passed)
+        .ready_o()
     );
 
     dot_product_unit #(
@@ -153,10 +153,10 @@ module syn_tle_dotp #(
         .out(out_temp)
     );
 
-    bq_pipe #(
+    bp_pipe #(
         .DATAW(OUT_DATAW),
         .PIPES(1)
-    ) bq_pipe (
+    ) bp_pipe (
         .clk_i(clk_i),
         .rst_ni(rst_n),
         .data_i(out_temp),
