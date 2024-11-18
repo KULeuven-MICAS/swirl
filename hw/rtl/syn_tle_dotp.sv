@@ -54,7 +54,13 @@ module syn_tle_dotp #(
     output logic signed [OUT_DATAW-1:0] out
 );
 
-
+    logic signed [OUT_DATAW-1:0] out_temp;
+    logic signed [DATAW-1:0] in1_passed [NUM_INPUTS];
+    logic signed [DATAW-1:0] in2_passed [NUM_INPUTS];
+    logic valid_o_temp;
+    logic ready_o_temp;
+    logic valid_i_passed;
+    logic ready_i_passed;
 
     initial begin
         // $dumpfile($sformatf("syn_tle_dotp.vcd"));
@@ -70,24 +76,95 @@ module syn_tle_dotp #(
         // $time, ready_i, ready_i_matmul,  ready_o_matmul, valid_i, valid_i_matmul,valid_o_matmul);
     end
 
+    for (genvar i = 0; i < NUM_INPUTS-1; i++) begin : g_input_registers
+        bq_pipe #(
+            .DATAW(DATAW),
+            .PIPES(1)
+        ) bq_pipe_1 (
+            .clk_i(clk_i),
+            .rst_ni(rst_n),
+            .data_i(in1[i]),
+            .data_o(in1_passed[i]),
+            .valid_i(1),
+            .valid_o(),
+            .ready_i(1),
+            .ready_o()
+        );
+
+        bq_pipe #(
+            .DATAW(DATAW),
+            .PIPES(1)
+        ) bq_pipe_2 (
+            .clk_i(clk_i),
+            .rst_ni(rst_n),
+            .data_i(in2[i]),
+            .data_o(in2_passed[i]),
+            .valid_i(1),
+            .valid_o(),
+            .ready_i(1),
+            .ready_o()
+        );
+    end
+
+    bq_pipe #(
+        .DATAW(DATAW),
+        .PIPES(1)
+    ) bq_pipe_1 (
+        .clk_i(clk_i),
+        .rst_ni(rst_n),
+        .data_i(in1[NUM_INPUTS-1]),
+        .data_o(in1_passed[NUM_INPUTS-1]),
+        .valid_i(valid_i),
+        .valid_o(valid_i_passed),
+        .ready_i(ready_i),
+        .ready_o(ready_i_passed)
+    );
+
+    bq_pipe #(
+        .DATAW(DATAW),
+        .PIPES(1)
+    ) bq_pipe_2 (
+        .clk_i(clk_i),
+        .rst_ni(rst_n),
+        .data_i(in2[NUM_INPUTS-1]),
+        .data_o(in2_passed[NUM_INPUTS-1]),
+        .valid_i(valid_i),
+        .valid_o(valid_i_passed),
+        .ready_i(ready_i),
+        .ready_o(ready_i_passed)
+    );
 
     dot_product_unit #(
         .DATAW(DATAW),
         .PIPES_TREE(PIPESTAGESTREE),
         .PIPES_MUL(PIPESTAGESMUL),
         .NUM_INPUTS(NUM_INPUTS),
-        .BACKPRESSURE(1),
-    ) dotpunit (
+        .BACKPRESSURE(1)
+    ) dot_product_unit (
         .clk(clk_i),
         .rst_n(rst_n),
         .sign_unsign(sign_unsign),
-        .valid_i(valid_i),
+        .valid_i(valid_i_passed),
+        .valid_o(valid_o_temp),
+        .ready_i(ready_i_passed),
+        .ready_o(ready_o_temp),
+        .in1(in1_passed),
+        .in2(in2_passed),
+        .out(out_temp)
+    );
+
+    bq_pipe #(
+        .DATAW(OUT_DATAW),
+        .PIPES(1)
+    ) bq_pipe (
+        .clk_i(clk_i),
+        .rst_ni(rst_n),
+        .data_i(out_temp),
+        .data_o(out),
+        .valid_i(valid_o_temp),
         .valid_o(valid_o),
-        .ready_i(ready_i),
-        .ready_o(ready_o),
-        .in1(in1),
-        .in2(in2),
-        .out(out)
+        .ready_i(ready_o_temp),
+        .ready_o(ready_o)
     );
 
 endmodule
