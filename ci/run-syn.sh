@@ -107,8 +107,11 @@ case $i in
 esac
 done
 
+OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_T${PIPE_REGS_TREE}_M${PIPE_REGS_MUL}_C${CLK_SPD}_RT${RETIME}"
+
 if [ -z "$OUTPUT_DIR" ]; then
-    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_PT${PIPE_REGS_TREE}_PM${PIPE_REGS_MUL}_C${CLK_SPD}_RT${RETIME}"
+    OUTPUT_DIR="$ROOT_DIR/pi/syn/outputs/${SYN_MODULE}/A${DOTP_ARCH}_W${DATAW}_M${M_SIZE}_N${N_SIZE}_K${K_SIZE}_T${PIPE_REGS_TREE}_M${PIPE_REGS_MUL}_C${CLK_SPD}_RT${RETIME}"
+    echo "No output directory specified, using default: $OUTPUT_DIR"	
 fi
 
 echo "Running synthesis with the following parameters:"
