@@ -6,30 +6,26 @@
 //  Quinten Guelinckx <quinten.guelinckx@student.kuleuven.be>
 //
 // Module description:
-// Binary tree adder testbench supporting 2^n inputs, giving 1 summed output (no overflows).
-// Inputs are expected to be in 2's complement format or decimal format for signed addition.
-// Testbench provides: corner cases for overflow, normal cases for positive and negative numbers.
+// Binary multiplier testbench supporting 2 inputs, giving 1 multiplied output.
+// Inputs are expected to be in 2's complement format or decimal format for signed multiplication.
+// Testbench provides: corner cases, normal cases for positive and negative numbers, zero cases.
 // Testbench also provides a maximum simulation time limit.
 //
 // Parameters:
-// - NUM_INPUTS: number of inputs, needs to be a power of 2 (8 taken as example for this testbench here)
-// - DATAW: number of bits of each seperate element of the inputs
-// - PIPES: number of pipeline stages
-// - BACKPRESSURE: 0 for no backpressure, 1 for backpressure
-// - NUM_TESTS_8: number of tests for 8 inputs
-// - test_inputs_8: test inputs for 8 inputs
-// - sign_unsign_ni_8: signed or unsigned for 8 inputs
-// - expected_outputs_8: expected outputs for 8 inputs
+// - DATAW: number of bits of the input data
+// - PIPES: number of pipeline stages, 0 means fully combinational
+// - BACKPRESSURE: 0 if backpressure is not used, 1 if backpressure is used
+
 
 `timescale 1ns / 1ps
 
 `define MAX_SIM 5000
 
-module tb_adder_tree;
+module tb_multiplier;
 
   initial begin
-    $dumpfile("tb_adder_tree.vcd");
-    $dumpvars(0, tb_adder_tree);
+    $dumpfile("tb_multiplier.vcd");
+    $dumpvars(0, tb_multiplier);
   end
   // Testbench signals
   logic clk_i = 0;
@@ -37,49 +33,39 @@ module tb_adder_tree;
   logic unsigned [15:0] timer=0;
 
   // parameters
-  parameter int NUM_INPUTS = 16;
   parameter int DATAW = 8;
-  parameter int PIPES = 8;
-  parameter int BACKPRESSURE = 0;
-
-  //derived params
-  parameter int NUM_LAYERS = $clog2(NUM_INPUTS);
-  parameter int OUT_DATAW = DATAW + NUM_LAYERS;
+  parameter int PIPES = 1;
+  parameter int BACKPRESSURE = 1;
 
   //signals
-  logic [DATAW-1:0] data_i [NUM_INPUTS];
-  logic [OUT_DATAW-1:0] data_o;
-  logic sign_unsign_ni;
+  logic signed [DATAW-1:0] data_i [2];
+  logic [2*DATAW-1:0] data_o;
 
   logic valid_i;
   logic valid_o;
   logic ready_i;
   logic ready_o;
 
-  parameter int NUM_TESTS_8 = 5;
+  parameter int NUM_TESTS_8 = 7;
 
-  logic signed [DATAW-1:0] test_inputs_8[NUM_TESTS_8][NUM_INPUTS] =  '{
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-    {1, -2, 3, -4, 5, -6, 7, -8, 9, -10, 11, -12, 13, -14, 15, -16},
-    {127, -128, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 6, 0, 0, 1},
-    {127, 5, 2, 1, 6, 1, 35, 6, 127, 5, 2, 1, 6, 1, 35, 6},
-    {-127, 5, 2, 1, -6, 1, -35, 6, 0, 0, 0, 0, 0, 0, 0, 0}
+  logic signed [DATAW-1:0] test_inputs[NUM_TESTS_8][2] =  '{
+    {1, 2},
+    {1, -2},
+    {127, -128},
+    {127, 5},
+    {-127, 5},
+    {0, 0},
+    {7, 0}
   };
 
-  static logic signed sign_unsign_ni_8[NUM_TESTS_8] = '{
-    1,
-    1,
-    1,
-    1,
-    1
-  };
-
-  static logic signed [31:0] expected_outputs_8[NUM_TESTS_8] = '{
-    136,
-    -8,
-    8,
-    366,
-    -153
+  static logic signed [2*DATAW-1:0] expected_outputs[NUM_TESTS_8] = '{
+    2,
+    -2,
+    -16256,
+    635,
+    -635,
+    0,
+    0
   };
 
   int i;
@@ -91,34 +77,32 @@ module tb_adder_tree;
   // Module instantiation
   generate
     if (BACKPRESSURE == 0) begin : g_no_backpressure
-      adder_tree #(
-        .NUM_INPUTS(NUM_INPUTS),
+      multiplier #(
         .DATAW(DATAW),
         .PIPES(PIPES),
         .BACKPRESSURE(0)
-      ) addertree1 (
+      ) multiplier1 (
         .clk_i(clk_i),
-        .rst_n(rst_n),
-        .data_i(data_i),
-        .data_o(data_o),
-        .sign_unsign_ni(sign_unsign_ni),
+        .rst_ni(rst_n),
+        .dataa_i(data_i[0]),
+        .datab_i(data_i[1]),
+        .prod_o(data_o),
         .valid_i(valid_i),
         .valid_o(valid_o),
-        .ready_i(1'b1),
+        .ready_i(ready_i),
         .ready_o(ready_o)
       );
     end else begin : g_backpressure
-      adder_tree #(
-        .NUM_INPUTS(NUM_INPUTS),
+      multiplier #(
         .DATAW(DATAW),
         .PIPES(PIPES),
         .BACKPRESSURE(1)
-      ) addertree1 (
+      ) multiplier1 (
         .clk_i(clk_i),
-        .rst_n(rst_n),
-        .data_i(data_i),
-        .data_o(data_o),
-        .sign_unsign_ni(sign_unsign_ni),
+        .rst_ni(rst_n),
+        .dataa_i(data_i[0]),
+        .datab_i(data_i[1]),
+        .prod_o(data_o),
         .valid_i(valid_i),
         .valid_o(valid_o),
         .ready_i(ready_i),
@@ -152,7 +136,6 @@ module tb_adder_tree;
   //initialize signals
   initial begin
     rst_n = 1'b0;
-    sign_unsign_ni = 0;
     valid_i = 0;
     ready_i = 0;
 
@@ -164,12 +147,9 @@ module tb_adder_tree;
 
     for (int i = 0; i < NUM_TESTS_8; i++) begin
       //apply inputs
-      for (int j = 0; j < NUM_INPUTS; j++) begin
-        data_i[j] = test_inputs_8[i][j];
-      end
+      data_i = test_inputs[i];
 
       //apply sign_unsign_ni
-      sign_unsign_ni = sign_unsign_ni_8[i];
 
       valid_i = 1;
       ready_i = 1;
@@ -186,8 +166,8 @@ module tb_adder_tree;
 
 
       //check output
-      if ($signed(data_o) !== expected_outputs_8[i]) begin
-        $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs_8[i], $signed(data_o));
+      if ($signed(data_o) !== expected_outputs[i]) begin
+        $display("Test %0d failed: expected %0d from inputs %0d and %0d, got %0d", i, expected_outputs[i], $signed(data_i[0]), $signed(data_i[1]), $signed(data_o));
         rst_n = 1'b0;
         #5
         rst_n = 1'b1;

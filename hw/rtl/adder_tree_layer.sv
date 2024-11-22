@@ -57,7 +57,7 @@ module adder_tree_layer #(
                 .PIPES(PIPES),
                 .BACKPRESSURE(BACKPRESSURE)
             ) adder (
-                .clk_i_i(clk_i),
+                .clk_i(clk_i),
                 .rst_ni(rst_n),
 
                 .dataa_i(extd_data_i[2*i]),
