@@ -13,7 +13,7 @@ if {[info exists ::env(DATAW)]} {
 }
 
 # M_SIZE = number of rows in the A matrix unit tile
-if {[info exists ::env(M_SIZE)]} { 
+if {[info exists ::env(M_SIZE)]} {
     set M_SIZE $::env(M_SIZE)
 } else {
     set M_SIZE 1
