@@ -25,7 +25,9 @@ set HDL_PATH [ list \
 
 #Add other paths here
 
-set search_path [ join "$HDL_PATH" ]
+set search_path [ join "$HDL_PATH
+                        $HDL_PATH/libs/include
+                        $HDL_PATH/libs" ]
 
 #if multiple IPs are used, add them to the list
 #set search_path [ join "$HDL_PATH 
@@ -72,10 +74,19 @@ if {$DESIGN == "syn_tle"} {
             -define P=${DATAW} -define PIPESTAGES=(${PIPE_REGS}+1) \
             -define TREE=${TREE} -define MODE=${DOTP_ARCH} -define MANUAL_PIPELINE=${MANUAL_PIPELINE} \
             ${HDL_LIST}
+} elseif {$DESIGN == "syn_tle_dotp"} {
+    source ${INPUTS_DIR}/gen_hdl_list_dotp.tcl
+    lappend HDL_LIST ${HDL_PATH}/syn_tle_dotp.sv
+
+    read_hdl -sv -define K=${K_SIZE} \
+            -define DATAW=${DATAW} -define PIPESTAGESTREE=${PIPE_REGS_TREE} \
+            -define PIPESTAGESMUL=${PIPE_REGS_MUL} -define SYNTHESIS=1\
+            ${HDL_LIST}
 } else {
     source ${INPUTS_DIR}/unit_hdl_list/${DESIGN}_hdl_list.tcl
     puts "MANUAL_PIPELINE: ${MANUAL_PIPELINE}"
-    read_hdl -sv -define MANUAL_PIPELINE=${MANUAL_PIPELINE} ${HDL_LIST}
+    read_hdl -sv -define MANUAL_PIPELINE=${MANUAL_PIPELINE} \
+            ${HDL_LIST}
 }
 
 elaborate ${DESIGN}
@@ -86,7 +97,8 @@ if {$RETIME} {
         set_attribute dont_retime true syn_tle/input_buffer
         set_attribute dont_retime true syn_tle/output_buffer
         set_attribute retime true syn_tle
-
+    } elseif {$DESIGN == "syn_tle_dotp"} {
+        set_attribute retime true *dot_product_unit*
     } else {
         set_attribute retime true ${DESIGN}*
     }

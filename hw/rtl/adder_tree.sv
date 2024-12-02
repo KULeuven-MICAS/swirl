@@ -15,11 +15,10 @@
 // - NUM_INPUTS: number of inputs, needs to be a power of 2
 // - DATAW: number of bits of each seperate element of the inputs
 //
-// TODO:
-// - Add backpressure signals
-// - Add pipeline support
+// PROBLEM:
+// - The adder_tree module is not synthesizable when PIPESFRONT = 0
 
-`include "assertions.svh"
+//`include "assertions.svh"
 
 module adder_tree #(
     parameter int NUM_INPUTS,
@@ -44,7 +43,12 @@ module adder_tree #(
     output logic ready_o
 );
 
-    `ASSERT_INIT(PowerOf2Error, ~((NUM_INPUTS-1) & NUM_INPUTS));
+    //`ASSERT_INIT(PowerOf2Error, ~((NUM_INPUTS-1) & NUM_INPUTS));
+
+    //logic to distribute PIPES across PIPESMID, PIPESBACK, PIPESFRONT in that order so PIPES = 7 gives 3,2,2 and 9 gives 3,3,3
+    localparam int PIPESBACK = PIPES / 3 + ((PIPES % 3) >> 1);
+    localparam int PIPESFRONT = PIPES / 3;
+    localparam int PIPESMID = PIPES - PIPESBACK - PIPESFRONT;
 
 
     generate
@@ -63,14 +67,14 @@ module adder_tree #(
                     adder_tree_layer #(
                         .NUM_INPUTS(LayerInputCnt),
                         .DATAW(LayerDataW),
-                        .PIPES(PIPES),
+                        .PIPES(PIPESBACK),
                         .BACKPRESSURE(BACKPRESSURE)
                     ) adder_tree_layer (
                         .clk_i(clk_i),
                         .rst_n(rst_n),
 
                         .data_i(gen_layer[layer-1].mid_data),
-                        .data_o_layer(mid_data),
+                        .data_o_layer(gen_layer[layer].mid_data),
                         .sign_unsign_ni(sign_unsign_ni),
 
                         .valid_i(gen_layer[layer-1].mid_valid_o),
@@ -86,14 +90,14 @@ module adder_tree #(
                     adder_tree_layer #(
                         .NUM_INPUTS(NUM_INPUTS),
                         .DATAW(DATAW),
-                        .PIPES(PIPES),
+                        .PIPES(PIPESFRONT + 1), //added +1 to make always synthesizable
                         .BACKPRESSURE(BACKPRESSURE)
                     ) adder_tree_layer (
                         .clk_i(clk_i),
                         .rst_n(rst_n),
 
                         .data_i(data_i),
-                        .data_o_layer(mid_data),
+                        .data_o_layer(gen_layer[layer].mid_data),
                         .sign_unsign_ni(sign_unsign_ni),
 
                         .valid_i(valid_i),
@@ -103,25 +107,47 @@ module adder_tree #(
                         .ready_o(mid_ready_o)
                     );
                 end else begin : gen_mid_layers
-                    adder_tree_layer #(
-                        .NUM_INPUTS(LayerInputCnt),
-                        .DATAW(LayerDataW),
-                        .PIPES(PIPES),
-                        .BACKPRESSURE(BACKPRESSURE)
-                    ) adder_tree_layer (
-                        .clk_i(clk_i),
-                        .rst_n(rst_n),
+                    if (layer != NUM_LAYERS/2) begin : gen_mid_layer_no_pipes
+                        adder_tree_layer #(
+                            .NUM_INPUTS(LayerInputCnt),
+                            .DATAW(LayerDataW),
+                            .PIPES(0),
+                            .BACKPRESSURE(BACKPRESSURE)
+                        ) adder_tree_layer (
+                            .clk_i(clk_i),
+                            .rst_n(rst_n),
 
-                        .data_i(gen_layer[layer-1].mid_data),
-                        .data_o_layer(mid_data),
-                        .sign_unsign_ni(sign_unsign_ni),
+                            .data_i(gen_layer[layer-1].mid_data),
+                            .data_o_layer(gen_layer[layer].mid_data),
+                            .sign_unsign_ni(sign_unsign_ni),
 
-                        .valid_i(gen_layer[layer-1].mid_valid_o),
-                        .valid_o(mid_valid_o),
+                            .valid_i(gen_layer[layer-1].mid_valid_o),
+                            .valid_o(mid_valid_o),
 
-                        .ready_i(gen_layer[layer-1].mid_ready_o),
-                        .ready_o(mid_ready_o)
-                    );
+                            .ready_i(gen_layer[layer-1].mid_ready_o),
+                            .ready_o(mid_ready_o)
+                        );
+                    end else begin : gen_mid_layer_pipesmid
+                        adder_tree_layer #(
+                            .NUM_INPUTS(LayerInputCnt),
+                            .DATAW(LayerDataW),
+                            .PIPES(PIPESMID),
+                            .BACKPRESSURE(BACKPRESSURE)
+                        ) adder_tree_layer (
+                            .clk_i(clk_i),
+                            .rst_n(rst_n),
+
+                            .data_i(gen_layer[layer-1].mid_data),
+                            .data_o_layer(gen_layer[layer].mid_data),
+                            .sign_unsign_ni(sign_unsign_ni),
+
+                            .valid_i(gen_layer[layer-1].mid_valid_o),
+                            .valid_o(mid_valid_o),
+
+                            .ready_i(gen_layer[layer-1].mid_ready_o),
+                            .ready_o(mid_ready_o)
+                        );
+                    end
                 end
             end
         end

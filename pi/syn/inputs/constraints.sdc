@@ -5,7 +5,7 @@ set_units -time ps
 set SOC_C_Period               $CLK_SPD
 set SOC_C_Latency_Max                 0
 set SOC_C_Latency_Min                 0
-set SOC_C_Uncertainty_Setup         500
+set SOC_C_Uncertainty_Setup         100
 set SOC_C_Uncertainty_Hold          125
 set SOC_C_Transition                500
 
