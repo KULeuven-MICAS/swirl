@@ -33,7 +33,7 @@ foreach dir $INCLUDE_DIRS {
 
 foreach file $HDL_FILES {
     puts "Compiling ${file} ..."
-    catch "vlog -sv -work ${WLIB} ${DEFINES} ${INCLUDES} ${file}" comperror
+    catch "vlog -sv -work ${WLIB} ${DEFINES} -suppress 2892 ${INCLUDES} ${file}" comperror
     if {$comperror != ""} {
         puts "ERROR: Compilation failed for ${file}"
         puts $comperror

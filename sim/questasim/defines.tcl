@@ -35,6 +35,19 @@ if {[info exists ::env(DBG)]} {
     set DBG 0
 }
 
+if {[info exists ::env(SYN)]} {
+    set SYN [expr {$::env(SYN) == 1}]
+} else {
+    set SYN 0
+}
+
+if {[info exists ::env(SYN_PATH)]} {
+    set SYN_PATH $::env(SYN_PATH)
+} else {
+    set SYN_PATH "./"
+}
+
+
 if {[info exists ::env(DEFINES)]} {
     set DEFINES $::env(DEFINES)
     if {[string match "" $DEFINES]} {
@@ -54,6 +67,7 @@ puts "TEST_PATH: ${TEST_PATH}"
 puts "HDL_FILE_LIST: ${HDL_FILE_LIST}"
 puts "SIM_NAME: ${SIM_NAME}"
 puts "DBG: ${DBG}"
+puts "SYN: ${SYN}"
 puts "DEFINES: ${DEFINES}"
 puts "WLIB: ${WLIB}"
 puts "--------------------------------------------------------------------------------"

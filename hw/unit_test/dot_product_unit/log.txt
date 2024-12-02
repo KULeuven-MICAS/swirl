@@ -1,0 +1,980 @@
+HDL_FILES: ../../rtl/libs/include ./src
+rm -rf work transcript *.vcd
+TEST_PATH=/users/students/r0941589/swirl/hw/unit_test/dot_product_unit SIM_NAME=dot_product_unit DBG=1 \
+BUILD_ONLY=1 DEFINES=+define+PIPES=1 HDL_FILE_LIST=/users/students/r0941589/swirl/hw/unit_test/dot_product_unit/hdl_file_list.tcl \
+vsim -c -do "source /users/students/r0941589/swirl/sim/questasim/build.tcl"
+Reading pref.tcl
+
+# 2022.4
+
+# source /users/students/r0941589/swirl/sim/questasim/build.tcl
+--------------------------------------------------------------------------------
+Defines loaded
+TEST_PATH: /users/students/r0941589/swirl/hw/unit_test/dot_product_unit
+HDL_FILE_LIST: /users/students/r0941589/swirl/hw/unit_test/dot_product_unit/hdl_file_list.tcl
+SIM_NAME: dot_product_unit
+DBG: 1
+SYN: 1
+DEFINES: +define+PIPES=1+QUESTA
+WLIB: /users/students/r0941589/swirl/hw/unit_test/dot_product_unit/work/work_dot_product_unit
+--------------------------------------------------------------------------------
+Building dot_product_unit ...
+Compiling /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v ...
+# QuestaSim-64 vlog 2022.4 Compiler 2022.10 Oct 18 2022
+# ** Warning: (vlog-13288) Multiple macros defined in +define+ command line switch.
+# Start time: 11:27:33 on Nov 28,2024
+# vlog -sv -work /users/students/r0941589/swirl/hw/unit_test/dot_product_unit/work/work_dot_product_unit "+define+PIPES=1+QUESTA+FUNCTIONAL" -suppress 2892 "+incdir+../../rtl/libs/include+./src" /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v 
+# -- Compiling module sky130_fd_sc_hs__a2bb2o_1
+# -- Compiling module sky130_fd_sc_hs__a2bb2o_2
+# -- Compiling module sky130_fd_sc_hs__a2bb2o_4
+# -- Compiling module sky130_fd_sc_hs__a2bb2oi_1
+# -- Compiling module sky130_fd_sc_hs__a2bb2oi_2
+# -- Compiling module sky130_fd_sc_hs__a2bb2oi_4
+# -- Compiling module sky130_fd_sc_hs__a21bo_1
+# -- Compiling module sky130_fd_sc_hs__a21bo_2
+# -- Compiling module sky130_fd_sc_hs__a21bo_4
+# -- Compiling module sky130_fd_sc_hs__a21boi_1
+# -- Compiling module sky130_fd_sc_hs__a21boi_2
+# -- Compiling module sky130_fd_sc_hs__a21boi_4
+# -- Compiling module sky130_fd_sc_hs__a21o_1
+# -- Compiling module sky130_fd_sc_hs__a21o_2
+# -- Compiling module sky130_fd_sc_hs__a21o_4
+# -- Compiling module sky130_fd_sc_hs__a21oi_1
+# -- Compiling module sky130_fd_sc_hs__a21oi_2
+# -- Compiling module sky130_fd_sc_hs__a21oi_4
+# -- Compiling module sky130_fd_sc_hs__a22o_1
+# -- Compiling module sky130_fd_sc_hs__a22o_2
+# -- Compiling module sky130_fd_sc_hs__a22o_4
+# -- Compiling module sky130_fd_sc_hs__a22oi_1
+# -- Compiling module sky130_fd_sc_hs__a22oi_2
+# -- Compiling module sky130_fd_sc_hs__a22oi_4
+# -- Compiling module sky130_fd_sc_hs__a31o_1
+# -- Compiling module sky130_fd_sc_hs__a31o_2
+# -- Compiling module sky130_fd_sc_hs__a31o_4
+# -- Compiling module sky130_fd_sc_hs__a31oi_1
+# -- Compiling module sky130_fd_sc_hs__a31oi_2
+# -- Compiling module sky130_fd_sc_hs__a31oi_4
+# -- Compiling module sky130_fd_sc_hs__a32o_1
+# -- Compiling module sky130_fd_sc_hs__a32o_2
+# -- Compiling module sky130_fd_sc_hs__a32o_4
+# -- Compiling module sky130_fd_sc_hs__a32oi_1
+# -- Compiling module sky130_fd_sc_hs__a32oi_2
+# -- Compiling module sky130_fd_sc_hs__a32oi_4
+# -- Compiling module sky130_fd_sc_hs__a41o_1
+# -- Compiling module sky130_fd_sc_hs__a41o_2
+# -- Compiling module sky130_fd_sc_hs__a41o_4
+# -- Compiling module sky130_fd_sc_hs__a41oi_1
+# -- Compiling module sky130_fd_sc_hs__a41oi_2
+# -- Compiling module sky130_fd_sc_hs__a41oi_4
+# -- Compiling module sky130_fd_sc_hs__a211o_1
+# -- Compiling module sky130_fd_sc_hs__a211o_2
+# -- Compiling module sky130_fd_sc_hs__a211o_4
+# -- Compiling module sky130_fd_sc_hs__a211oi_1
+# -- Compiling module sky130_fd_sc_hs__a211oi_2
+# -- Compiling module sky130_fd_sc_hs__a211oi_4
+# -- Compiling module sky130_fd_sc_hs__a221o_1
+# -- Compiling module sky130_fd_sc_hs__a221o_2
+# -- Compiling module sky130_fd_sc_hs__a221o_4
+# -- Compiling module sky130_fd_sc_hs__a221oi_1
+# -- Compiling module sky130_fd_sc_hs__a221oi_2
+# -- Compiling module sky130_fd_sc_hs__a221oi_4
+# -- Compiling module sky130_fd_sc_hs__a222o_1
+# -- Compiling module sky130_fd_sc_hs__a222o_2
+# -- Compiling module sky130_fd_sc_hs__a222oi_1
+# -- Compiling module sky130_fd_sc_hs__a222oi_2
+# -- Compiling module sky130_fd_sc_hs__a311o_1
+# -- Compiling module sky130_fd_sc_hs__a311o_2
+# -- Compiling module sky130_fd_sc_hs__a311o_4
+# -- Compiling module sky130_fd_sc_hs__a311oi_1
+# -- Compiling module sky130_fd_sc_hs__a311oi_2
+# -- Compiling module sky130_fd_sc_hs__a311oi_4
+# -- Compiling module sky130_fd_sc_hs__a2111o_1
+# -- Compiling module sky130_fd_sc_hs__a2111o_2
+# -- Compiling module sky130_fd_sc_hs__a2111o_4
+# -- Compiling module sky130_fd_sc_hs__a2111oi_1
+# -- Compiling module sky130_fd_sc_hs__a2111oi_2
+# -- Compiling module sky130_fd_sc_hs__a2111oi_4
+# -- Compiling module sky130_fd_sc_hs__and2_1
+# -- Compiling module sky130_fd_sc_hs__and2_2
+# -- Compiling module sky130_fd_sc_hs__and2_4
+# -- Compiling module sky130_fd_sc_hs__and2b_1
+# -- Compiling module sky130_fd_sc_hs__and2b_2
+# -- Compiling module sky130_fd_sc_hs__and2b_4
+# -- Compiling module sky130_fd_sc_hs__and3_1
+# -- Compiling module sky130_fd_sc_hs__and3_2
+# -- Compiling module sky130_fd_sc_hs__and3_4
+# -- Compiling module sky130_fd_sc_hs__and3b_1
+# -- Compiling module sky130_fd_sc_hs__and3b_2
+# -- Compiling module sky130_fd_sc_hs__and3b_4
+# -- Compiling module sky130_fd_sc_hs__and4_1
+# -- Compiling module sky130_fd_sc_hs__and4_2
+# -- Compiling module sky130_fd_sc_hs__and4_4
+# -- Compiling module sky130_fd_sc_hs__and4b_1
+# -- Compiling module sky130_fd_sc_hs__and4b_2
+# -- Compiling module sky130_fd_sc_hs__and4b_4
+# -- Compiling module sky130_fd_sc_hs__and4bb_1
+# -- Compiling module sky130_fd_sc_hs__and4bb_2
+# -- Compiling module sky130_fd_sc_hs__and4bb_4
+# -- Compiling module sky130_fd_sc_hs__buf_1
+# -- Compiling module sky130_fd_sc_hs__buf_2
+# -- Compiling module sky130_fd_sc_hs__buf_4
+# -- Compiling module sky130_fd_sc_hs__buf_8
+# -- Compiling module sky130_fd_sc_hs__buf_16
+# -- Compiling module sky130_fd_sc_hs__bufbuf_8
+# -- Compiling module sky130_fd_sc_hs__bufbuf_16
+# -- Compiling module sky130_fd_sc_hs__bufinv_8
+# -- Compiling module sky130_fd_sc_hs__bufinv_16
+# -- Compiling module sky130_fd_sc_hs__clkbuf_1
+# -- Compiling module sky130_fd_sc_hs__clkbuf_2
+# -- Compiling module sky130_fd_sc_hs__clkbuf_4
+# -- Compiling module sky130_fd_sc_hs__clkbuf_8
+# -- Compiling module sky130_fd_sc_hs__clkbuf_16
+# -- Compiling module sky130_fd_sc_hs__clkdlyinv3sd1_1
+# -- Compiling module sky130_fd_sc_hs__clkdlyinv3sd2_1
+# -- Compiling module sky130_fd_sc_hs__clkdlyinv3sd3_1
+# -- Compiling module sky130_fd_sc_hs__clkdlyinv5sd1_1
+# -- Compiling module sky130_fd_sc_hs__clkdlyinv5sd2_1
+# -- Compiling module sky130_fd_sc_hs__clkdlyinv5sd3_1
+# -- Compiling module sky130_fd_sc_hs__clkinv_1
+# -- Compiling module sky130_fd_sc_hs__clkinv_2
+# -- Compiling module sky130_fd_sc_hs__clkinv_4
+# -- Compiling module sky130_fd_sc_hs__clkinv_8
+# -- Compiling module sky130_fd_sc_hs__clkinv_16
+# -- Compiling module sky130_fd_sc_hs__conb_1
+# -- Compiling module sky130_fd_sc_hs__decap_4
+# -- Compiling module sky130_fd_sc_hs__decap_8
+# -- Compiling module sky130_fd_sc_hs__dfbbn_1
+# -- Compiling module sky130_fd_sc_hs__dfbbn_2
+# -- Compiling module sky130_fd_sc_hs__dfbbp_1
+# -- Compiling module sky130_fd_sc_hs__dfrbp_1
+# -- Compiling module sky130_fd_sc_hs__dfrbp_2
+# -- Compiling module sky130_fd_sc_hs__dfrtn_1
+# -- Compiling module sky130_fd_sc_hs__dfrtp_1
+# -- Compiling module sky130_fd_sc_hs__dfrtp_2
+# -- Compiling module sky130_fd_sc_hs__dfrtp_4
+# -- Compiling module sky130_fd_sc_hs__dfsbp_1
+# -- Compiling module sky130_fd_sc_hs__dfsbp_2
+# -- Compiling module sky130_fd_sc_hs__dfstp_1
+# -- Compiling module sky130_fd_sc_hs__dfstp_2
+# -- Compiling module sky130_fd_sc_hs__dfstp_4
+# -- Compiling module sky130_fd_sc_hs__dfxbp_1
+# -- Compiling module sky130_fd_sc_hs__dfxbp_2
+# -- Compiling module sky130_fd_sc_hs__dfxtp_1
+# -- Compiling module sky130_fd_sc_hs__dfxtp_2
+# -- Compiling module sky130_fd_sc_hs__dfxtp_4
+# -- Compiling module sky130_fd_sc_hs__diode_2
+# -- Compiling module sky130_fd_sc_hs__dlclkp_1
+# -- Compiling module sky130_fd_sc_hs__dlclkp_2
+# -- Compiling module sky130_fd_sc_hs__dlclkp_4
+# -- Compiling module sky130_fd_sc_hs__dlrbn_1
+# -- Compiling module sky130_fd_sc_hs__dlrbn_2
+# -- Compiling module sky130_fd_sc_hs__dlrbp_1
+# -- Compiling module sky130_fd_sc_hs__dlrbp_2
+# -- Compiling module sky130_fd_sc_hs__dlrtn_1
+# -- Compiling module sky130_fd_sc_hs__dlrtn_2
+# -- Compiling module sky130_fd_sc_hs__dlrtn_4
+# -- Compiling module sky130_fd_sc_hs__dlrtp_1
+# -- Compiling module sky130_fd_sc_hs__dlrtp_2
+# -- Compiling module sky130_fd_sc_hs__dlrtp_4
+# -- Compiling module sky130_fd_sc_hs__dlxbn_1
+# -- Compiling module sky130_fd_sc_hs__dlxbn_2
+# -- Compiling module sky130_fd_sc_hs__dlxbp_1
+# -- Compiling module sky130_fd_sc_hs__dlxtn_1
+# -- Compiling module sky130_fd_sc_hs__dlxtn_2
+# -- Compiling module sky130_fd_sc_hs__dlxtn_4
+# -- Compiling module sky130_fd_sc_hs__dlxtp_1
+# -- Compiling module sky130_fd_sc_hs__dlygate4sd1_1
+# -- Compiling module sky130_fd_sc_hs__dlygate4sd2_1
+# -- Compiling module sky130_fd_sc_hs__dlygate4sd3_1
+# -- Compiling module sky130_fd_sc_hs__dlymetal6s2s_1
+# -- Compiling module sky130_fd_sc_hs__dlymetal6s4s_1
+# -- Compiling module sky130_fd_sc_hs__dlymetal6s6s_1
+# -- Compiling module sky130_fd_sc_hs__ebufn_1
+# -- Compiling module sky130_fd_sc_hs__ebufn_2
+# -- Compiling module sky130_fd_sc_hs__ebufn_4
+# -- Compiling module sky130_fd_sc_hs__ebufn_8
+# -- Compiling module sky130_fd_sc_hs__edfxbp_1
+# -- Compiling module sky130_fd_sc_hs__edfxtp_1
+# -- Compiling module sky130_fd_sc_hs__einvn_1
+# -- Compiling module sky130_fd_sc_hs__einvn_2
+# -- Compiling module sky130_fd_sc_hs__einvn_4
+# -- Compiling module sky130_fd_sc_hs__einvn_8
+# -- Compiling module sky130_fd_sc_hs__einvp_1
+# -- Compiling module sky130_fd_sc_hs__einvp_2
+# -- Compiling module sky130_fd_sc_hs__einvp_4
+# -- Compiling module sky130_fd_sc_hs__einvp_8
+# -- Compiling module sky130_fd_sc_hs__fa_1
+# -- Compiling module sky130_fd_sc_hs__fa_2
+# -- Compiling module sky130_fd_sc_hs__fa_4
+# -- Compiling module sky130_fd_sc_hs__fah_1
+# -- Compiling module sky130_fd_sc_hs__fah_2
+# -- Compiling module sky130_fd_sc_hs__fah_4
+# -- Compiling module sky130_fd_sc_hs__fahcin_1
+# -- Compiling module sky130_fd_sc_hs__fahcon_1
+# -- Compiling module sky130_fd_sc_hs__fill_1
+# -- Compiling module sky130_fd_sc_hs__fill_2
+# -- Compiling module sky130_fd_sc_hs__fill_4
+# -- Compiling module sky130_fd_sc_hs__fill_8
+# -- Compiling module sky130_fd_sc_hs__fill_diode_2
+# -- Compiling module sky130_fd_sc_hs__fill_diode_4
+# -- Compiling module sky130_fd_sc_hs__fill_diode_8
+# -- Compiling module sky130_fd_sc_hs__ha_1
+# -- Compiling module sky130_fd_sc_hs__ha_2
+# -- Compiling module sky130_fd_sc_hs__ha_4
+# -- Compiling module sky130_fd_sc_hs__inv_1
+# -- Compiling module sky130_fd_sc_hs__inv_2
+# -- Compiling module sky130_fd_sc_hs__inv_4
+# -- Compiling module sky130_fd_sc_hs__inv_8
+# -- Compiling module sky130_fd_sc_hs__inv_16
+# -- Compiling module sky130_fd_sc_hs__maj3_1
+# -- Compiling module sky130_fd_sc_hs__maj3_2
+# -- Compiling module sky130_fd_sc_hs__maj3_4
+# -- Compiling module sky130_fd_sc_hs__mux2_1
+# -- Compiling module sky130_fd_sc_hs__mux2_2
+# -- Compiling module sky130_fd_sc_hs__mux2_4
+# -- Compiling module sky130_fd_sc_hs__mux2i_1
+# -- Compiling module sky130_fd_sc_hs__mux2i_2
+# -- Compiling module sky130_fd_sc_hs__mux2i_4
+# -- Compiling module sky130_fd_sc_hs__mux4_1
+# -- Compiling module sky130_fd_sc_hs__mux4_2
+# -- Compiling module sky130_fd_sc_hs__mux4_4
+# -- Compiling module sky130_fd_sc_hs__nand2_1
+# -- Compiling module sky130_fd_sc_hs__nand2_2
+# -- Compiling module sky130_fd_sc_hs__nand2_4
+# -- Compiling module sky130_fd_sc_hs__nand2_8
+# -- Compiling module sky130_fd_sc_hs__nand2b_1
+# -- Compiling module sky130_fd_sc_hs__nand2b_2
+# -- Compiling module sky130_fd_sc_hs__nand2b_4
+# -- Compiling module sky130_fd_sc_hs__nand3_1
+# -- Compiling module sky130_fd_sc_hs__nand3_2
+# -- Compiling module sky130_fd_sc_hs__nand3_4
+# -- Compiling module sky130_fd_sc_hs__nand3b_1
+# -- Compiling module sky130_fd_sc_hs__nand3b_2
+# -- Compiling module sky130_fd_sc_hs__nand3b_4
+# -- Compiling module sky130_fd_sc_hs__nand4_1
+# -- Compiling module sky130_fd_sc_hs__nand4_2
+# -- Compiling module sky130_fd_sc_hs__nand4_4
+# -- Compiling module sky130_fd_sc_hs__nand4b_1
+# -- Compiling module sky130_fd_sc_hs__nand4b_2
+# -- Compiling module sky130_fd_sc_hs__nand4b_4
+# -- Compiling module sky130_fd_sc_hs__nand4bb_1
+# -- Compiling module sky130_fd_sc_hs__nand4bb_2
+# -- Compiling module sky130_fd_sc_hs__nand4bb_4
+# -- Compiling module sky130_fd_sc_hs__nor2_1
+# -- Compiling module sky130_fd_sc_hs__nor2_2
+# -- Compiling module sky130_fd_sc_hs__nor2_4
+# -- Compiling module sky130_fd_sc_hs__nor2_8
+# -- Compiling module sky130_fd_sc_hs__nor2b_1
+# -- Compiling module sky130_fd_sc_hs__nor2b_2
+# -- Compiling module sky130_fd_sc_hs__nor2b_4
+# -- Compiling module sky130_fd_sc_hs__nor3_1
+# -- Compiling module sky130_fd_sc_hs__nor3_2
+# -- Compiling module sky130_fd_sc_hs__nor3_4
+# -- Compiling module sky130_fd_sc_hs__nor3b_1
+# -- Compiling module sky130_fd_sc_hs__nor3b_2
+# -- Compiling module sky130_fd_sc_hs__nor3b_4
+# -- Compiling module sky130_fd_sc_hs__nor4_1
+# -- Compiling module sky130_fd_sc_hs__nor4_2
+# -- Compiling module sky130_fd_sc_hs__nor4_4
+# -- Compiling module sky130_fd_sc_hs__nor4b_1
+# -- Compiling module sky130_fd_sc_hs__nor4b_2
+# -- Compiling module sky130_fd_sc_hs__nor4b_4
+# -- Compiling module sky130_fd_sc_hs__nor4bb_1
+# -- Compiling module sky130_fd_sc_hs__nor4bb_2
+# -- Compiling module sky130_fd_sc_hs__nor4bb_4
+# -- Compiling module sky130_fd_sc_hs__o2bb2a_1
+# -- Compiling module sky130_fd_sc_hs__o2bb2a_2
+# -- Compiling module sky130_fd_sc_hs__o2bb2a_4
+# -- Compiling module sky130_fd_sc_hs__o2bb2ai_1
+# -- Compiling module sky130_fd_sc_hs__o2bb2ai_2
+# -- Compiling module sky130_fd_sc_hs__o2bb2ai_4
+# -- Compiling module sky130_fd_sc_hs__o21a_1
+# -- Compiling module sky130_fd_sc_hs__o21a_2
+# -- Compiling module sky130_fd_sc_hs__o21a_4
+# -- Compiling module sky130_fd_sc_hs__o21ai_1
+# -- Compiling module sky130_fd_sc_hs__o21ai_2
+# -- Compiling module sky130_fd_sc_hs__o21ai_4
+# -- Compiling module sky130_fd_sc_hs__o21ba_1
+# -- Compiling module sky130_fd_sc_hs__o21ba_2
+# -- Compiling module sky130_fd_sc_hs__o21ba_4
+# -- Compiling module sky130_fd_sc_hs__o21bai_1
+# -- Compiling module sky130_fd_sc_hs__o21bai_2
+# -- Compiling module sky130_fd_sc_hs__o21bai_4
+# -- Compiling module sky130_fd_sc_hs__o22a_1
+# -- Compiling module sky130_fd_sc_hs__o22a_2
+# -- Compiling module sky130_fd_sc_hs__o22a_4
+# -- Compiling module sky130_fd_sc_hs__o22ai_1
+# -- Compiling module sky130_fd_sc_hs__o22ai_2
+# -- Compiling module sky130_fd_sc_hs__o22ai_4
+# -- Compiling module sky130_fd_sc_hs__o31a_1
+# -- Compiling module sky130_fd_sc_hs__o31a_2
+# -- Compiling module sky130_fd_sc_hs__o31a_4
+# -- Compiling module sky130_fd_sc_hs__o31ai_1
+# -- Compiling module sky130_fd_sc_hs__o31ai_2
+# -- Compiling module sky130_fd_sc_hs__o31ai_4
+# -- Compiling module sky130_fd_sc_hs__o32a_1
+# -- Compiling module sky130_fd_sc_hs__o32a_2
+# -- Compiling module sky130_fd_sc_hs__o32a_4
+# -- Compiling module sky130_fd_sc_hs__o32ai_1
+# -- Compiling module sky130_fd_sc_hs__o32ai_2
+# -- Compiling module sky130_fd_sc_hs__o32ai_4
+# -- Compiling module sky130_fd_sc_hs__o41a_1
+# -- Compiling module sky130_fd_sc_hs__o41a_2
+# -- Compiling module sky130_fd_sc_hs__o41a_4
+# -- Compiling module sky130_fd_sc_hs__o41ai_1
+# -- Compiling module sky130_fd_sc_hs__o41ai_2
+# -- Compiling module sky130_fd_sc_hs__o41ai_4
+# -- Compiling module sky130_fd_sc_hs__o211a_1
+# -- Compiling module sky130_fd_sc_hs__o211a_2
+# -- Compiling module sky130_fd_sc_hs__o211a_4
+# -- Compiling module sky130_fd_sc_hs__o211ai_1
+# -- Compiling module sky130_fd_sc_hs__o211ai_2
+# -- Compiling module sky130_fd_sc_hs__o211ai_4
+# -- Compiling module sky130_fd_sc_hs__o221a_1
+# -- Compiling module sky130_fd_sc_hs__o221a_2
+# -- Compiling module sky130_fd_sc_hs__o221a_4
+# -- Compiling module sky130_fd_sc_hs__o221ai_1
+# -- Compiling module sky130_fd_sc_hs__o221ai_2
+# -- Compiling module sky130_fd_sc_hs__o221ai_4
+# -- Compiling module sky130_fd_sc_hs__o311a_1
+# -- Compiling module sky130_fd_sc_hs__o311a_2
+# -- Compiling module sky130_fd_sc_hs__o311a_4
+# -- Compiling module sky130_fd_sc_hs__o311ai_1
+# -- Compiling module sky130_fd_sc_hs__o311ai_2
+# -- Compiling module sky130_fd_sc_hs__o311ai_4
+# -- Compiling module sky130_fd_sc_hs__o2111a_1
+# -- Compiling module sky130_fd_sc_hs__o2111a_2
+# -- Compiling module sky130_fd_sc_hs__o2111a_4
+# -- Compiling module sky130_fd_sc_hs__o2111ai_1
+# -- Compiling module sky130_fd_sc_hs__o2111ai_2
+# -- Compiling module sky130_fd_sc_hs__o2111ai_4
+# -- Compiling module sky130_fd_sc_hs__or2_1
+# -- Compiling module sky130_fd_sc_hs__or2_2
+# -- Compiling module sky130_fd_sc_hs__or2_4
+# -- Compiling module sky130_fd_sc_hs__or2b_1
+# -- Compiling module sky130_fd_sc_hs__or2b_2
+# -- Compiling module sky130_fd_sc_hs__or2b_4
+# -- Compiling module sky130_fd_sc_hs__or3_1
+# -- Compiling module sky130_fd_sc_hs__or3_2
+# -- Compiling module sky130_fd_sc_hs__or3_4
+# -- Compiling module sky130_fd_sc_hs__or3b_1
+# -- Compiling module sky130_fd_sc_hs__or3b_2
+# -- Compiling module sky130_fd_sc_hs__or3b_4
+# -- Compiling module sky130_fd_sc_hs__or4_1
+# -- Compiling module sky130_fd_sc_hs__or4_2
+# -- Compiling module sky130_fd_sc_hs__or4_4
+# -- Compiling module sky130_fd_sc_hs__or4b_1
+# -- Compiling module sky130_fd_sc_hs__or4b_2
+# -- Compiling module sky130_fd_sc_hs__or4b_4
+# -- Compiling module sky130_fd_sc_hs__or4bb_1
+# -- Compiling module sky130_fd_sc_hs__or4bb_2
+# -- Compiling module sky130_fd_sc_hs__or4bb_4
+# -- Compiling module sky130_fd_sc_hs__sdfbbn_1
+# -- Compiling module sky130_fd_sc_hs__sdfbbn_2
+# -- Compiling module sky130_fd_sc_hs__sdfbbp_1
+# -- Compiling module sky130_fd_sc_hs__sdfrbp_1
+# -- Compiling module sky130_fd_sc_hs__sdfrbp_2
+# -- Compiling module sky130_fd_sc_hs__sdfrtn_1
+# -- Compiling module sky130_fd_sc_hs__sdfrtp_1
+# -- Compiling module sky130_fd_sc_hs__sdfrtp_2
+# -- Compiling module sky130_fd_sc_hs__sdfrtp_4
+# -- Compiling module sky130_fd_sc_hs__sdfsbp_1
+# -- Compiling module sky130_fd_sc_hs__sdfsbp_2
+# -- Compiling module sky130_fd_sc_hs__sdfstp_1
+# -- Compiling module sky130_fd_sc_hs__sdfstp_2
+# -- Compiling module sky130_fd_sc_hs__sdfstp_4
+# -- Compiling module sky130_fd_sc_hs__sdfxbp_1
+# -- Compiling module sky130_fd_sc_hs__sdfxbp_2
+# -- Compiling module sky130_fd_sc_hs__sdfxtp_1
+# -- Compiling module sky130_fd_sc_hs__sdfxtp_2
+# -- Compiling module sky130_fd_sc_hs__sdfxtp_4
+# -- Compiling module sky130_fd_sc_hs__sdlclkp_1
+# -- Compiling module sky130_fd_sc_hs__sdlclkp_2
+# -- Compiling module sky130_fd_sc_hs__sdlclkp_4
+# -- Compiling module sky130_fd_sc_hs__sedfxbp_1
+# -- Compiling module sky130_fd_sc_hs__sedfxbp_2
+# -- Compiling module sky130_fd_sc_hs__sedfxtp_1
+# -- Compiling module sky130_fd_sc_hs__sedfxtp_2
+# -- Compiling module sky130_fd_sc_hs__sedfxtp_4
+# -- Compiling module sky130_fd_sc_hs__tap_1
+# -- Compiling module sky130_fd_sc_hs__tap_2
+# -- Compiling module sky130_fd_sc_hs__tapmet1_2
+# -- Compiling module sky130_fd_sc_hs__tapvgnd2_1
+# -- Compiling module sky130_fd_sc_hs__tapvgnd_1
+# -- Compiling module sky130_fd_sc_hs__tapvpwrvgnd_1
+# -- Compiling module sky130_fd_sc_hs__xnor2_1
+# -- Compiling module sky130_fd_sc_hs__xnor2_2
+# -- Compiling module sky130_fd_sc_hs__xnor2_4
+# -- Compiling module sky130_fd_sc_hs__xnor3_1
+# -- Compiling module sky130_fd_sc_hs__xnor3_2
+# -- Compiling module sky130_fd_sc_hs__xnor3_4
+# -- Compiling module sky130_fd_sc_hs__xor2_1
+# -- Compiling module sky130_fd_sc_hs__xor2_2
+# -- Compiling module sky130_fd_sc_hs__xor2_4
+# -- Compiling module sky130_fd_sc_hs__xor3_1
+# -- Compiling module sky130_fd_sc_hs__xor3_2
+# -- Compiling module sky130_fd_sc_hs__xor3_4
+# 
+# Top level modules:
+# 	sky130_fd_sc_hs__a2bb2o_1
+# 	sky130_fd_sc_hs__a2bb2o_2
+# 	sky130_fd_sc_hs__a2bb2o_4
+# 	sky130_fd_sc_hs__a2bb2oi_1
+# 	sky130_fd_sc_hs__a2bb2oi_2
+# 	sky130_fd_sc_hs__a2bb2oi_4
+# 	sky130_fd_sc_hs__a21bo_1
+# 	sky130_fd_sc_hs__a21bo_2
+# 	sky130_fd_sc_hs__a21bo_4
+# 	sky130_fd_sc_hs__a21boi_1
+# 	sky130_fd_sc_hs__a21boi_2
+# 	sky130_fd_sc_hs__a21boi_4
+# 	sky130_fd_sc_hs__a21o_1
+# 	sky130_fd_sc_hs__a21o_2
+# 	sky130_fd_sc_hs__a21o_4
+# 	sky130_fd_sc_hs__a21oi_1
+# 	sky130_fd_sc_hs__a21oi_2
+# 	sky130_fd_sc_hs__a21oi_4
+# 	sky130_fd_sc_hs__a22o_1
+# 	sky130_fd_sc_hs__a22o_2
+# 	sky130_fd_sc_hs__a22o_4
+# 	sky130_fd_sc_hs__a22oi_1
+# 	sky130_fd_sc_hs__a22oi_2
+# 	sky130_fd_sc_hs__a22oi_4
+# 	sky130_fd_sc_hs__a31o_1
+# 	sky130_fd_sc_hs__a31o_2
+# 	sky130_fd_sc_hs__a31o_4
+# 	sky130_fd_sc_hs__a31oi_1
+# 	sky130_fd_sc_hs__a31oi_2
+# 	sky130_fd_sc_hs__a31oi_4
+# 	sky130_fd_sc_hs__a32o_1
+# 	sky130_fd_sc_hs__a32o_2
+# 	sky130_fd_sc_hs__a32o_4
+# 	sky130_fd_sc_hs__a32oi_1
+# 	sky130_fd_sc_hs__a32oi_2
+# 	sky130_fd_sc_hs__a32oi_4
+# 	sky130_fd_sc_hs__a41o_1
+# 	sky130_fd_sc_hs__a41o_2
+# 	sky130_fd_sc_hs__a41o_4
+# 	sky130_fd_sc_hs__a41oi_1
+# 	sky130_fd_sc_hs__a41oi_2
+# 	sky130_fd_sc_hs__a41oi_4
+# 	sky130_fd_sc_hs__a211o_1
+# 	sky130_fd_sc_hs__a211o_2
+# 	sky130_fd_sc_hs__a211o_4
+# 	sky130_fd_sc_hs__a211oi_1
+# 	sky130_fd_sc_hs__a211oi_2
+# 	sky130_fd_sc_hs__a211oi_4
+# 	sky130_fd_sc_hs__a221o_1
+# 	sky130_fd_sc_hs__a221o_2
+# 	sky130_fd_sc_hs__a221o_4
+# 	sky130_fd_sc_hs__a221oi_1
+# 	sky130_fd_sc_hs__a221oi_2
+# 	sky130_fd_sc_hs__a221oi_4
+# 	sky130_fd_sc_hs__a222o_1
+# 	sky130_fd_sc_hs__a222o_2
+# 	sky130_fd_sc_hs__a222oi_1
+# 	sky130_fd_sc_hs__a222oi_2
+# 	sky130_fd_sc_hs__a311o_1
+# 	sky130_fd_sc_hs__a311o_2
+# 	sky130_fd_sc_hs__a311o_4
+# 	sky130_fd_sc_hs__a311oi_1
+# 	sky130_fd_sc_hs__a311oi_2
+# 	sky130_fd_sc_hs__a311oi_4
+# 	sky130_fd_sc_hs__a2111o_1
+# 	sky130_fd_sc_hs__a2111o_2
+# 	sky130_fd_sc_hs__a2111o_4
+# 	sky130_fd_sc_hs__a2111oi_1
+# 	sky130_fd_sc_hs__a2111oi_2
+# 	sky130_fd_sc_hs__a2111oi_4
+# 	sky130_fd_sc_hs__and2_1
+# 	sky130_fd_sc_hs__and2_2
+# 	sky130_fd_sc_hs__and2_4
+# 	sky130_fd_sc_hs__and2b_1
+# 	sky130_fd_sc_hs__and2b_2
+# 	sky130_fd_sc_hs__and2b_4
+# 	sky130_fd_sc_hs__and3_1
+# 	sky130_fd_sc_hs__and3_2
+# 	sky130_fd_sc_hs__and3_4
+# 	sky130_fd_sc_hs__and3b_1
+# 	sky130_fd_sc_hs__and3b_2
+# 	sky130_fd_sc_hs__and3b_4
+# 	sky130_fd_sc_hs__and4_1
+# 	sky130_fd_sc_hs__and4_2
+# 	sky130_fd_sc_hs__and4_4
+# 	sky130_fd_sc_hs__and4b_1
+# 	sky130_fd_sc_hs__and4b_2
+# 	sky130_fd_sc_hs__and4b_4
+# 	sky130_fd_sc_hs__and4bb_1
+# 	sky130_fd_sc_hs__and4bb_2
+# 	sky130_fd_sc_hs__and4bb_4
+# 	sky130_fd_sc_hs__buf_1
+# 	sky130_fd_sc_hs__buf_2
+# 	sky130_fd_sc_hs__buf_4
+# 	sky130_fd_sc_hs__buf_8
+# 	sky130_fd_sc_hs__buf_16
+# 	sky130_fd_sc_hs__bufbuf_8
+# 	sky130_fd_sc_hs__bufbuf_16
+# 	sky130_fd_sc_hs__bufinv_8
+# 	sky130_fd_sc_hs__bufinv_16
+# 	sky130_fd_sc_hs__clkbuf_1
+# 	sky130_fd_sc_hs__clkbuf_2
+# 	sky130_fd_sc_hs__clkbuf_4
+# 	sky130_fd_sc_hs__clkbuf_8
+# 	sky130_fd_sc_hs__clkbuf_16
+# 	sky130_fd_sc_hs__clkdlyinv3sd1_1
+# 	sky130_fd_sc_hs__clkdlyinv3sd2_1
+# 	sky130_fd_sc_hs__clkdlyinv3sd3_1
+# 	sky130_fd_sc_hs__clkdlyinv5sd1_1
+# 	sky130_fd_sc_hs__clkdlyinv5sd2_1
+# 	sky130_fd_sc_hs__clkdlyinv5sd3_1
+# 	sky130_fd_sc_hs__clkinv_1
+# 	sky130_fd_sc_hs__clkinv_2
+# 	sky130_fd_sc_hs__clkinv_4
+# 	sky130_fd_sc_hs__clkinv_8
+# 	sky130_fd_sc_hs__clkinv_16
+# 	sky130_fd_sc_hs__conb_1
+# 	sky130_fd_sc_hs__decap_4
+# 	sky130_fd_sc_hs__decap_8
+# 	sky130_fd_sc_hs__dfbbn_1
+# 	sky130_fd_sc_hs__dfbbn_2
+# 	sky130_fd_sc_hs__dfbbp_1
+# 	sky130_fd_sc_hs__dfrbp_1
+# 	sky130_fd_sc_hs__dfrbp_2
+# 	sky130_fd_sc_hs__dfrtn_1
+# 	sky130_fd_sc_hs__dfrtp_1
+# 	sky130_fd_sc_hs__dfrtp_2
+# 	sky130_fd_sc_hs__dfrtp_4
+# 	sky130_fd_sc_hs__dfsbp_1
+# 	sky130_fd_sc_hs__dfsbp_2
+# 	sky130_fd_sc_hs__dfstp_1
+# 	sky130_fd_sc_hs__dfstp_2
+# 	sky130_fd_sc_hs__dfstp_4
+# 	sky130_fd_sc_hs__dfxbp_1
+# 	sky130_fd_sc_hs__dfxbp_2
+# 	sky130_fd_sc_hs__dfxtp_1
+# 	sky130_fd_sc_hs__dfxtp_2
+# 	sky130_fd_sc_hs__dfxtp_4
+# 	sky130_fd_sc_hs__diode_2
+# 	sky130_fd_sc_hs__dlclkp_1
+# 	sky130_fd_sc_hs__dlclkp_2
+# 	sky130_fd_sc_hs__dlclkp_4
+# 	sky130_fd_sc_hs__dlrbn_1
+# 	sky130_fd_sc_hs__dlrbn_2
+# 	sky130_fd_sc_hs__dlrbp_1
+# 	sky130_fd_sc_hs__dlrbp_2
+# 	sky130_fd_sc_hs__dlrtn_1
+# 	sky130_fd_sc_hs__dlrtn_2
+# 	sky130_fd_sc_hs__dlrtn_4
+# 	sky130_fd_sc_hs__dlrtp_1
+# 	sky130_fd_sc_hs__dlrtp_2
+# 	sky130_fd_sc_hs__dlrtp_4
+# 	sky130_fd_sc_hs__dlxbn_1
+# 	sky130_fd_sc_hs__dlxbn_2
+# 	sky130_fd_sc_hs__dlxbp_1
+# 	sky130_fd_sc_hs__dlxtn_1
+# 	sky130_fd_sc_hs__dlxtn_2
+# 	sky130_fd_sc_hs__dlxtn_4
+# 	sky130_fd_sc_hs__dlxtp_1
+# 	sky130_fd_sc_hs__dlygate4sd1_1
+# 	sky130_fd_sc_hs__dlygate4sd2_1
+# 	sky130_fd_sc_hs__dlygate4sd3_1
+# 	sky130_fd_sc_hs__dlymetal6s2s_1
+# 	sky130_fd_sc_hs__dlymetal6s4s_1
+# 	sky130_fd_sc_hs__dlymetal6s6s_1
+# 	sky130_fd_sc_hs__ebufn_1
+# 	sky130_fd_sc_hs__ebufn_2
+# 	sky130_fd_sc_hs__ebufn_4
+# 	sky130_fd_sc_hs__ebufn_8
+# 	sky130_fd_sc_hs__edfxbp_1
+# 	sky130_fd_sc_hs__edfxtp_1
+# 	sky130_fd_sc_hs__einvn_1
+# 	sky130_fd_sc_hs__einvn_2
+# 	sky130_fd_sc_hs__einvn_4
+# 	sky130_fd_sc_hs__einvn_8
+# 	sky130_fd_sc_hs__einvp_1
+# 	sky130_fd_sc_hs__einvp_2
+# 	sky130_fd_sc_hs__einvp_4
+# 	sky130_fd_sc_hs__einvp_8
+# 	sky130_fd_sc_hs__fa_1
+# 	sky130_fd_sc_hs__fa_2
+# 	sky130_fd_sc_hs__fa_4
+# 	sky130_fd_sc_hs__fah_1
+# 	sky130_fd_sc_hs__fah_2
+# 	sky130_fd_sc_hs__fah_4
+# 	sky130_fd_sc_hs__fahcin_1
+# 	sky130_fd_sc_hs__fahcon_1
+# 	sky130_fd_sc_hs__fill_1
+# 	sky130_fd_sc_hs__fill_2
+# 	sky130_fd_sc_hs__fill_4
+# 	sky130_fd_sc_hs__fill_8
+# 	sky130_fd_sc_hs__fill_diode_2
+# 	sky130_fd_sc_hs__fill_diode_4
+# 	sky130_fd_sc_hs__fill_diode_8
+# 	sky130_fd_sc_hs__ha_1
+# 	sky130_fd_sc_hs__ha_2
+# 	sky130_fd_sc_hs__ha_4
+# 	sky130_fd_sc_hs__inv_1
+# 	sky130_fd_sc_hs__inv_2
+# 	sky130_fd_sc_hs__inv_4
+# 	sky130_fd_sc_hs__inv_8
+# 	sky130_fd_sc_hs__inv_16
+# 	sky130_fd_sc_hs__maj3_1
+# 	sky130_fd_sc_hs__maj3_2
+# 	sky130_fd_sc_hs__maj3_4
+# 	sky130_fd_sc_hs__mux2_1
+# 	sky130_fd_sc_hs__mux2_2
+# 	sky130_fd_sc_hs__mux2_4
+# 	sky130_fd_sc_hs__mux2i_1
+# 	sky130_fd_sc_hs__mux2i_2
+# 	sky130_fd_sc_hs__mux2i_4
+# 	sky130_fd_sc_hs__mux4_1
+# 	sky130_fd_sc_hs__mux4_2
+# 	sky130_fd_sc_hs__mux4_4
+# 	sky130_fd_sc_hs__nand2_1
+# 	sky130_fd_sc_hs__nand2_2
+# 	sky130_fd_sc_hs__nand2_4
+# 	sky130_fd_sc_hs__nand2_8
+# 	sky130_fd_sc_hs__nand2b_1
+# 	sky130_fd_sc_hs__nand2b_2
+# 	sky130_fd_sc_hs__nand2b_4
+# 	sky130_fd_sc_hs__nand3_1
+# 	sky130_fd_sc_hs__nand3_2
+# 	sky130_fd_sc_hs__nand3_4
+# 	sky130_fd_sc_hs__nand3b_1
+# 	sky130_fd_sc_hs__nand3b_2
+# 	sky130_fd_sc_hs__nand3b_4
+# 	sky130_fd_sc_hs__nand4_1
+# 	sky130_fd_sc_hs__nand4_2
+# 	sky130_fd_sc_hs__nand4_4
+# 	sky130_fd_sc_hs__nand4b_1
+# 	sky130_fd_sc_hs__nand4b_2
+# 	sky130_fd_sc_hs__nand4b_4
+# 	sky130_fd_sc_hs__nand4bb_1
+# 	sky130_fd_sc_hs__nand4bb_2
+# 	sky130_fd_sc_hs__nand4bb_4
+# 	sky130_fd_sc_hs__nor2_1
+# 	sky130_fd_sc_hs__nor2_2
+# 	sky130_fd_sc_hs__nor2_4
+# 	sky130_fd_sc_hs__nor2_8
+# 	sky130_fd_sc_hs__nor2b_1
+# 	sky130_fd_sc_hs__nor2b_2
+# 	sky130_fd_sc_hs__nor2b_4
+# 	sky130_fd_sc_hs__nor3_1
+# 	sky130_fd_sc_hs__nor3_2
+# 	sky130_fd_sc_hs__nor3_4
+# 	sky130_fd_sc_hs__nor3b_1
+# 	sky130_fd_sc_hs__nor3b_2
+# 	sky130_fd_sc_hs__nor3b_4
+# 	sky130_fd_sc_hs__nor4_1
+# 	sky130_fd_sc_hs__nor4_2
+# 	sky130_fd_sc_hs__nor4_4
+# 	sky130_fd_sc_hs__nor4b_1
+# 	sky130_fd_sc_hs__nor4b_2
+# 	sky130_fd_sc_hs__nor4b_4
+# 	sky130_fd_sc_hs__nor4bb_1
+# 	sky130_fd_sc_hs__nor4bb_2
+# 	sky130_fd_sc_hs__nor4bb_4
+# 	sky130_fd_sc_hs__o2bb2a_1
+# 	sky130_fd_sc_hs__o2bb2a_2
+# 	sky130_fd_sc_hs__o2bb2a_4
+# 	sky130_fd_sc_hs__o2bb2ai_1
+# 	sky130_fd_sc_hs__o2bb2ai_2
+# 	sky130_fd_sc_hs__o2bb2ai_4
+# 	sky130_fd_sc_hs__o21a_1
+# 	sky130_fd_sc_hs__o21a_2
+# 	sky130_fd_sc_hs__o21a_4
+# 	sky130_fd_sc_hs__o21ai_1
+# 	sky130_fd_sc_hs__o21ai_2
+# 	sky130_fd_sc_hs__o21ai_4
+# 	sky130_fd_sc_hs__o21ba_1
+# 	sky130_fd_sc_hs__o21ba_2
+# 	sky130_fd_sc_hs__o21ba_4
+# 	sky130_fd_sc_hs__o21bai_1
+# 	sky130_fd_sc_hs__o21bai_2
+# 	sky130_fd_sc_hs__o21bai_4
+# 	sky130_fd_sc_hs__o22a_1
+# 	sky130_fd_sc_hs__o22a_2
+# 	sky130_fd_sc_hs__o22a_4
+# 	sky130_fd_sc_hs__o22ai_1
+# 	sky130_fd_sc_hs__o22ai_2
+# 	sky130_fd_sc_hs__o22ai_4
+# 	sky130_fd_sc_hs__o31a_1
+# 	sky130_fd_sc_hs__o31a_2
+# 	sky130_fd_sc_hs__o31a_4
+# 	sky130_fd_sc_hs__o31ai_1
+# 	sky130_fd_sc_hs__o31ai_2
+# 	sky130_fd_sc_hs__o31ai_4
+# 	sky130_fd_sc_hs__o32a_1
+# 	sky130_fd_sc_hs__o32a_2
+# 	sky130_fd_sc_hs__o32a_4
+# 	sky130_fd_sc_hs__o32ai_1
+# 	sky130_fd_sc_hs__o32ai_2
+# 	sky130_fd_sc_hs__o32ai_4
+# 	sky130_fd_sc_hs__o41a_1
+# 	sky130_fd_sc_hs__o41a_2
+# 	sky130_fd_sc_hs__o41a_4
+# 	sky130_fd_sc_hs__o41ai_1
+# 	sky130_fd_sc_hs__o41ai_2
+# 	sky130_fd_sc_hs__o41ai_4
+# 	sky130_fd_sc_hs__o211a_1
+# 	sky130_fd_sc_hs__o211a_2
+# 	sky130_fd_sc_hs__o211a_4
+# 	sky130_fd_sc_hs__o211ai_1
+# 	sky130_fd_sc_hs__o211ai_2
+# 	sky130_fd_sc_hs__o211ai_4
+# 	sky130_fd_sc_hs__o221a_1
+# 	sky130_fd_sc_hs__o221a_2
+# 	sky130_fd_sc_hs__o221a_4
+# 	sky130_fd_sc_hs__o221ai_1
+# 	sky130_fd_sc_hs__o221ai_2
+# 	sky130_fd_sc_hs__o221ai_4
+# 	sky130_fd_sc_hs__o311a_1
+# 	sky130_fd_sc_hs__o311a_2
+# 	sky130_fd_sc_hs__o311a_4
+# 	sky130_fd_sc_hs__o311ai_1
+# 	sky130_fd_sc_hs__o311ai_2
+# 	sky130_fd_sc_hs__o311ai_4
+# 	sky130_fd_sc_hs__o2111a_1
+# 	sky130_fd_sc_hs__o2111a_2
+# 	sky130_fd_sc_hs__o2111a_4
+# 	sky130_fd_sc_hs__o2111ai_1
+# 	sky130_fd_sc_hs__o2111ai_2
+# 	sky130_fd_sc_hs__o2111ai_4
+# 	sky130_fd_sc_hs__or2_1
+# 	sky130_fd_sc_hs__or2_2
+# 	sky130_fd_sc_hs__or2_4
+# 	sky130_fd_sc_hs__or2b_1
+# 	sky130_fd_sc_hs__or2b_2
+# 	sky130_fd_sc_hs__or2b_4
+# 	sky130_fd_sc_hs__or3_1
+# 	sky130_fd_sc_hs__or3_2
+# 	sky130_fd_sc_hs__or3_4
+# 	sky130_fd_sc_hs__or3b_1
+# 	sky130_fd_sc_hs__or3b_2
+# 	sky130_fd_sc_hs__or3b_4
+# 	sky130_fd_sc_hs__or4_1
+# 	sky130_fd_sc_hs__or4_2
+# 	sky130_fd_sc_hs__or4_4
+# 	sky130_fd_sc_hs__or4b_1
+# 	sky130_fd_sc_hs__or4b_2
+# 	sky130_fd_sc_hs__or4b_4
+# 	sky130_fd_sc_hs__or4bb_1
+# 	sky130_fd_sc_hs__or4bb_2
+# 	sky130_fd_sc_hs__or4bb_4
+# 	sky130_fd_sc_hs__sdfbbn_1
+# 	sky130_fd_sc_hs__sdfbbn_2
+# 	sky130_fd_sc_hs__sdfbbp_1
+# 	sky130_fd_sc_hs__sdfrbp_1
+# 	sky130_fd_sc_hs__sdfrbp_2
+# 	sky130_fd_sc_hs__sdfrtn_1
+# 	sky130_fd_sc_hs__sdfrtp_1
+# 	sky130_fd_sc_hs__sdfrtp_2
+# 	sky130_fd_sc_hs__sdfrtp_4
+# 	sky130_fd_sc_hs__sdfsbp_1
+# 	sky130_fd_sc_hs__sdfsbp_2
+# 	sky130_fd_sc_hs__sdfstp_1
+# 	sky130_fd_sc_hs__sdfstp_2
+# 	sky130_fd_sc_hs__sdfstp_4
+# 	sky130_fd_sc_hs__sdfxbp_1
+# 	sky130_fd_sc_hs__sdfxbp_2
+# 	sky130_fd_sc_hs__sdfxtp_1
+# 	sky130_fd_sc_hs__sdfxtp_2
+# 	sky130_fd_sc_hs__sdfxtp_4
+# 	sky130_fd_sc_hs__sdlclkp_1
+# 	sky130_fd_sc_hs__sdlclkp_2
+# 	sky130_fd_sc_hs__sdlclkp_4
+# 	sky130_fd_sc_hs__sedfxbp_1
+# 	sky130_fd_sc_hs__sedfxbp_2
+# 	sky130_fd_sc_hs__sedfxtp_1
+# 	sky130_fd_sc_hs__sedfxtp_2
+# 	sky130_fd_sc_hs__sedfxtp_4
+# 	sky130_fd_sc_hs__tap_1
+# 	sky130_fd_sc_hs__tap_2
+# 	sky130_fd_sc_hs__tapmet1_2
+# 	sky130_fd_sc_hs__tapvgnd2_1
+# 	sky130_fd_sc_hs__tapvgnd_1
+# 	sky130_fd_sc_hs__tapvpwrvgnd_1
+# 	sky130_fd_sc_hs__xnor2_1
+# 	sky130_fd_sc_hs__xnor2_2
+# 	sky130_fd_sc_hs__xnor2_4
+# 	sky130_fd_sc_hs__xnor3_1
+# 	sky130_fd_sc_hs__xnor3_2
+# 	sky130_fd_sc_hs__xnor3_4
+# 	sky130_fd_sc_hs__xor2_1
+# 	sky130_fd_sc_hs__xor2_2
+# 	sky130_fd_sc_hs__xor2_4
+# 	sky130_fd_sc_hs__xor3_1
+# 	sky130_fd_sc_hs__xor3_2
+# 	sky130_fd_sc_hs__xor3_4
+# End time: 11:27:34 on Nov 28,2024, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 1, Suppressed Errors: 2438
+Compiling /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/primitives.v ...
+# QuestaSim-64 vlog 2022.4 Compiler 2022.10 Oct 18 2022
+# ** Warning: (vlog-13288) Multiple macros defined in +define+ command line switch.
+# Start time: 11:27:34 on Nov 28,2024
+# vlog -sv -work /users/students/r0941589/swirl/hw/unit_test/dot_product_unit/work/work_dot_product_unit "+define+PIPES=1+QUESTA+FUNCTIONAL" -suppress 2892 "+incdir+../../rtl/libs/include+./src" /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/primitives.v 
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$NR_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$NR_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$NSR_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$NSR_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$P_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$P_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$P_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$P_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$P_pp$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PE_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PE_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PR_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PR_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PR_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PR_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PR_pp$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PS_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PS_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PS_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PS_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dff$PS_pp$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$P_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$P_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$P_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$P_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$P_pp$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PR_pp$PG
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PR_pp$PG$N
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PR_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PR_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PR_pp$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PSa_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PSa_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_dlatch$PSa_pp$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_isolatch_pp$PKG$s
+# -- Compiling UDP sky130_fd_sc_hs__udp_isolatch_pp$PKG$sN
+# -- Compiling UDP sky130_fd_sc_hs__udp_mux_2to1
+# -- Compiling UDP sky130_fd_sc_hs__udp_mux_2to1_N
+# -- Compiling UDP sky130_fd_sc_hs__udp_mux_4to2
+# -- Compiling UDP sky130_fd_sc_hs__udp_pwrgood_pp$PG
+# 
+# Top level modules:
+# 	--none--
+# End time: 11:27:34 on Nov 28,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 1
+Compiling ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT1_PM1_C2000_RT1/syn_tle_dotp.v ...
+# QuestaSim-64 vlog 2022.4 Compiler 2022.10 Oct 18 2022
+# ** Warning: (vlog-13288) Multiple macros defined in +define+ command line switch.
+# Start time: 11:27:34 on Nov 28,2024
+# vlog -sv -work /users/students/r0941589/swirl/hw/unit_test/dot_product_unit/work/work_dot_product_unit "+define+PIPES=1+QUESTA+FUNCTIONAL" -suppress 2892 "+incdir+../../rtl/libs/include+./src" ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT1_PM1_C2000_RT1/syn_tle_dotp.v 
+# -- Compiling module lowp_cg_RC_CG_MOD_14
+# -- Compiling module bp_pipe_DATAW19_PIPES1
+# -- Compiling module lowp_cg_RC_CG_MOD_15
+# -- Compiling module bp_pipe_DATAW8_PIPES1_15_338
+# -- Compiling module lowp_cg_RC_CG_MOD_15_350
+# -- Compiling module bp_pipe_DATAW8_PIPES1_15
+# -- Compiling module lowp_cg_RC_CG_MOD_10_346
+# -- Compiling module bp_pipe_DATAW17_PIPES1
+# -- Compiling module adder_DATAW17_PIPES1_BACKPRESSURE1
+# -- Compiling module lowp_cg_RC_CG_MOD_10
+# -- Compiling module bp_pipe_DATAW17_PIPES1_323
+# -- Compiling module adder_DATAW17_PIPES1_BACKPRESSURE1_137
+# -- Compiling module lowp_cg_RC_CG_MOD_10_348
+# -- Compiling module bp_pipe_DATAW17_PIPES1_322
+# -- Compiling module adder_DATAW17_PIPES1_BACKPRESSURE1_136
+# -- Compiling module lowp_cg_RC_CG_MOD_10_347
+# -- Compiling module bp_pipe_DATAW17_PIPES1_321
+# -- Compiling module adder_DATAW17_PIPES1_BACKPRESSURE1_135
+# -- Compiling module adder_tree_layer_NUM_INPUTS8_DATAW16_PIPES1_BACKPRESSURE1
+# -- Compiling module lowp_cg_RC_CG_MOD_12_349
+# -- Compiling module bp_pipe_DATAW18_PIPES1
+# -- Compiling module adder_DATAW18_PIPES1_BACKPRESSURE1
+# -- Compiling module lowp_cg_RC_CG_MOD_12
+# -- Compiling module bp_pipe_DATAW18_PIPES1_324
+# -- Compiling module adder_DATAW18_PIPES1_BACKPRESSURE1_138
+# -- Compiling module adder_tree_layer_NUM_INPUTS4_DATAW17_PIPES1_BACKPRESSURE1
+# -- Compiling module adder_DATAW19_PIPES0_BACKPRESSURE1
+# -- Compiling module adder_tree_layer_NUM_INPUTS2_DATAW18_PIPES0_BACKPRESSURE1
+# -- Compiling module adder_tree_NUM_INPUTS8_DATAW16_PIPES1_BACKPRESSURE1
+# -- Compiling module lowp_cg_RC_CG_MOD_339
+# -- Compiling module bp_pipe_DATAW16_PIPES1
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1
+# -- Compiling module lowp_cg_RC_CG_MOD_340
+# -- Compiling module bp_pipe_DATAW16_PIPES1_320
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_182
+# -- Compiling module lowp_cg_RC_CG_MOD_341
+# -- Compiling module bp_pipe_DATAW16_PIPES1_319
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_181
+# -- Compiling module lowp_cg_RC_CG_MOD_342
+# -- Compiling module bp_pipe_DATAW16_PIPES1_318
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_180
+# -- Compiling module lowp_cg_RC_CG_MOD_343
+# -- Compiling module bp_pipe_DATAW16_PIPES1_317
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_179
+# -- Compiling module lowp_cg_RC_CG_MOD_344
+# -- Compiling module bp_pipe_DATAW16_PIPES1_316
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_178
+# -- Compiling module lowp_cg_RC_CG_MOD_345
+# -- Compiling module bp_pipe_DATAW16_PIPES1_315
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_177
+# -- Compiling module lowp_cg_RC_CG_MOD
+# -- Compiling module bp_pipe_DATAW16_PIPES1_314
+# -- Compiling module multiplier_DATAW8_PIPES1_BACKPRESSURE1_176
+# -- Compiling module dot_product_unit_NUM_INPUTS8_DATAW8_PIPES_TREE1_PIPES_MUL1_BACKPRESSURE1
+# -- Compiling module bp_pipe_DATAW8_PIPES1
+# -- Compiling module bp_pipe_DATAW8_PIPES1_337
+# -- Compiling module bp_pipe_DATAW8_PIPES1_336
+# -- Compiling module bp_pipe_DATAW8_PIPES1_335
+# -- Compiling module bp_pipe_DATAW8_PIPES1_334
+# -- Compiling module bp_pipe_DATAW8_PIPES1_333
+# -- Compiling module bp_pipe_DATAW8_PIPES1_332
+# -- Compiling module bp_pipe_DATAW8_PIPES1_331
+# -- Compiling module bp_pipe_DATAW8_PIPES1_330
+# -- Compiling module bp_pipe_DATAW8_PIPES1_329
+# -- Compiling module bp_pipe_DATAW8_PIPES1_328
+# -- Compiling module bp_pipe_DATAW8_PIPES1_327
+# -- Compiling module bp_pipe_DATAW8_PIPES1_326
+# -- Compiling module bp_pipe_DATAW8_PIPES1_325
+# -- Compiling module syn_tle_dotp
+# 
+# Top level modules:
+# 	syn_tle_dotp
+# End time: 11:27:34 on Nov 28,2024, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 1
+Compiling ../../tb/tb_dot_product_unit.sv ...
+# QuestaSim-64 vlog 2022.4 Compiler 2022.10 Oct 18 2022
+# ** Warning: (vlog-13288) Multiple macros defined in +define+ command line switch.
+# Start time: 11:27:34 on Nov 28,2024
+# vlog -sv -work /users/students/r0941589/swirl/hw/unit_test/dot_product_unit/work/work_dot_product_unit "+define+PIPES=1+QUESTA+FUNCTIONAL" -suppress 2892 "+incdir+../../rtl/libs/include+./src" ../../tb/tb_dot_product_unit.sv 
+# -- Compiling module tb_dot_product_unit
+# 
+# Top level modules:
+# 	tb_dot_product_unit
+# End time: 11:27:35 on Nov 28,2024, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 1
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility.
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(129302): Module 'sky130_fd_sc_hs__u_dl_p_pg' is not defined.
+#  For instance 'u_dl_p_pg0' at path 'tb_dot_product_unit.dp_unit.bp_pipe.lowp_cg_RC_CG_HIER_INST3.RC_CGIC_INST'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(71242): Module 'sky130_fd_sc_hs__u_mux_2_1' is not defined.
+#  For instance 'u_mux_20' at path 'tb_dot_product_unit.dp_unit.bp_pipe.g78__2398'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(45242): Module 'sky130_fd_sc_hs__u_df_p_r_pg' is not defined.
+#  For instance 'u_df_p_r_pg0' at path 'tb_dot_product_unit.dp_unit.bp_pipe.\g_pipe_pipe_valid_reg[1] '
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(44888): Module 'sky130_fd_sc_hs__u_df_p_r_pg' is not defined.
+#  For instance 'u_df_p_r_pg0' at path 'tb_dot_product_unit.dp_unit.bp_pipe_1.\g_pipe_pipe_data_reg[1][4] '
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(46690): Module 'sky130_fd_sc_hs__u_df_p_s_pg' is not defined.
+#  For instance 'u_df_p_s_pg0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.adder_tree_inst.gen_tree_gen_layer_0_gen_first_layer_adder_tree_layer.gen_adder_0_adder.retime_s2_55_reg'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(43440): Module 'sky130_fd_sc_hs__u_df_p_r_pg' is not defined.
+#  For instance 'u_df_p_r_pg0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.adder_tree_inst.gen_tree_gen_layer_0_gen_first_layer_adder_tree_layer.gen_adder_0_adder.add_47_26_retime_s1_100_reg'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(43808): Module 'sky130_fd_sc_hs__u_df_p_r_pg' is not defined.
+#  For instance 'u_df_p_r_pg0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.adder_tree_inst.gen_tree_gen_layer_1_gen_mid_layers_gen_mid_layer_pipesmid_adder_tree_layer.gen_adder_0_adder.retime_s3_20_reg'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(47044): Module 'sky130_fd_sc_hs__u_df_p_s_pg' is not defined.
+#  For instance 'u_df_p_s_pg0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.gen_mul_0_mul.mul_40_36_retime_s1_18_reg'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(46336): Module 'sky130_fd_sc_hs__u_df_p_s_pg' is not defined.
+#  For instance 'u_df_p_s_pg0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.gen_mul_1_mul.mul_40_36_retime_s1_22_reg'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(72554): Module 'sky130_fd_sc_hs__u_mux_2_1_inv' is not defined.
+#  For instance 'u_mux_2_1_inv0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.gen_mul_1_mul.mul_40_36_g9773'
+# ** Error: /volume1/users/r0941589/no_backup_open_pdk/share/pdk/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v(45976): Module 'sky130_fd_sc_hs__u_df_p_s_pg' is not defined.
+#  For instance 'u_df_p_s_pg0' at path 'tb_dot_product_unit.dp_unit.dot_product_unit.gen_mul_4_mul.mul_40_36_retime_s1_157_reg'
+# Optimization failed
+# /esat/micas-data/software/Mentor/questasim_2022.4/linux_x86_64/vopt failed.
+QuestaSim> # Break key hit
+# Break key hit
+# Break key hit
+# Break key hit
+# Break key hit
