@@ -35,22 +35,36 @@ module tb_dot_product_unit;
     logic status;
     logic file;
     logic expected_output;
-    logic signed [DATAW-1:0] in1 [NUM_INPUTS];
-    logic signed [DATAW-1:0] in2 [NUM_INPUTS];
+    reg signed [DATAW-1:0] in1 [NUM_INPUTS];
+    reg signed [DATAW-1:0] in2 [NUM_INPUTS];
     logic signed [(2*DATAW)+$clog2(NUM_INPUTS)-1:0] out;
 
     // Module instantiation
     syn_tle_dotp #(
     ) dp_unit (
-        .clk(clk),
+        .clk_i(clk),
         .rst_n(rst_n),
         .sign_unsign(sign_unsign),
         .valid_i(valid_i),
         .ready_i(ready_i),
         .valid_o(valid_o),
         .ready_o(ready_o),
-        .in1(in1),
-        .in2(in2),
+        .\in1[7] (in1[7]),
+        .\in1[6] (in1[6]),
+        .\in1[5] (in1[5]),
+        .\in1[4] (in1[4]),
+        .\in1[3] (in1[3]),
+        .\in1[2] (in1[2]),
+        .\in1[1] (in1[1]),
+        .\in1[0] (in1[0]),
+        .\in2[7] (in2[7]),
+        .\in2[6] (in2[6]),
+        .\in2[5] (in2[5]),
+        .\in2[4] (in2[4]),
+        .\in2[3] (in2[3]),
+        .\in2[2] (in2[2]),
+        .\in2[1] (in2[1]),
+        .\in2[0] (in2[0]),
         .out(out)
     );
 
@@ -98,7 +112,7 @@ module tb_dot_product_unit;
             valid_i = 0;
             wait (valid_o == 1);
             assert(out == expected_output) else begin
-                $display("\nTest #%0d failed\nExpected:%d\nGot:%d", testIndex, expected_output, out);
+                $display("\nTest #%0d failed\nExpected:%d\nGot:%d", testindex, expected_output, out);
                 $fatal();
             end
             $display("Test #%0d passed", testindex);
