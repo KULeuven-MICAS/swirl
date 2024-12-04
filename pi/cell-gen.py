@@ -9,11 +9,12 @@
 import os
 PDK_ROOT = os.getenv('PDK_ROOT')
 if PDK_ROOT is None:
-    print("Error: Must set $PDK_ROOT to the directory that contains skywater-pdk "
-          "and the root of the sky130A install.")
+    print("Error: Must set $PDK_ROOT to the directory that contains",
+          " skywater-pdk and the root of the sky130A install.")
     exit()
 
 SKYWATER_PDK = os.path.join(PDK_ROOT, 'skywater-pdk/libraries/sky130_fd_sc_hd/latest/cells')
+
 cells = os.listdir(SKYWATER_PDK)
 cell_names = []
 for cell in cells:

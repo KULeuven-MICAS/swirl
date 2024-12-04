@@ -29,7 +29,7 @@ cd $PREFIX/open_pdks
     --disable-verification-gf180mcu --disable-io-gf180mcu --disable-sc-7t5v0-gf180mcu \
     --disable-sc-9t5v0-gf180mcu --disable-sram-gf180mcu --disable-osu-sc-gf180mcu \
     --enable-primitive-sky130 --disable-io-sky130 --disable-sc-ms-sky130 \
-    --disable-sc-ls-sky130 --disable-sc-lp-sky130 --disable-sc-hd-sky130 --disable-sc-hdll-sky130 \
+    --disable-sc-ls-sky130 --disable-sc-lp-sky130 --enable-sc-hd-sky130 --disable-sc-hdll-sky130 \
     --disable-sc-hvl-sky130
     
 make

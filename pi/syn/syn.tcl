@@ -106,7 +106,7 @@ if {$RETIME} {
 
 read_sdc ${INPUTS_DIR}/constraints.sdc
 
-read_power_intent ${SCRIPT_DIR}/tech/power_intent.tcl
+read_power_intent ${SCRIPT_DIR}/tech/power_intent.upf
 apply_power_intent
 commit_power_intent
 
