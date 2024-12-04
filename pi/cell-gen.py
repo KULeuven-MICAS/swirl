@@ -1,6 +1,6 @@
 '''
     Purpose: generate list of standard cells in skywater library
-    Usage: 
+    Usage:
         export PDK_ROOT=<path-to-dir-containing-sky130-setup>
         python cells-gen.py
     Output:
