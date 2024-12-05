@@ -106,7 +106,9 @@ if {$RETIME} {
 
 read_sdc ${INPUTS_DIR}/constraints.sdc
 
+read_power_intent ${SCRIPT_DIR}/tech/power_intent.upf
 apply_power_intent
+commit_power_intent
 
 set_attribute syn_generic_effort medium
 set_attribute syn_map_effort     medium
@@ -129,6 +131,6 @@ report gates                        > ${OUTPUTS_DIR}/${DESIGN}_gates.rpt
 report power                        > ${OUTPUTS_DIR}/${DESIGN}_power.rpt
 report disabled_transparent_latches > ${OUTPUTS_DIR}/${DESIGN}_latches.rpt
 
-write_hdl > ${OUTPUTS_DIR}/${DESIGN}.v
+write_hdl -pg > ${OUTPUTS_DIR}/${DESIGN}.v
 
 exit

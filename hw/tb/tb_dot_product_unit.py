@@ -1,22 +1,26 @@
-#input generator for dot product unit given a certainy amount of sparsity
-#makes testdatadotp.txt with on the first line in1 in the format {{}, {}, {}, {},...} and the same for in2 on the second line
+# input generator for dot product unit given a certainy amount of sparsity
+# makes testdatadotp.txt with on the first line in1 in the format {{}, {}, {}, {},...}
+#   the same for in2 on the second line
 
 import numpy as np
 import os
 
+
 def save_matrices_to_file(A, B, outputs, filepath):
-
-
     with open(filepath, 'w') as f:
-        # Format so that each line has 1 input of A and one of B in curly-braces and seperated by a space
+        # Format: 1 input of A and one of B in curly-braces and seperated by a space
         for a_row, b_row, output_row in zip(A, B, outputs):
-            formatted_line = '{' + ', '.join(map(str, a_row)) + '} {' + ', '.join(map(str, b_row)) + '}' + ' ' + str(output_row)
+            formatted_line = (
+                '{' + ', '.join(map(str, a_row)) + '} {' + ', '.join(map(str, b_row)) + '}'
+                + ' ' + str(output_row)
+            )
             f.write(formatted_line + '\n')
+
 
 def generate_input_data(sparsity, num_elements, DATAW, num_tests, filepath):
     # Generate random data
-    limit_under = -2**(DATAW-1)
-    limit_over = 2**(DATAW-1) - 1
+    # limit_under = -2**(DATAW-1)
+    # limit_over = 2**(DATAW-1) - 1
     A_list = []
     B_list = []
     output_list = []
