@@ -6,7 +6,7 @@ if {${SYN}} {
         "../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v"  \
         "../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hs/verilog/primitives.v"  \
         "${SYN_PATH}/syn_tle_dotp.v"       \
-        "../../tb/tb_dot_product_unit.sv"             \
+        "./src/tb_dot_product_unit.sv"             \
     ]
     set DEFINES "${DEFINES}+FUNCTIONAL"
 } else {

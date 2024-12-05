@@ -42,10 +42,10 @@ module tb_dot_product_unit;
   parameter int OUT_DATAW = (2 * DATAW) + NUM_LAYERS;
 
   //signals
-  logic signed [DATAW-1:0] data_i_a [NUM_INPUTS];
-  logic signed [DATAW-1:0] data_i_b [NUM_INPUTS];
+  logic signed [DATAW-1:0] in1 [NUM_INPUTS];
+  logic signed [DATAW-1:0] in2 [NUM_INPUTS];
   logic signed sign_unsign_ni;
-  logic [OUT_DATAW-1:0] data_o;
+  logic [OUT_DATAW-1:0] out;
 
   logic valid_i;
   logic valid_o;
@@ -108,47 +108,33 @@ module tb_dot_product_unit;
   logic sim_done = 0;
 
   // Module instantiation
-  generate
-    if (BACKPRESSURE == 0) begin : g_no_backpressure
-      dot_product_unit #(
-        .DATAW(DATAW),
-        .PIPES_MUL(PIPES_MUL),
-        .PIPES_TREE(PIPES_TREE),
-        .BACKPRESSURE(0),
-        .NUM_INPUTS(NUM_INPUTS)
-      ) dot_product_unit1 (
-        .clk(clk_i),
-        .rst_n(rst_n),
-        .sign_unsign(sign_unsign_ni),
-        .valid_i(valid_i),
-        .valid_o(valid_o),
-        .ready_i(ready_i),
-        .ready_o(ready_o),
-        .in1(data_i_a),
-        .in2(data_i_b),
-        .out(data_o)
-      );
-    end else begin : g_backpressure
-      dot_product_unit #(
-        .DATAW(DATAW),
-        .PIPES_MUL(PIPES_MUL),
-        .PIPES_TREE(PIPES_TREE),
-        .BACKPRESSURE(1),
-        .NUM_INPUTS(NUM_INPUTS)
-      ) dot_product_unit1 (
-        .clk(clk_i),
-        .rst_n(rst_n),
-        .sign_unsign(sign_unsign_ni),
-        .valid_i(valid_i),
-        .valid_o(valid_o),
-        .ready_i(ready_i),
-        .ready_o(ready_o),
-        .in1(data_i_a),
-        .in2(data_i_b),
-        .out(data_o)
-      );
-    end
-  endgenerate
+  syn_tle_dotp #(
+    ) dp_unit (
+      .clk_i(clk_i),
+      .rst_n(rst_n),
+      .sign_unsign(sign_unsign),
+      .valid_i(valid_i),
+      .ready_i(ready_i),
+      .valid_o(valid_o),
+      .ready_o(ready_o),
+      .\in1[7] (in1[7]),
+      .\in1[6] (in1[6]),
+      .\in1[5] (in1[5]),
+      .\in1[4] (in1[4]),
+      .\in1[3] (in1[3]),
+      .\in1[2] (in1[2]),
+      .\in1[1] (in1[1]),
+      .\in1[0] (in1[0]),
+      .\in2[7] (in2[7]),
+      .\in2[6] (in2[6]),
+      .\in2[5] (in2[5]),
+      .\in2[4] (in2[4]),
+      .\in2[3] (in2[3]),
+      .\in2[2] (in2[2]),
+      .\in2[1] (in2[1]),
+      .\in2[0] (in2[0]),
+      .out(out)
+    );
 
 
   initial begin
@@ -187,8 +173,8 @@ module tb_dot_product_unit;
 
     for (int i = 0; i < NUM_TESTS_8; i++) begin
       //apply inputs
-      data_i_a = test_inputs_a[i];
-      data_i_b = test_inputs_b[i];
+      in1 = test_inputs_a[i];
+      in2 = test_inputs_b[i];
       sign_unsign_ni = sign_unsign_ni_8[i];
 
       //apply sign_unsign_ni
@@ -208,14 +194,14 @@ module tb_dot_product_unit;
 
 
       //check output
-      if ($signed(data_o) !== expected_outputs[i]) begin
-        $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs[i], $signed(data_o));
+      if ($signed(out) !== expected_outputs[i]) begin
+        $display("Test %0d failed: expected %0d, got %0d", i, expected_outputs[i], $signed(out));
         rst_n = 1'b0;
         #5
         rst_n = 1'b1;
         $finish(1);
       end else begin
-        $display("Test %0d passed: Output %0d is correct", i, $signed(data_o));
+        $display("Test %0d passed: Output %0d is correct", i, $signed(out));
         rst_n = 1'b0;
         #5
         rst_n = 1'b1;
