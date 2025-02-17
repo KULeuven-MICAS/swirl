@@ -24,7 +24,7 @@
 module tb_dot_product_unit;
 
   initial begin
-    $dumpfile("tb_dot_product_unit.vcd");
+    $dumpfile("tb_dot_product_unit.saif");
     $dumpvars(0, tb_dot_product_unit);
   end
   // Testbench signals

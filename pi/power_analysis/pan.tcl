@@ -16,7 +16,7 @@ source ${INPUTS_DIR}/defines.tcl
 
 source $SCRIPT_DIR/tech/skywater130_setup.tcl
 set_db library [list \
-    ${SKYWT130_TIMING_HOME}/sky130_fd_sc_hs__tt_025C_1v80.lib \
+    ${SKYWT130_TIMING_HOME}/sky130_fd_sc_hd__tt_025C_1v80.lib \
     ]
 
 set_attribute lef_library ${SKYWT130_LEF_FILES}
