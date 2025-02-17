@@ -38,7 +38,7 @@ set reAnalyzeRTL "TRUE"
 source $SCRIPT_DIR/tech/sky130_open_pdks_setup.tcl
 
 set_db library [list \
-    ${SKYWT130_TIMING_HOME}/sky130_fd_sc_hs__tt_025C_1v80.lib \
+    ${SKYWT130_TIMING_HOME}/sky130_fd_sc_hd__tt_025C_1v80.lib \
     ]
 
 set_attribute auto_ungroup none

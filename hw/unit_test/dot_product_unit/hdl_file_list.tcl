@@ -1,14 +1,14 @@
 set HDL_PATH ../../rtl
-set sky_lib_dir ../../../../../../../../volume1/users/r0941589/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hs/latest/cells/
+set sky_lib_dir ../../../../../../../../volume1/users/r0941589/no_backup/130_skywater_pdk/libraries/sky130_fd_sc_hd/latest/cells/
 
 if {${SYN}} {
     set HDL_FILES [ list                    \
-        "../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hs/verilog/sky130_fd_sc_hs.v"  \
-        "../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hs/verilog/primitives.v"  \
+        "../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v"  \
+        "../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v"  \
         "${SYN_PATH}/syn_tle_dotp.v"       \
         "./src/tb_dot_product_unit.sv"             \
     ]
-    set DEFINES "${DEFINES}+FUNCTIONAL"
+    set DEFINES "${DEFINES}"
 } else {
     set HDL_FILES [ list                    \
         "./src/tb_dot_product_unit.sv"                 \
@@ -18,6 +18,8 @@ if {${SYN}} {
         "${HDL_PATH}/adder.sv"        \
         "${HDL_PATH}/adder_tree.sv"        \
         "${HDL_PATH}/dot_product_unit.sv"        \
+        "${HDL_PATH}/syn_tle_dotp.sv"        \
+
     ]
 }
 

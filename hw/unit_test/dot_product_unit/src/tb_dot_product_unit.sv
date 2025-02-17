@@ -36,7 +36,7 @@ module tb_dot_product_unit;
   parameter int DATAW = 8;
   parameter int PIPES_MUL = 1;
   parameter int PIPES_TREE = 1;
-  parameter int BACKPRESSURE = 1;
+  parameter int BACKPRESSURE = 0;
   parameter int NUM_INPUTS = 8;
   parameter int NUM_LAYERS = $clog2(NUM_INPUTS);
   parameter int OUT_DATAW = (2 * DATAW) + NUM_LAYERS;
@@ -112,7 +112,7 @@ module tb_dot_product_unit;
     ) dp_unit (
       .clk_i(clk_i),
       .rst_n(rst_n),
-      .sign_unsign(sign_unsign),
+      .sign_unsign(sign_unsign_ni),
       .valid_i(valid_i),
       .ready_i(ready_i),
       .valid_o(valid_o),
@@ -133,7 +133,9 @@ module tb_dot_product_unit;
       .\in2[2] (in2[2]),
       .\in2[1] (in2[1]),
       .\in2[0] (in2[0]),
-      .out(out)
+      .out(out),
+      .VDD(1'b1),
+      .VSS(1'b0)
     );
 
 

@@ -82,6 +82,7 @@ module dot_product_unit #(
                 .ready_o(ready_o_mult[i])
             );
         end
+
         assign valid_i_tree = &valid_o_mult;
         assign ready_i_tree = &ready_o_mult;
 

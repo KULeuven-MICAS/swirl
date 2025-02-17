@@ -139,7 +139,7 @@ module syn_tle_dotp #(
         .PIPES_TREE(PIPESTAGESTREE),
         .PIPES_MUL(PIPESTAGESMUL),
         .NUM_INPUTS(NUM_INPUTS),
-        .BACKPRESSURE(1)
+        .BACKPRESSURE(0)
     ) dot_product_unit (
         .clk(clk_i),
         .rst_n(rst_n),
