@@ -7,15 +7,15 @@
 # Skywater 130nm PDK setup script
 
 set USER_NAME [exec whoami]
-set SKYWT130_PDK_HOME /volume1/users/$USER_NAME/no_backup/130_skywater_pdk
+set SKYWT130_PDK_HOME /volume1/users/$USER_NAME/no_backup_open_pdk/open_pdks/sky130/sky130A
 
 # LEF files
-set SKYWT130_LEF_PATH "$SKYWT130_PDK_HOME/libraries/sky130_fd_sc_hs/latest/tech"
+set SKYWT130_LEF_PATH "$SKYWT130_PDK_HOME/libs.ref/sky130_fd_sc_hd/techlef"
 
 set SKYWT130_LEF_FILES [list \
-    "$SKYWT130_LEF_PATH/sky130_fd_sc_hs.tlef" \
+    "$SKYWT130_LEF_PATH/sky130_fd_sc_hd__nom.tlef" \
     ]
 
 set all_lef_files $SKYWT130_LEF_FILES
 
-set SKYWT130_TIMING_HOME "$SKYWT130_PDK_HOME/libraries/sky130_fd_sc_hs/latest/timing"
+set SKYWT130_TIMING_HOME "$SKYWT130_PDK_HOME/libs.ref/sky130_fd_sc_hd/lib"

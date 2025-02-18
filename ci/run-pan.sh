@@ -72,4 +72,4 @@ echo "  ACT_FILE=$ACT_FILE"
 echo "  REP_FILE=$REP_FILE"
 
 source /esat/micas-data/data/design/scripts/ddi_22.35.rc
-SYN_MODULE=$SYN_MODULE NETLIST=$NETLIST ACTIVITY_FILE=$ACT_FILE REPORT_FILE=$REP_FILE genus -legacy_ui -overwrite -files ../pi/power_analysis/pan.tcl -log genCompile.log
+SYN_MODULE=$SYN_MODULE NETLIST=$NETLIST ACTIVITY_FILE=$ACT_FILE REPORT_FILE=$REP_FILE genus -legacy_ui -overwrite -files ./pi/power_analysis/pan.tcl -log genCompile.log
