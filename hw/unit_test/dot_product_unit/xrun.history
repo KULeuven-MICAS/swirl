@@ -1,0 +1,58 @@
+#e1(25Feb2025:09:59:25): source ./xcelium.d/env.d/env.history.25Feb2025_09_59_25
+s1(25Feb2025:09:59:25):  xrun -tcl 
+#e2(25Feb2025:10:53:59): source ./xcelium.d/env.d/env.history.25Feb2025_10_53_59
+s2(25Feb2025:10:53:59):  xrun -compile "./src/tb_dot_product_unit.sv ../../../pi/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C166_RT1/syn_tle_dotp.v" 
+#e3(25Feb2025:10:54:20): source ./xcelium.d/env.d/env.history.25Feb2025_10_54_20
+s3(25Feb2025:10:54:20):  xrun -compile ./src/tb_dot_product_unit.sv 
+#e4(25Feb2025:10:54:39): source ./xcelium.d/env.d/env.history.25Feb2025_10_54_39
+s4(25Feb2025:10:54:39):  xrun -compile ../../../pi/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C166_RT1/syn_tle_dotp.v 
+#e5(25Feb2025:10:54:49): source ./xcelium.d/env.d/env.history.25Feb2025_10_54_49
+s5(25Feb2025:10:54:49):  xrun -compile ../../../pi/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e6(25Feb2025:10:55:06): source ./xcelium.d/env.d/env.history.25Feb2025_10_55_06
+s6(25Feb2025:10:55:06):  xrun -compile ./../../../pi/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e7(25Feb2025:10:55:50): source ./xcelium.d/env.d/env.history.25Feb2025_10_55_50
+s7(25Feb2025:10:55:50):  xrun -compile ./../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e8(25Feb2025:10:56:19): source ./xcelium.d/env.d/env.history.25Feb2025_10_56_19
+s8(25Feb2025:10:56:19):  xrun -elaborate ./src/tb_dot_product_unit.sv 
+#e9(25Feb2025:10:57:37): source ./xcelium.d/env.d/env.history.25Feb2025_10_57_37
+s9(25Feb2025:10:57:37):  xrun -elaborate ./../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e10(25Feb2025:10:58:10): source ./xcelium.d/env.d/env.history.25Feb2025_10_58_10
+s10(25Feb2025:10:58:10):  xrun -compile ./src/tb_dot_product_unit.sv 
+#e11(25Feb2025:10:58:17): source ./xcelium.d/env.d/env.history.25Feb2025_10_58_17
+s11(25Feb2025:10:58:17):  xrun -elaborate ./../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e12(25Feb2025:10:58:30): source ./xcelium.d/env.d/env.history.25Feb2025_10_58_30
+s12(25Feb2025:10:58:30):  xrun -compile ./../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e13(25Feb2025:10:58:37): source ./xcelium.d/env.d/env.history.25Feb2025_10_58_37
+s13(25Feb2025:10:58:37):  xrun -compile ./src/tb_dot_product_unit.sv 
+#e14(25Feb2025:11:00:48): source ./xcelium.d/env.d/env.history.25Feb2025_11_00_48
+s14(25Feb2025:11:00:48):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C166_RT1/syn_tle_dotp.v 
+#e15(25Feb2025:11:01:00): source ./xcelium.d/env.d/env.history.25Feb2025_11_01_00
+s15(25Feb2025:11:01:00):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C166_RT1/syn_tle_dotp.v 
+#e16(25Feb2025:11:01:07): source ./xcelium.d/env.d/env.history.25Feb2025_11_01_07
+s16(25Feb2025:11:01:07):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e17(25Feb2025:11:01:29): source ./xcelium.d/env.d/env.history.25Feb2025_11_01_29
+s17(25Feb2025:11:01:29):  xrun -elaborate ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v 
+#e18(25Feb2025:11:01:55): source ./xcelium.d/env.d/env.history.25Feb2025_11_01_55
+s18(25Feb2025:11:01:55):  xrun -elaborate ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e19(25Feb2025:11:02:21): source ./xcelium.d/env.d/env.history.25Feb2025_11_02_21
+s19(25Feb2025:11:02:21):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e20(25Feb2025:11:02:39): source ./xcelium.d/env.d/env.history.25Feb2025_11_02_39
+s20(25Feb2025:11:02:39):  xrun -elaborate ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e21(25Feb2025:11:04:26): source ./xcelium.d/env.d/env.history.25Feb2025_11_04_26
+s21(25Feb2025:11:04:26):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e22(25Feb2025:11:05:05): source ./xcelium.d/env.d/env.history.25Feb2025_11_05_05
+s22(25Feb2025:11:05:05):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e23(25Feb2025:11:13:07): source ./xcelium.d/env.d/env.history.25Feb2025_11_13_07
+s23(25Feb2025:11:13:07):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e24(25Feb2025:11:13:58): source ./xcelium.d/env.d/env.history.25Feb2025_11_13_58
+s24(25Feb2025:11:13:58):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e25(25Feb2025:11:16:04): source ./xcelium.d/env.d/env.history.25Feb2025_11_16_04
+s25(25Feb2025:11:16:04):  xrun -compile ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e26(25Feb2025:11:16:28): source ./xcelium.d/env.d/env.history.25Feb2025_11_16_28
+s26(25Feb2025:11:16:28):  xrun -elaborate ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e27(25Feb2025:11:26:08): source ./xcelium.d/env.d/env.history.25Feb2025_11_26_08
+s27(25Feb2025:11:26:08):  xrun -access -R -input run-tb.tcl 
+#e28(25Feb2025:11:34:01): source ./xcelium.d/env.d/env.history.25Feb2025_11_34_01
+s28(25Feb2025:11:34:01):  xrun -compile +access+r ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 
+#e29(25Feb2025:11:34:21): source ./xcelium.d/env.d/env.history.25Feb2025_11_34_21
+s29(25Feb2025:11:34:21):  xrun -elaborate +access+r ./src/tb_dot_product_unit.sv ../../../pi/syn/outputs/syn_tle_dotp/A1_W8_M1_N1_K8_PT5_PM1_C1666_RT1/syn_tle_dotp.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v ../../../../../../../../volume1/users/r0941589/no_backup_open_pdk/open_pdks/sky130/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v 

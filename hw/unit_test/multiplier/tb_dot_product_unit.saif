@@ -1,0 +1,373 @@
+
+Power Report Interval
+50005000 ps
+
+Power Report                        Node     Tc     Ti    Time At 1    Time At 0    Time At X
+---------------------------------------------------------------------------------------------
+      /tb_dot_product_unit/dp_unit/clk_i  10001      0     25000000     25005000            0
+      /tb_dot_product_unit/dp_unit/rst_n    101      0     49744000       261000            0
+/tb_dot_product_unit/dp_unit/sign_unsign      0      0     50005000            0            0
+    /tb_dot_product_unit/dp_unit/valid_i    100      0      4749000     45256000            0
+    /tb_dot_product_unit/dp_unit/ready_i    100      0      4749000     45256000            0
+/tb_dot_product_unit/dp_unit/\in1[7] (7)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (6)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (5)     14      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (4)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (3)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (2)     10      0       800000     49194000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (1)      8      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[7] (0)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (7)      8      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (6)     13      0     45795000      4199000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (5)     12      0       800000     49194000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (4)     13      0     45895000      4099000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (3)      9      0     45495000      4499000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (2)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (1)     13      0     45895000      4099000        11000
+/tb_dot_product_unit/dp_unit/\in1[6] (0)      9      0     45595000      4399000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (7)     16      0       900000     49094000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (6)     14      0       900000     49094000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (5)     10      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (4)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (3)      4      0       200000     49794000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (2)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (1)     16      0      1100000     48894000        11000
+/tb_dot_product_unit/dp_unit/\in1[5] (0)     14      0       900000     49094000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (7)      6      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (6)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (5)     11      0       599000     49395000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (4)     14      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (3)      9      0       499000     49495000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (2)      9      0       499000     49495000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (1)      9      0       599000     49395000        11000
+/tb_dot_product_unit/dp_unit/\in1[4] (0)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (7)      6      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (6)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (5)     12      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (4)      6      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (3)      4      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (2)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (1)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[3] (0)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (7)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (6)     13      0       699000     49295000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (5)      8      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (4)      9      0       699000     49295000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (3)     12      0     45694000      4300000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (2)     13      0       799000     49195000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (1)     14      0     45894000      4100000        11000
+/tb_dot_product_unit/dp_unit/\in1[2] (0)     17      0       999000     48995000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (7)     12      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (6)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (5)     10      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (4)      8      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (3)      6      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (2)      8      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (1)      6      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in1[1] (0)      6      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (7)     14      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (6)     20      0      1000000     48994000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (5)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (4)      4      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (3)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (2)      2      0       100000     49894000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (1)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in1[0] (0)     16      0       900000     49094000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (7)      9      0     45495000      4499000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (6)     11      0     45595000      4399000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (5)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (4)      7      0     45395000      4599000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (3)     14      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (2)      5      0     45295000      4699000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (1)      7      0     45395000      4599000        11000
+/tb_dot_product_unit/dp_unit/\in2[7] (0)     11      0     45595000      4399000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (7)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (6)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (5)     20      0      1000000     48994000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (4)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (3)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (2)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (1)     14      0       800000     49194000        11000
+/tb_dot_product_unit/dp_unit/\in2[6] (0)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (7)     13      0       799000     49195000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (6)     14      0      1100000     48894000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (5)     17      0      1299000     48695000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (4)     14      0      1000000     48994000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (3)     15      0      1199000     48795000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (2)     13      0      1199000     48795000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (1)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[5] (0)     14      0       800000     49194000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (7)     14      0       900000     49094000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (6)     16      0      1000000     48994000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (5)      8      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (4)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (3)     20      0      1200000     48794000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (2)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (1)     16      0      1100000     48894000        11000
+/tb_dot_product_unit/dp_unit/\in2[4] (0)     16      0       900000     49094000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (7)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (6)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (5)      4      0       200000     49794000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (4)      8      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (3)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (2)     10      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (1)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[3] (0)     10      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (7)     11      0     45595000      4399000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (6)      9      0     45495000      4499000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (5)      9      0     45495000      4499000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (4)      4      0       200000     49794000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (3)      4      0       200000     49794000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (2)      5      0     45295000      4699000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (1)      6      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in2[2] (0)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (7)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (6)      6      0       300000     49694000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (5)      8      0       500000     49494000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (4)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (3)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (2)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (1)     14      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in2[1] (0)      8      0       400000     49594000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (7)     12      0       700000     49294000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (6)     16      0      1000000     48994000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (5)     11      0       699000     49295000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (4)      2      0       100000     49894000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (3)     12      0       600000     49394000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (2)     17      0       999000     48995000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (1)     15      0       899000     49095000        11000
+/tb_dot_product_unit/dp_unit/\in2[0] (0)     19      0      1099000     48895000        11000
+    /tb_dot_product_unit/dp_unit/valid_o    100      0       500000     49504000         1000
+    /tb_dot_product_unit/dp_unit/ready_o      0      0     50005000            0            0
+    /tb_dot_product_unit/dp_unit/out(18)     22      0       110000     49894000         1000
+    /tb_dot_product_unit/dp_unit/out(17)     22      0       110000     49894000         1000
+    /tb_dot_product_unit/dp_unit/out(16)     22      0       110000     49894000         1000
+    /tb_dot_product_unit/dp_unit/out(15)     22      0       110000     49894000         1000
+    /tb_dot_product_unit/dp_unit/out(14)     22      0       110000     49894000         1000
+    /tb_dot_product_unit/dp_unit/out(13)     30      0       150000     49854000         1000
+    /tb_dot_product_unit/dp_unit/out(12)     22      0       110000     49894000         1000
+    /tb_dot_product_unit/dp_unit/out(11)     12      0        60000     49944000         1000
+    /tb_dot_product_unit/dp_unit/out(10)     26      0       130000     49874000         1000
+     /tb_dot_product_unit/dp_unit/out(9)     20      0       100000     49904000         1000
+     /tb_dot_product_unit/dp_unit/out(8)     26      0       130000     49874000         1000
+     /tb_dot_product_unit/dp_unit/out(7)     16      0        80000     49924000         1000
+     /tb_dot_product_unit/dp_unit/out(6)     32      0       160000     49844000         1000
+     /tb_dot_product_unit/dp_unit/out(5)     20      0       100000     49904000         1000
+     /tb_dot_product_unit/dp_unit/out(4)     20      0       100000     49904000         1000
+     /tb_dot_product_unit/dp_unit/out(3)     20      0       100000     49904000         1000
+     /tb_dot_product_unit/dp_unit/out(2)     24      0       120000     49884000         1000
+     /tb_dot_product_unit/dp_unit/out(1)     24      0       120000     49884000         1000
+     /tb_dot_product_unit/dp_unit/out(0)     14      0        70000     49934000         1000
+        /tb_dot_product_unit/dp_unit/VDD      0      0     50005000            0            0
+        /tb_dot_product_unit/dp_unit/VSS      0      0            0     50005000            0
+/tb_dot_product_unit/dp_unit/out_temp(18)     22      0       220000     49784000         1000
+/tb_dot_product_unit/dp_unit/out_temp(17)     22      0       220000     49784000         1000
+/tb_dot_product_unit/dp_unit/out_temp(16)     22      0       220000     49784000         1000
+/tb_dot_product_unit/dp_unit/out_temp(15)     22      0       220000     49784000         1000
+/tb_dot_product_unit/dp_unit/out_temp(14)     22      0       220000     49784000         1000
+/tb_dot_product_unit/dp_unit/out_temp(13)     30      0       300000     49704000         1000
+/tb_dot_product_unit/dp_unit/out_temp(12)     22      0       220000     49784000         1000
+/tb_dot_product_unit/dp_unit/out_temp(11)     12      0       120000     49884000         1000
+/tb_dot_product_unit/dp_unit/out_temp(10)     26      0       260000     49744000         1000
+/tb_dot_product_unit/dp_unit/out_temp(9)     20      0       200000     49804000         1000
+/tb_dot_product_unit/dp_unit/out_temp(8)     26      0       260000     49744000         1000
+/tb_dot_product_unit/dp_unit/out_temp(7)     16      0       160000     49844000         1000
+/tb_dot_product_unit/dp_unit/out_temp(6)     32      0       320000     49684000         1000
+/tb_dot_product_unit/dp_unit/out_temp(5)     20      0       200000     49804000         1000
+/tb_dot_product_unit/dp_unit/out_temp(4)     20      0       200000     49804000         1000
+/tb_dot_product_unit/dp_unit/out_temp(3)     20      0       200000     49804000         1000
+/tb_dot_product_unit/dp_unit/out_temp(2)     24      0       240000     49764000         1000
+/tb_dot_product_unit/dp_unit/out_temp(1)     24      0       240000     49764000         1000
+/tb_dot_product_unit/dp_unit/out_temp(0)     14      0       140000     49864000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (7)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (6)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (5)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (4)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (3)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (2)     16      0       720000     49284000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (1)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[7] (0)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (7)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (6)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (5)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (4)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (3)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (2)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (1)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[7] (0)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (7)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (6)     17      0     45709000      4295000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (5)     16      0       720000     49284000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (4)     19      0     45799000      4205000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (3)     11      0     45439000      4565000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (2)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (1)     19      0     45799000      4205000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[6] (0)     13      0     45529000      4475000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (7)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (6)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (5)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (4)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (3)      4      0       180000     49824000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (2)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (1)     22      0       990000     49014000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[5] (0)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (7)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (6)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (5)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (4)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (3)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (2)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (1)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[4] (0)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (7)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (6)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (5)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (4)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (3)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (2)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (1)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[3] (0)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (7)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (6)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (5)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (4)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (3)     15      0     45619000      4385000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (2)     16      0       720000     49284000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (1)     19      0     45799000      4205000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[2] (0)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (7)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (6)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (5)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (4)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (3)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (2)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (1)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[1] (0)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (7)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (6)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (5)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (4)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (3)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (2)      2      0        90000     49914000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (1)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in1_passed[0] (0)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (7)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (6)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (5)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (4)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (3)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (2)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (1)     16      0       720000     49284000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[6] (0)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (7)     16      0       720000     49284000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (6)     22      0       990000     49014000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (5)     26      0      1170000     48834000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (4)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (3)     24      0      1080000     48924000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (2)     24      0      1080000     48924000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (1)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[5] (0)     16      0       720000     49284000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (7)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (6)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (5)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (4)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (3)     24      0      1080000     48924000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (2)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (1)     22      0       990000     49014000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[4] (0)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (7)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (6)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (5)      4      0       180000     49824000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (4)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (3)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (2)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (1)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[3] (0)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (7)     13      0     45529000      4475000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (6)     11      0     45439000      4565000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (5)     11      0     45439000      4565000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (4)      4      0       180000     49824000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (3)      4      0       180000     49824000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (2)      7      0     45259000      4745000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (1)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[2] (0)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (7)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (6)      6      0       270000     49734000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (5)     10      0       450000     49554000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (4)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (3)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (2)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (1)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[1] (0)      8      0       360000     49644000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (7)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (6)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (5)     14      0       630000     49374000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (4)      2      0        90000     49914000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (3)     12      0       540000     49464000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (2)     20      0       900000     49104000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (1)     18      0       810000     49194000         1000
+/tb_dot_product_unit/dp_unit/\in2_passed[0] (0)     22      0       990000     49014000         1000
+/tb_dot_product_unit/dp_unit/UNCONNECTED616      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED617      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED618      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED619      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED620      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED621      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED622      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED623      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED624      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED625      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED626      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED627      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED628      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED629      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED630      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED631      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED632      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED633      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED634      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED635      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED636      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED637      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED638      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED639      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED640      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED641      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED642      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED643      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED644      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED645      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z53      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z54      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z55      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z56      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z57      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z58      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z59      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z60      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z61      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z62      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z63      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z64      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z65      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z66      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z67      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z68      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z69      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z70      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z71      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z72      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z73      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z74      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z75      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z76      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z77      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z78      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z79      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/UNCONNECTED_HIER_Z80      0      0            0            0     50005000
+/tb_dot_product_unit/dp_unit/ready_i_passed    100      0     49954000        50000         1000
+/tb_dot_product_unit/dp_unit/ready_o_temp      0      0     50005000            0            0
+/tb_dot_product_unit/dp_unit/valid_i_passed    100      0      4500000     45504000         1000
+/tb_dot_product_unit/dp_unit/valid_o_temp    100      0      1000000     49004000         1000
+---------------------------------------------------------------------------------------------
+

@@ -32,7 +32,6 @@ if {$FORCE_BUILD == 1} {
 
 # Verify library mapping
 vmap
-
 # Apply the IterationLimit attribute
 set IterationLimit 200000
 
@@ -46,5 +45,10 @@ vsim -quiet \
      -modelsimini ./modelsim.ini \
      ${OBJ}
 
+power add dp_unit/*
+
 run -all
+
+power report -all -file tb_dot_product_unit.saif
+
 quit

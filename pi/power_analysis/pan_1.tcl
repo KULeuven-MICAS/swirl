@@ -22,7 +22,7 @@ set_db library [list \
     ${SKYWT130_TIMING_HOME}/sky130_fd_sc_hd__tt_025C_1v80.lib \
     ]
 
-set_attribute lef_library ${SKYWT130_LEF_FILES}
+set_db lef_library ${SKYWT130_LEF_FILES}
 set_attribute init_hdl_search_path $HDL_PATH
 
 read_power_intent -module ${NETLIST} $SCRIPT_DIR/../syn/tech/power_intent.upf
@@ -39,10 +39,10 @@ puts "setting saif_file to ${saif_file}"
 set top_instance ${ACTIVITY_FILE}
 puts "setting top_instance to ${top_instance}"
 
-#read_vcd ${VCD_DIR}/vcd_file
-read_tcf ${VCD_DIR}/tcf.dump
+read_vcd ${VCD_DIR}/vcd_file
+
 #read_saif -instance ${NETLIST} ${VCD_DIR}/${saif_file}
 
-report_power -by_hierarchy -level 4 > ${HDL_PATH}/${REPORT_FILE}
+#report_power -by_hierarchy -level 4 > ${HDL_PATH}/${REPORT_FILE}
 
-exit
+#exit

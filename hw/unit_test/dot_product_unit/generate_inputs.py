@@ -42,20 +42,34 @@ def generate_dataset(num_cases=10, sparsity=0.5):
     return vec_a_list, vec_b_list, results
 
 def main():
-    num_cases = 10  # Number of test cases
-    sparsity = 0.5  # 50% sparse vectors
+    num_cases = 5000  # Number of test cases
+    sparsity = 0.6  # Sparse vectors
     
     vec_a_list, vec_b_list, results = generate_dataset(num_cases, sparsity)
     vec_a_list = str(vec_a_list)
     vec_b_list = str(vec_b_list)
     
-    print("{")
+    # print("{")
     vec_a_list = vec_a_list.replace("[", "{").replace("]", "}")
-    print(vec_a_list)
+    # print(vec_a_list)
+    # print("\n")
     vec_b_list = vec_b_list.replace("[", "{").replace("]", "}")
-    print(vec_b_list)
-    print("  {", ", ".join(map(str, results)), "}")
-    print("}")
+    # print(vec_b_list)
+    # print("\n")
+    # print("  {", ", ".join(map(str, results)), "}")
+    # print("}")
+
+    f = open("inputsa.txt", "w")
+    f.write(vec_a_list)
+    f.close()
+    f = open("inputsb.txt", "w")
+    f.write(vec_b_list)
+    f.close()
+    f = open("output.txt", "w")
+    f.write("  {")
+    f.write(", ".join(map(str, results)))
+    f.write("}")
+    f.close()
 
 if __name__ == "__main__":
     main()
